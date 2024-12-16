@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DA.DinnerPlanner.Model.UnitsTypes;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,10 @@ namespace DA.DinnerPlanner.Model
 	/// </ChangeLog>
 	public class DinnerPlannerContext(string connectionString):DbContext
 	{
+		public DbSet<Country> Countries { get; set; }
+		public DbSet<CommunicationType> CommunicationTypes { get; set; }
+		public DbSet<Allergy> Allergies { get; set; }
+		public DbSet<User> Users { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
@@ -22,7 +27,31 @@ namespace DA.DinnerPlanner.Model
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			// TODO DA: add entities here
+			// TODO DA: add/modify entity-definitions here
+			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/one-to-many
+			modelBuilder.Entity<User>(user =>
+			{
+				user.HasKey(u => u.Id);
+				user.HasMany(u => u.Allergies);
+				user.HasMany(u => u.AddressList).WithOne(a => a.User);
+				user.HasMany(u=>u.CommunicationList).WithOne(c => c.User);
+				user.HasAlternateKey(u => u.GoogleId);
+			});
+			modelBuilder.Entity<Allergy>(allergy =>
+			{
+				allergy.HasKey(a => a.Id);
+
+			});
+			modelBuilder.Entity<Communication>(communication =>
+			{
+				communication.HasKey(c => c.Id);
+				communication.HasOne(c => c.CommunicationType);
+			});
+			modelBuilder.Entity<Address>(address =>
+			{
+				address.HasKey(a => a.Id);
+				address.HasOne(a => a.Country);
+			});
 		}
 	}
 }

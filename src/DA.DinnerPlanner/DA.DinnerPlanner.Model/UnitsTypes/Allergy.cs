@@ -1,4 +1,6 @@
-﻿namespace DA.DinnerPlanner.Model.UnitsTypes
+﻿using System.Text.Json.Serialization;
+
+namespace DA.DinnerPlanner.Model.UnitsTypes
 {
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />

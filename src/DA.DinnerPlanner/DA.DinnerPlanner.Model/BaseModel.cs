@@ -16,15 +16,13 @@ namespace DA.DinnerPlanner.Model
 		/// <summary>
 		/// Änderungsdatum
 		/// </summary>
-		public DateTime? ChangeDate { get; set; }
+		public DateTime? ChangeDate { get; set; } = DateTime.UtcNow;
 
 		/// <summary>
 		/// Erstelldatum
 		/// </summary>
-		public DateTime? CreationDate { get; set; }
+		public DateTime? CreationDate { get; set; }=DateTime.UtcNow;
 		public bool Deleted { get; set; }
-		public static T Create<T>() where T : BaseModel, new()
-			=> new T { ChangeDate = DateTime.UtcNow, CreationDate = DateTime.UtcNow, Deleted = false };
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();

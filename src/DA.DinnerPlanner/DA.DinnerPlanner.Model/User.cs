@@ -11,13 +11,13 @@ namespace DA.DinnerPlanner.Model
 		public string FirstName { get; set; } = "";
 		public string LastName { get; set; } = "";
 		public string DisplayName { get; set; } = "";
-		public DateOnly BirthDate { get; set; }
+		public DateTime BirthDate { get; set; }
 		/// <summary>
 		/// a user can have more then one address
 		/// </summary>
-		public ICollection<Address> AddressList { get; set; } = new List<Address>();
-		public ICollection<Allergy> Allergies { get; set; } = new List<Allergy>();
-		public ICollection<Communication> CommunicationList { get; set; } = new List<Communication>();
+		public ICollection<Address> AddressList { get; set; } = [];
+		public ICollection<Allergy> Allergies { get; set; } = [];
+		public ICollection<Communication> CommunicationList { get; set; } = [];
 		public override bool Equals(object? obj)
 		{
 			if (obj ==null || !(obj is User)) return false;
@@ -26,6 +26,10 @@ namespace DA.DinnerPlanner.Model
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();
+		}
+		public string GetDefaultDisplayName()
+		{
+			return $"{LastName}, {FirstName}";
 		}
 	}
 }
