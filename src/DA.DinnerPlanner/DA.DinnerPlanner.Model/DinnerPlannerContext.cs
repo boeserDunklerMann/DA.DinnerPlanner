@@ -19,6 +19,7 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<Allergy> Allergies { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Dinner> Dinners { get; set; }
+		public DbSet<Pet> Pets { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
@@ -37,9 +38,11 @@ namespace DA.DinnerPlanner.Model
 				user.HasKey(u => u.Id);
 				user.HasMany(u => u.Allergies);
 				user.HasMany(u => u.AddressList).WithOne(a => a.User);
-				user.HasMany(u=>u.CommunicationList).WithOne(c => c.User);
-				//user.HasAlternateKey(u => u.GoogleId);
+				user.HasMany(u => u.CommunicationList).WithOne(c => c.User);
+				user.HasMany(u => u.Pets);
 				user.Property(u => u.GoogleId).IsRequired(false);
+				user.HasIndex(u => u.GoogleId).HasFilter("LABEL IS NOT NULL")
+				.IsUnique();
 			});
 			modelBuilder.Entity<Allergy>(allergy =>
 			{
