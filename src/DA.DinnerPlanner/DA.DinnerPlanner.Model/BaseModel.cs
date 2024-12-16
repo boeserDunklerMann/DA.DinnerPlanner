@@ -25,5 +25,9 @@ namespace DA.DinnerPlanner.Model
 		public bool Deleted { get; set; }
 		public static T Create<T>() where T : BaseModel, new()
 			=> new T { ChangeDate = DateTime.UtcNow, CreationDate = DateTime.UtcNow, Deleted = false };
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
 	}
 }
