@@ -16,5 +16,6 @@ namespace DA.DinnerPlanner.Model.UnitsTypes
 			if (obj == null || !(obj is Allergy)) return false;
 			return Id == ((Allergy)obj).Id;
 		}
+		public ICollection<User> Users { get; set; } = [];  // see here https://learn.microsoft.com/de-de/ef/core/modeling/relationships/many-to-many
 	}
 }

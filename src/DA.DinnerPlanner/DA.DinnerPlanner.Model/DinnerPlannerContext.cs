@@ -29,6 +29,7 @@ namespace DA.DinnerPlanner.Model
 			base.OnModelCreating(modelBuilder);
 			// TODO DA: add/modify entity-definitions here
 			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/one-to-many
+			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/many-to-many <--- das ist das Richtige!
 			modelBuilder.Entity<User>(user =>
 			{
 				user.HasKey(u => u.Id);
