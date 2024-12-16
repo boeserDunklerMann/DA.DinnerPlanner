@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 namespace DA.DinnerPlanner.Model
 {
 	/// <ChangeLog>
-		/// <Create Datum="16.12.2024" Entwickler="DA" />
-		/// </ChangeLog>
+	/// <Create Datum="16.12.2024" Entwickler="DA" />
+	/// </ChangeLog>
+	/// <remarks>
+	/// all Dates are stored in Utc since we are an international app.
+	/// </remarks>
 	public abstract class BaseModel
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
