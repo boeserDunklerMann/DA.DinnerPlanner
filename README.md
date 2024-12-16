@@ -4,6 +4,8 @@ webportal of this type. Just for fun.
 
 # DA.DinnerPlanner.Model
 Datamodel with databasecontext
+## TODO
+- Essgewohnheiten (vegetarisch/vegan/Fleisch)
 
 # DA.DinnerPlanner.EFCore.Setup.Cons
 Console project for setting up the database and generating some testdata
