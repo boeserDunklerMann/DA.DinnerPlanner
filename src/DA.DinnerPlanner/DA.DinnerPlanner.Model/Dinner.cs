@@ -17,6 +17,7 @@
 		public ICollection<User> Cooks { get; set; } = [];
 		public ICollection<User> Guests { get; set; } = [];
 		public DateTime DinnerDate { get; set; }
-		public string Dinnerdescription { get; set; }
+		public string Dinnerdescription { get; set; } = "";
+		public DinnerReview Review { get; set; } = new();
 	}
 }
