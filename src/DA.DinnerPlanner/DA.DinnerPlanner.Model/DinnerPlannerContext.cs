@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZstdSharp.Unsafe;
 
 namespace DA.DinnerPlanner.Model
 {
@@ -17,6 +18,7 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<CommunicationType> CommunicationTypes { get; set; }
 		public DbSet<Allergy> Allergies { get; set; }
 		public DbSet<User> Users { get; set; }
+		public DbSet<Dinner> Dinners { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
@@ -36,7 +38,8 @@ namespace DA.DinnerPlanner.Model
 				user.HasMany(u => u.Allergies);
 				user.HasMany(u => u.AddressList).WithOne(a => a.User);
 				user.HasMany(u=>u.CommunicationList).WithOne(c => c.User);
-				user.HasAlternateKey(u => u.GoogleId);
+				//user.HasAlternateKey(u => u.GoogleId);
+				user.Property(u => u.GoogleId).IsRequired(false);
 			});
 			modelBuilder.Entity<Allergy>(allergy =>
 			{
@@ -52,6 +55,20 @@ namespace DA.DinnerPlanner.Model
 			{
 				address.HasKey(a => a.Id);
 				address.HasOne(a => a.Country);
+			});
+			modelBuilder.Entity<Dinner>(dinner =>
+			{
+				dinner.HasKey(d => d.Id);
+				dinner.HasMany(d => d.Reviews).WithOne(r=>r.Dinner);
+				dinner.HasOne(d => d.Host).WithMany(u => u.DinnerAsHost);
+				dinner.HasMany(d => d.Cooks).WithMany(u => u.DinnerAsCook).UsingEntity("DinnerCook");
+				dinner.HasMany(d => d.Guests).WithMany(u => u.DinnerAsGuest).UsingEntity("DinnerGuest");
+			});
+			modelBuilder.Entity<DinnerReview>(dr =>
+			{
+				dr.HasKey(d => d.Id);
+				dr.HasOne(d => d.ReviewsAuthor).WithMany(u => u.Reviews);
+				dr.HasOne(d => d.Dinner).WithMany(d => d.Reviews);
 			});
 		}
 	}

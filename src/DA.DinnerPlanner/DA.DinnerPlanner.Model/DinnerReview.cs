@@ -22,5 +22,10 @@ namespace DA.DinnerPlanner.Model
 		public string ReviewHost { get; set; } = "";
 		public int NumberStars4Cook { get; set; }
 		public string ReviewCook { get; set; } = "";
+		/// <summary>
+		/// Who wrote the review
+		/// </summary>
+		public User ReviewsAuthor { get; set; } = new();
+		public Dinner Dinner { get; set; } = new();
 	}
 }
