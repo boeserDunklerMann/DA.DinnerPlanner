@@ -18,6 +18,9 @@ namespace DA.DinnerPlanner.Model
 		public ICollection<Address> AddressList { get; set; } = [];
 		public ICollection<Allergy> Allergies { get; set; } = [];
 		public ICollection<Communication> CommunicationList { get; set; } = [];
+		public ICollection<Dinner> DinnerAsHost { get; set; } = [];
+		public ICollection<Dinner> DinnerAsCook { get; set; } = [];
+		public ICollection<Dinner> DinnerAsGuest {  get; set; } = [];
 		public override bool Equals(object? obj)
 		{
 			if (obj ==null || !(obj is User)) return false;
