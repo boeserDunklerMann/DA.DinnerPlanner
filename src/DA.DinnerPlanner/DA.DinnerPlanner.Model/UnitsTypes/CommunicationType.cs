@@ -3,16 +3,16 @@
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// </ChangeLog>
-	/// <summary>
-	/// a possible allergy a user could have
-	/// </summary>
-	public class Allergy : BaseModel
+	/// <example>
+	/// email, phone, mobile, ...
+	/// </example>
+	public class CommunicationType : BaseModel
 	{
 		public string Name { get; set; } = "";
 		public override bool Equals(object? obj)
 		{
-			if (obj == null || !(obj is Allergy)) return false;
-			return Id == ((Allergy)obj).Id;
+			if (obj == null || !(obj is CommunicationType)) return false;
+			return Id == ((CommunicationType)obj).Id;
 		}
 	}
 }
