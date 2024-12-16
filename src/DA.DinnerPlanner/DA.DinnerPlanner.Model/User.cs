@@ -1,4 +1,6 @@
-﻿namespace DA.DinnerPlanner.Model
+﻿using DA.DinnerPlanner.Model.UnitsTypes;
+
+namespace DA.DinnerPlanner.Model
 {
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
@@ -14,6 +16,7 @@
 		/// a user can have more then one address
 		/// </summary>
 		public ICollection<Address> AddressList { get; set; } = new List<Address>();
+		public ICollection<Allergy> Allergies { get; set; } = new List<Allergy>();
 		public override bool Equals(object? obj)
 		{
 			if (obj ==null || !(obj is User)) return false;
