@@ -6,6 +6,10 @@ webportal of this type. Just for fun.
 Datamodel with databasecontext
 ## TODO
 - Essgewohnheiten (vegetarisch/vegan/Fleisch)
+- Raucher/Nichtraucher beim Host
 
 # DA.DinnerPlanner.EFCore.Setup.Cons
 Console project for setting up the database and generating some testdata
+
+# DA.DinnerPlanner.Razor.Proto
+Webapp-prototype with DB-access via EFCore
