@@ -1,5 +1,7 @@
 # local appsettings. here are the connection strings - we don't want them in public git(Hub)
 appsettings.local.json
+src\DA.DinnerPlanner\DA.DinnerPlanner.EFCore.Setup.Cons\Program.cs
+# "D:\git\DA.DinnerPlanner\src\DA.DinnerPlanner\DA.DinnerPlanner.EFCore.Setup.Cons\Program.cs"
 
 # temporary files for uploading into DB
 [Tt]emp/
