@@ -3,3 +3,39 @@
 @{
 	ViewData["Title"] = "Dinners";
 }
+<h1>Dinners</h1>
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Date</th>
+			<th>No of guests (including cooks)</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var dinner in Model.Dinners)
+		{
+			<tr>
+				<td>@dinner.Dinnerdescription</td>
+				<td>@dinner.DinnerDate</td>
+				<td>@Html.Raw((dinner.Guests.Count + dinner.Cooks.Count).ToString())</td>
+				<td>@if (dinner.DinnerDate>DateTime.UtcNow)	// liegt das Dinner in der Zukunft, kann es gelöscht werden
+						Html.Raw("löschen");
+					</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<div>
+	<h2>create new dinner</h2>
+	<form asp-page-handler="create" method="post">
+		<div class="form-group">
+			<label>Name/Description:</label>
+			<input type="text" asp-for="@Model.NewDinner.Dinnerdescription"/>
+			<label>Date:</label>
+			<input type="date" asp-for="@Model.NewDinner.DinnerDate"/>
+		</div>
+		<input type="submit" class="btn btn-primary" value="create"/>
+	</form>
+</div>

@@ -14,5 +14,6 @@ namespace DA.DinnerPlanner.Model.Contracts
 		DbSet<Dinner> Dinners { get; set; }
 		DbSet<Pet> Pets { get; set; }
 		DbSet<User> Users { get; set; }
+		DbContext Db { get; }
 	}
 }

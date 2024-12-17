@@ -21,6 +21,7 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<User> Users { get; set; }
 		public DbSet<Dinner> Dinners { get; set; }
 		public DbSet<Pet> Pets { get; set; }
+		public DbContext Db => this;
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
