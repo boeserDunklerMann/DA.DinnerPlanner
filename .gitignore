@@ -308,3 +308,4 @@ paket-files/
 *.cache
 /Wpf/bins/DA.lib.MVVM.Framework.dll
 Testing Apps/
+/src/DA.DinnerPlanner/DA.DinnerPlanner.EFCore.Setup.Cons/Program.cs
