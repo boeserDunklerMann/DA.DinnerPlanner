@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using DA.DinnerPlanner.Common;
+using DA.DinnerPlanner.Model.Contracts;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DA.DinnerPlanner.Razor.Proto
 {
@@ -7,5 +9,6 @@ namespace DA.DinnerPlanner.Razor.Proto
 	/// </ChangeLog>
 	public class BasePageModel(IConfiguration config) : PageModel
 	{
+		protected IDinnerPlannerContext context = ContractBinder.GetObject<IDinnerPlannerContext>();
 	}
 }

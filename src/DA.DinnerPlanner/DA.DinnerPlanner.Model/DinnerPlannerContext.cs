@@ -1,4 +1,5 @@
-﻿using DA.DinnerPlanner.Model.UnitsTypes;
+﻿using DA.DinnerPlanner.Model.Contracts;
+using DA.DinnerPlanner.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace DA.DinnerPlanner.Model
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// </ChangeLog>
-	public class DinnerPlannerContext(string connectionString):DbContext
+	public class DinnerPlannerContext(string connectionString) : DbContext, IDinnerPlannerContext
 	{
 		public DbSet<Country> Countries { get; set; }
 		public DbSet<CommunicationType> CommunicationTypes { get; set; }
@@ -24,7 +25,7 @@ namespace DA.DinnerPlanner.Model
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
 			// MariaDB 11+ doesnt work because of nullable PKs?
-			optionsBuilder.UseMySQL(connectionString);	// MariaDB10
+			optionsBuilder.UseMySQL(connectionString);  // MariaDB10
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -62,7 +63,7 @@ namespace DA.DinnerPlanner.Model
 			modelBuilder.Entity<Dinner>(dinner =>
 			{
 				dinner.HasKey(d => d.Id);
-				dinner.HasMany(d => d.Reviews).WithOne(r=>r.Dinner);
+				dinner.HasMany(d => d.Reviews).WithOne(r => r.Dinner);
 				dinner.HasOne(d => d.Host).WithMany(u => u.DinnerAsHost);
 				dinner.HasMany(d => d.Cooks).WithMany(u => u.DinnerAsCook).UsingEntity("DinnerCook");
 				dinner.HasMany(d => d.Guests).WithMany(u => u.DinnerAsGuest).UsingEntity("DinnerGuest");
