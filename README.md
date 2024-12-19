@@ -5,9 +5,6 @@ webportal of this type. Just for fun.
 # DA.DinnerPlanner.Model
 Datamodel with databasecontext
 ## TODO
-- Essgewohnheiten (vegetarisch/vegan/Fleisch)
-- Raucher/Nichtraucher beim Host
-- 
 see [Jira Board](https://boeserdunklermann.atlassian.net/jira/software/projects/DPLAN/boards/4)
 
 # DA.DinnerPlanner.EFCore.Setup.Cons
