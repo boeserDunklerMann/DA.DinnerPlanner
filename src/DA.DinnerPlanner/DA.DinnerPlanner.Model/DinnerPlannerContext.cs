@@ -7,6 +7,7 @@ namespace DA.DinnerPlanner.Model
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
+	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// </ChangeLog>
 	public class DinnerPlannerContext(string connectionString) : DbContext, IDinnerPlannerContext
 	{
@@ -18,6 +19,7 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<Pet> Pets { get; set; }
 		public DbContext Db => this;
 		public DbSet<EatingHabit> EatingHabits { get; set; }
+		public DbSet<Language> Languages { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

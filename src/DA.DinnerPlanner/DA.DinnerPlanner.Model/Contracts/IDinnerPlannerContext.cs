@@ -6,6 +6,7 @@ namespace DA.DinnerPlanner.Model.Contracts
 	/// <ChangeLog>
 	/// <Create Datum="17.12.2024" Entwickler="DA" />
 	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
+	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// </ChangeLog>
 	public interface IDinnerPlannerContext
 	{
@@ -16,6 +17,7 @@ namespace DA.DinnerPlanner.Model.Contracts
 		DbSet<Dinner> Dinners { get; set; }
 		DbSet<Pet> Pets { get; set; }
 		DbSet<User> Users { get; set; }
+		DbSet<Language> Languages { get; set; }
 		DbContext Db { get; }
 	}
 }

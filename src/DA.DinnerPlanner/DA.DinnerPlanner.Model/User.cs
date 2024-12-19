@@ -6,6 +6,7 @@ namespace DA.DinnerPlanner.Model
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
 	/// <Change Datum="19.12.2024" Entwickler="DA">Smoker added (Jira-Nr. DPLAN-5)</Change>
+	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// </ChangeLog>
 	public class User : BaseModel
 	{
@@ -37,6 +38,8 @@ namespace DA.DinnerPlanner.Model
 			if (obj == null || !(obj is User)) return false;
 			return Id == ((User)obj).Id;
 		}
+		public ICollection<Language> Languages { get; set; } = [];
+
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();
