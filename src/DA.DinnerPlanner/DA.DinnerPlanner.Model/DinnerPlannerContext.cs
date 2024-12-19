@@ -1,17 +1,12 @@
 ﻿using DA.DinnerPlanner.Model.Contracts;
 using DA.DinnerPlanner.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZstdSharp.Unsafe;
 
 namespace DA.DinnerPlanner.Model
 {
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
+	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
 	/// </ChangeLog>
 	public class DinnerPlannerContext(string connectionString) : DbContext, IDinnerPlannerContext
 	{
@@ -22,6 +17,8 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<Dinner> Dinners { get; set; }
 		public DbSet<Pet> Pets { get; set; }
 		public DbContext Db => this;
+		public DbSet<EatingHabit> EatingHabits { get; set; }
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
@@ -50,6 +47,10 @@ namespace DA.DinnerPlanner.Model
 			{
 				allergy.HasKey(a => a.Id);
 
+			});
+			modelBuilder.Entity<EatingHabit>(eh =>
+			{
+				eh.HasKey(e => e.Id);
 			});
 			modelBuilder.Entity<Communication>(communication =>
 			{

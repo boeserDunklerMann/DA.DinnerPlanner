@@ -4,6 +4,8 @@ namespace DA.DinnerPlanner.Model
 {
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
+	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
+	/// <Change Datum="19.12.2024" Entwickler="DA">Smoker added (Jira-Nr. DPLAN-5)</Change>
 	/// </ChangeLog>
 	public class User : BaseModel
 	{
@@ -25,13 +27,14 @@ namespace DA.DinnerPlanner.Model
 		public ICollection<Communication> CommunicationList { get; set; } = [];
 		public ICollection<Dinner> DinnerAsHost { get; set; } = [];
 		public ICollection<Dinner> DinnerAsCook { get; set; } = [];
-		public ICollection<Dinner> DinnerAsGuest {  get; set; } = [];
+		public ICollection<Dinner> DinnerAsGuest { get; set; } = [];
 		public ICollection<DinnerReview> Reviews { get; set; } = [];
 		public ICollection<Pet> Pets { get; set; } = [];
-
+		public EatingHabit? EatingHabit { get; set; }
+		public bool? Smoker { get; set; }
 		public override bool Equals(object? obj)
 		{
-			if (obj ==null || !(obj is User)) return false;
+			if (obj == null || !(obj is User)) return false;
 			return Id == ((User)obj).Id;
 		}
 		public override int GetHashCode()

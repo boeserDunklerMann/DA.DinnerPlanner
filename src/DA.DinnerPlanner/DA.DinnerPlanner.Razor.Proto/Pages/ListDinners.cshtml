@@ -20,7 +20,7 @@
 				<td>@dinner.Dinnerdescription</td>
 				<td>@dinner.DinnerDate</td>
 				<td>@Html.Raw((dinner.Guests.Count + dinner.Cooks.Count).ToString())</td>
-				<td>@if (dinner.DinnerDate>DateTime.UtcNow)	// liegt das Dinner in der Zukunft, kann es gelöscht werden
+				<td>@if (dinner.DinnerDate>DateTime.UtcNow)	// liegt das Dinner in der Zukunft, darf es gelöscht werden
 						Html.Raw("löschen");
 					</td>
 			</tr>
