@@ -66,6 +66,6 @@ namespace DA.DinnerPlanner.Model
 			if (obj == null || !(obj is UserImage)) return false;
 			return Id == ((BaseModel)obj).Id;
 		}
-		public User User { get; set; }
+		public User User { get; set; } = new();
 	}
 }
