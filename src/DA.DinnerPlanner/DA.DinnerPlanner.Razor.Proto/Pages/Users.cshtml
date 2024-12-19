@@ -1,0 +1,28 @@
+﻿@page
+@model DA.DinnerPlanner.Razor.Proto.Pages.UsersModel
+@{
+	ViewData["Title"] = "Users";
+}
+<h1>Users</h1>
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Age</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var user in Model.Users)
+		{
+			<tr>
+				<td>@user.GetDefaultDisplayName()</td>
+				<td>
+					@{
+						TimeSpan tsAge = DateTime.UtcNow - user.BirthDate;
+						Html.Raw(tsAge.TotalDays / 365);
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

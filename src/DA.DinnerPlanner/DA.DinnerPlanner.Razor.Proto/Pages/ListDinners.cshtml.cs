@@ -13,10 +13,6 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 		{
 			Dinners = context.Dinners.Where(d => !d.Deleted).ToList().AsReadOnly();
 		}
-		public void OnGet()
-		{
-
-		}
 
 		public async Task<IActionResult> OnPostCreateAsync()
 		{
