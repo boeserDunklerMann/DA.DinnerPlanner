@@ -7,6 +7,7 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
 	/// <Change Datum="19.12.2024" Entwickler="DA">Smoker added (Jira-Nr. DPLAN-5)</Change>
 	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
+	/// <Change Datum="19.12.2024" Entwickler="DA">UserImages added (Jira-Nr. DPLAN-9)</Change>
 	/// </ChangeLog>
 	public class User : BaseModel
 	{
@@ -33,6 +34,7 @@ namespace DA.DinnerPlanner.Model
 		public ICollection<Pet> Pets { get; set; } = [];
 		public EatingHabit? EatingHabit { get; set; }
 		public bool? Smoker { get; set; }
+		public ICollection<UserImage> UserImages { get; set; } = [];
 		public override bool Equals(object? obj)
 		{
 			if (obj == null || !(obj is User)) return false;
@@ -47,6 +49,19 @@ namespace DA.DinnerPlanner.Model
 		public string GetDefaultDisplayName()
 		{
 			return $"{LastName}, {FirstName}";
+		}
+	}
+
+	/// <ChangeLog>
+	/// <Create Datum="19.12.2024" Entwickler="DA" />
+	/// </ChangeLog>
+	public class UserImage : BaseModel
+	{
+		public byte[] Image { get; set; } = [];
+		public override bool Equals(object? obj)
+		{
+			if (obj == null || !(obj is UserImage)) return false;
+			return Id == ((BaseModel)obj).Id;
 		}
 	}
 }
