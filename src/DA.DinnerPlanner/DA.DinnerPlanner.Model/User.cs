@@ -1,4 +1,5 @@
 ﻿using DA.DinnerPlanner.Model.UnitsTypes;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DA.DinnerPlanner.Model
 {
@@ -35,6 +36,8 @@ namespace DA.DinnerPlanner.Model
 		public EatingHabit? EatingHabit { get; set; }
 		public bool? Smoker { get; set; }
 		public ICollection<UserImage> UserImages { get; set; } = [];
+		[NotMapped]
+		public int Age => (int)(Math.Floor((DateTime.UtcNow - BirthDate).TotalDays/365));
 		public override bool Equals(object? obj)
 		{
 			if (obj == null || !(obj is User)) return false;
@@ -63,5 +66,6 @@ namespace DA.DinnerPlanner.Model
 			if (obj == null || !(obj is UserImage)) return false;
 			return Id == ((BaseModel)obj).Id;
 		}
+		public User User { get; set; }
 	}
 }

@@ -20,6 +20,7 @@ namespace DA.DinnerPlanner.Model
 		public DbContext Db => this;
 		public DbSet<EatingHabit> EatingHabits { get; set; }
 		public DbSet<Language> Languages { get; set; }
+		public DbSet<UserImage> UserImages { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -77,6 +78,11 @@ namespace DA.DinnerPlanner.Model
 				dr.HasKey(d => d.Id);
 				dr.HasOne(d => d.ReviewsAuthor).WithMany(u => u.Reviews);
 				dr.HasOne(d => d.Dinner).WithMany(d => d.Reviews);
+			});
+			modelBuilder.Entity<UserImage>(image =>
+			{
+				image.HasKey(i => i.Id);
+				image.HasOne(i => i.User).WithMany(u => u.UserImages);
 			});
 		}
 	}
