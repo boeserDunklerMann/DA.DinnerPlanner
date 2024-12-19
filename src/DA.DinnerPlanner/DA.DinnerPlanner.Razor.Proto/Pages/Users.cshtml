@@ -19,7 +19,8 @@
 				<td>
 					@{
 						TimeSpan tsAge = DateTime.UtcNow - user.BirthDate;
-						Html.Raw(tsAge.TotalDays / 365);
+						double age = (Math.Floor(tsAge.TotalDays / 365));
+						@: @age
 					}
 				</td>
 			</tr>
