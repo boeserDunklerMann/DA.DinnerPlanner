@@ -12,6 +12,7 @@
 			<th>Age</th>
 			<th>Image</th>
 			<th>Languages</th>
+			<th>Action</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -36,8 +37,14 @@
 							sb.Append(", ");
 						}
 						sb.Length-=2;
-						@sb.ToString();
+						@sb.ToString()
+						;
 					}</td>
+				<td class="border">
+					@{
+						@Html.ActionLink("...", "EditUser");
+					}
+				</td>
 			</tr>
 		}
 	</tbody>
