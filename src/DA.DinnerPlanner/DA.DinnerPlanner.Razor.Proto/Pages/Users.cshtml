@@ -9,6 +9,7 @@
 		<tr>
 			<th>Name</th>
 			<th>Age</th>
+			<th>Image</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,12 +17,13 @@
 		{
 			<tr>
 				<td>@user.GetDefaultDisplayName()</td>
-				<td>
-					@{
-						TimeSpan tsAge = DateTime.UtcNow - user.BirthDate;
-						double age = (Math.Floor(tsAge.TotalDays / 365));
-						@: @age
-					}
+				<td>@user.Age</td>
+				<td>@{
+						foreach(var image in user.UserImages)
+						{
+							<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="100" />
+						}
+				}
 				</td>
 			</tr>
 		}

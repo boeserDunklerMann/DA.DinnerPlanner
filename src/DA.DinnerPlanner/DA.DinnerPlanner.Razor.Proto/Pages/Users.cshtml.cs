@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace DA.DinnerPlanner.Razor.Proto.Pages
 {
@@ -12,7 +13,17 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 
         public UsersModel(IConfiguration config) : base(config)
         {
-            Users = context.Users.Where(u=>!u.Deleted).ToList().AsReadOnly();
+            // TODO DA: das hier zentral auslagern
+            Users = context.Users
+					.Include(nameof(Model.User.AddressList))
+					.Include(nameof(Model.User.Allergies))
+					.Include(nameof(Model.User.CommunicationList))
+					.Include(nameof(Model.User.DinnerAsCook))
+					.Include(nameof(Model.User.DinnerAsGuest))
+					.Include(nameof(Model.User.DinnerAsHost))
+					.Include(nameof(Model.User.Reviews))
+					.Include(nameof(Model.User.UserImages))
+                    .Where(u=>!u.Deleted).ToList().AsReadOnly();
         }
     }
 }
