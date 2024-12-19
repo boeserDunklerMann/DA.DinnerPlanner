@@ -23,6 +23,7 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 					.Include(nameof(Model.User.DinnerAsHost))
 					.Include(nameof(Model.User.Reviews))
 					.Include(nameof(Model.User.UserImages))
+                    .Include(nameof(Model.User.Languages))
                     .Where(u=>!u.Deleted).ToList().AsReadOnly();
         }
     }
