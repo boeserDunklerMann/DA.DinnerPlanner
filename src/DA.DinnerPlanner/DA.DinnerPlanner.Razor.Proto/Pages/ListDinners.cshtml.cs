@@ -16,12 +16,6 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 
 		public async Task<IActionResult> OnPostCreateAsync()
 		{
-			// DONE DA: create new dinner here
-			//if (NewDinner != null)
-			//{
-			//	context.Dinners.Add(NewDinner);
-			//	await context.Db.SaveChangesAsync();
-			//}
 			await application.CreateDinnerAsync(NewDinner);
 			return Redirect("Index");
 		}

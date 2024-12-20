@@ -36,9 +36,11 @@
 							sb.Append(language.Name);
 							sb.Append(", ");
 						}
-						sb.Length-=2;
-						@sb.ToString()
-						;
+						if (sb.Length>0)
+						{
+							sb.Length-=2;
+							@sb.ToString()
+						}
 					}</td>
 				<td class="border">
 					@{
@@ -49,3 +51,19 @@
 		}
 	</tbody>
 </table>
+<div>
+	<h2>Create new user</h2>
+	<form asp-page-handler="create" method="post">
+		<div class="form-group">
+			<label>Lastname:</label>
+			<input type="text" asp-for="@Model.NewUser.LastName"/>
+			<br/>
+			<label>Firstname:</label>
+			<input type="text" asp-for="@Model.NewUser.FirstName" />
+			<br/>
+			<label>Birthdate:</label>
+			<input type="date" asp-for="@Model.NewUser.BirthDate" />
+		</div>
+		<input type="submit" class="btn btn-primary" value="create" />
+	</form>
+</div>
