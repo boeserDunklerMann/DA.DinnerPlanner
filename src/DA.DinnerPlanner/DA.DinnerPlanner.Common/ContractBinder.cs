@@ -1,12 +1,8 @@
-﻿using System.Diagnostics.Contracts;
-using System.Diagnostics.Metrics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace DA.DinnerPlanner.Common
+﻿namespace DA.DinnerPlanner.Common
 {
 	/// <ChangeLog>
-		/// <Create Datum="17.12.2024" Entwickler="DA" />
-		/// </ChangeLog>
+	/// <Create Datum="17.12.2024" Entwickler="DA" />
+	/// </ChangeLog>
 	public static class ContractBinder
 	{
 		private static HashSet<Tuple<Type, Type>> container;
