@@ -1,20 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DA.DinnerPlanner.Common
 {
 	/// <ChangeLog>
-		/// <Create Datum="20.12.2024" Entwickler="DA" />
-		/// </ChangeLog>
-	public class Application
+	/// <Create Datum="20.12.2024" Entwickler="DA" />
+	/// <Change Datum="21.12.2024" Entwickler="DA">class made singleton (Jira-Nr. DPLAN-20)</Change>
+	/// </ChangeLog>
+	public sealed class Application
 	{
-		private readonly Lazy<Model.DinnerPlannerContext> context;
-		public Application(IConfiguration config)
+		private static readonly Lazy<Application> lazy = new(() => new Application());
+
+		private Lazy<Model.DinnerPlannerContext>? context;
+		public static Application Instance =>lazy.Value;
+
+		public Application()
+		{
+			context = null;
+		}
+		public void SetConfig(IConfiguration config)
 		{
 			string? connString = config["ConnectionStrings:da_dinnerplanner-db"];
 			if (!string.IsNullOrEmpty(connString))
@@ -22,6 +26,10 @@ namespace DA.DinnerPlanner.Common
 		}
 		public async Task<ICollection<Model.User>> GetAllUsersAsync()
 		{
+			if (context== null)
+			{
+				throw new NullReferenceException($"{nameof(context)} not set.");
+			}
 			return await context.Value.Users
 					.Include(nameof(Model.User.AddressList))
 					.Include(nameof(Model.User.Allergies))
@@ -37,6 +45,10 @@ namespace DA.DinnerPlanner.Common
 
 		public async Task<ICollection<Model.Dinner>> GetAllDinnersAsync()
 		{
+			if (context == null)
+			{
+				throw new NullReferenceException($"{nameof(context)} not set.");
+			}
 			return await context.Value.Dinners
 				.Where(d => !d.Deleted).ToListAsync();
 		}
@@ -47,6 +59,10 @@ namespace DA.DinnerPlanner.Common
 		/// <param name="newDinner">the new dinner</param>
 		public async Task CreateDinnerAsync(Model.Dinner newDinner)
 		{
+			if (context == null)
+			{
+				throw new NullReferenceException($"{nameof(context)} not set.");
+			}
 			if (newDinner != null)
 			{
 				context.Value.Dinners.Add(newDinner);
@@ -56,6 +72,10 @@ namespace DA.DinnerPlanner.Common
 
 		public async Task CreateUserAsync(Model.User newUser)
 		{
+			if (context == null)
+			{
+				throw new NullReferenceException($"{nameof(context)} not set.");
+			}
 			if (newUser!=null)
 			{
 				await context.Value.Users.AddAsync(newUser);
