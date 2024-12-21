@@ -9,7 +9,6 @@ namespace DA.DinnerPlanner.Razor.Proto
 	/// </ChangeLog>
 	public class BasePageModel : PageModel
 	{
-		//protected IDinnerPlannerContext context = new Model.DinnerPlannerContext(config["ConnectionStrings:da_dinnerplanner-db"]);
 		protected Application application = Application.Instance;
 		public BasePageModel(IConfiguration config)
 		{

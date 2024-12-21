@@ -6,6 +6,7 @@ namespace DA.DinnerPlanner.Common
 	/// <ChangeLog>
 	/// <Create Datum="20.12.2024" Entwickler="DA" />
 	/// <Change Datum="21.12.2024" Entwickler="DA">class made singleton (Jira-Nr. DPLAN-20)</Change>
+	/// https://csharpindepth.com/articles/singleton
 	/// </ChangeLog>
 	public sealed class Application
 	{
