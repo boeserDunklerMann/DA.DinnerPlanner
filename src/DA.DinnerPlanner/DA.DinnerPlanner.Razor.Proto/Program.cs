@@ -1,3 +1,5 @@
+using Hangfire;
+
 namespace DA.DinnerPlanner.Razor.Proto
 {
 	public class Program
@@ -5,6 +7,12 @@ namespace DA.DinnerPlanner.Razor.Proto
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+			// init Hangfire stuff
+			builder.Services.AddHangfire(cfg => cfg.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+			.UseInMemoryStorage()
+			.UseSimpleAssemblyNameTypeSerializer()
+			);
+			builder.Services.AddHangfireServer();
 
 			// Add services to the container.
 			builder.Services.AddRazorPages()/*.WithRazorPagesRoot("/dinnerplan")*/;
@@ -24,6 +32,8 @@ namespace DA.DinnerPlanner.Razor.Proto
 			}
 			app.UseStaticFiles();
 
+			app.UseHangfireDashboard();
+			
 			app.UseRouting();
 
 			app.UseAuthorization();

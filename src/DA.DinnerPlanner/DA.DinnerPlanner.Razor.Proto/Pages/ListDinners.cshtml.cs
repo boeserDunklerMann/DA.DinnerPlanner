@@ -1,15 +1,19 @@
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DA.DinnerPlanner.Razor.Proto.Pages
 {
+	/// <ChangeLog>
+	/// <Create Datum="19.12.2024" Entwickler="DA" />
+	/// <Change Datum="19.01.2025" Entwickler="DA">Hangfire support added</Change>
+	/// </ChangeLog>
 	public class ListDinnersModel : BasePageModel
 	{
 		public ICollection<Model.Dinner> Dinners { get; private set; }
 		[BindProperty]
 		public Model.Dinner NewDinner { get; set; } = new();
 
-		public ListDinnersModel(IConfiguration config) : base(config)
+		public ListDinnersModel(IConfiguration config, IBackgroundJobClient backgroundJob) : base(config, backgroundJob)
 		{
 			Dinners = application.GetAllDinnersAsync().Result;
 		}
