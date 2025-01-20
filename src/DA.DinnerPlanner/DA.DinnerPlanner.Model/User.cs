@@ -9,6 +9,7 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="19.12.2024" Entwickler="DA">Smoker added (Jira-Nr. DPLAN-5)</Change>
 	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// <Change Datum="19.12.2024" Entwickler="DA">UserImages added (Jira-Nr. DPLAN-9)</Change>
+	/// <Change Datum="20.01.2025" Entwickler="DA">prop AvailableAsCook added</Change>
 	/// </ChangeLog>
 	public class User : BaseModel
 	{
@@ -38,6 +39,10 @@ namespace DA.DinnerPlanner.Model
 		public ICollection<UserImage> UserImages { get; set; } = [];
 		[NotMapped]
 		public int Age => (int)(Math.Floor((DateTime.UtcNow - BirthDate).TotalDays/365));
+		/// <summary>
+		/// Is this user also assignable as cook
+		/// </summary>
+		public bool AvailableAsCook { get; set; }
 		public override bool Equals(object? obj)
 		{
 			if (obj == null || !(obj is User)) return false;
