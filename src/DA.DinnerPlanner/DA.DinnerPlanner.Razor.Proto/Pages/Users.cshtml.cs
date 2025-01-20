@@ -19,11 +19,11 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
         public UsersModel(IConfiguration config, IBackgroundJobClient backgroundJob, IDinnerPlannerContext context) : base(config, backgroundJob, context)
         {
             // DONE DA: das hier zentral auslagern
-            Users = application.GetAllUsersAsync().Result;
+            Users = application.GetAllUsersAsync(db).Result;
         }
         public async Task<IActionResult> OnPostCreateAsync()
         {
-            await application.CreateUserAsync(NewUser);
+            await application.CreateUserAsync(db, NewUser);
             return Redirect("Index");
         }
     }

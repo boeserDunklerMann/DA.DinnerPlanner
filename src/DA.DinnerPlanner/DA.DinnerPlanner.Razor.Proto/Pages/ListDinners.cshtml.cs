@@ -17,12 +17,12 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 
 		public ListDinnersModel(IConfiguration config, IBackgroundJobClient backgroundJob, IDinnerPlannerContext context) : base(config, backgroundJob, context)
 		{
-			Dinners = application.GetAllDinnersAsync().Result;
+			Dinners = application.GetAllDinnersAsync(db).Result;
 		}
 
 		public async Task<IActionResult> OnPostCreateAsync()
 		{
-			await application.CreateDinnerAsync(NewDinner);
+			await application.CreateDinnerAsync(db, NewDinner);
 			return Redirect("Index");
 		}
 	}

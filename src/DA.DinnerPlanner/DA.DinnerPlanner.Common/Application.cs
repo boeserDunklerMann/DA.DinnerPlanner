@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DA.DinnerPlanner.Model.Contracts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace DA.DinnerPlanner.Common
@@ -12,26 +13,26 @@ namespace DA.DinnerPlanner.Common
 	{
 		private static readonly Lazy<Application> lazy = new(() => new Application());
 
-		private Lazy<Model.DinnerPlannerContext>? context;
+		//private Lazy<Model.DinnerPlannerContext>? context;
 		public static Application Instance =>lazy.Value;
 
 		public Application()
 		{
-			context = null;
+			//context = null;
 		}
 		public void SetConfig(IConfiguration config)
 		{
 			string? connString = config["ConnectionStrings:da_dinnerplanner-db"];
-			if (!string.IsNullOrEmpty(connString))
-				context = new Lazy<Model.DinnerPlannerContext>(() => new Model.DinnerPlannerContext(connString));
+			//if (!string.IsNullOrEmpty(connString))
+			//	context = new Lazy<Model.DinnerPlannerContext>(() => new Model.DinnerPlannerContext(connString));
 		}
-		public async Task<ICollection<Model.User>> GetAllUsersAsync()
+		public async Task<ICollection<Model.User>> GetAllUsersAsync(IDinnerPlannerContext context)
 		{
 			if (context== null)
 			{
 				throw new NullReferenceException($"{nameof(context)} not set.");
 			}
-			return await context.Value.Users
+			return await context.Users
 					.Include(nameof(Model.User.AddressList))
 					.Include(nameof(Model.User.Allergies))
 					.Include(nameof(Model.User.CommunicationList))
@@ -44,13 +45,13 @@ namespace DA.DinnerPlanner.Common
 					.Where(u => !u.Deleted).ToListAsync();
 		}
 
-		public async Task<ICollection<Model.Dinner>> GetAllDinnersAsync()
+		public async Task<ICollection<Model.Dinner>> GetAllDinnersAsync(IDinnerPlannerContext context)
 		{
 			if (context == null)
 			{
 				throw new NullReferenceException($"{nameof(context)} not set.");
 			}
-			return await context.Value.Dinners
+			return await context.Dinners
 				.Where(d => !d.Deleted).ToListAsync();
 		}
 
@@ -58,7 +59,7 @@ namespace DA.DinnerPlanner.Common
 		/// adds a new dinner to the ctx and saves it to db
 		/// </summary>
 		/// <param name="newDinner">the new dinner</param>
-		public async Task CreateDinnerAsync(Model.Dinner newDinner)
+		public async Task CreateDinnerAsync(IDinnerPlannerContext context, Model.Dinner newDinner)
 		{
 			if (context == null)
 			{
@@ -66,12 +67,12 @@ namespace DA.DinnerPlanner.Common
 			}
 			if (newDinner != null)
 			{
-				context.Value.Dinners.Add(newDinner);
-				await context.Value.Db.SaveChangesAsync();
+				context.Dinners.Add(newDinner);
+				await context.Db.SaveChangesAsync();
 			}
 		}
 
-		public async Task CreateUserAsync(Model.User newUser)
+		public async Task CreateUserAsync(IDinnerPlannerContext context, Model.User newUser)
 		{
 			if (context == null)
 			{
@@ -79,8 +80,8 @@ namespace DA.DinnerPlanner.Common
 			}
 			if (newUser!=null)
 			{
-				await context.Value.Users.AddAsync(newUser);
-				await context.Value.Db.SaveChangesAsync();
+				await context.Users.AddAsync(newUser);
+				await context.Db.SaveChangesAsync();
 			}
 		}
 	}

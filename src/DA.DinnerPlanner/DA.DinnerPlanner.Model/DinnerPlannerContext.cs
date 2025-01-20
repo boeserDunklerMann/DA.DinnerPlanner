@@ -10,7 +10,7 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// <Change Datum="20.01.2025" Entwickler="DA">ConnectionString SaveAsync added (Jira-Nr. DPLAN-23)</Change>
 		/// </ChangeLog>
-	public class DinnerPlannerContext(string connectionString) : DbContext, IDinnerPlannerContext
+	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext
 	{
 		public DbSet<Country> Countries { get; set; }
 		public DbSet<CommunicationType> CommunicationTypes { get; set; }
@@ -33,7 +33,7 @@ namespace DA.DinnerPlanner.Model
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
 			// MariaDB 11+ doesnt work because of nullable PKs?
-			optionsBuilder.UseMySQL(connectionString);  // MariaDB10
+			optionsBuilder.UseMySQL(ConnectionString);  // MariaDB10
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

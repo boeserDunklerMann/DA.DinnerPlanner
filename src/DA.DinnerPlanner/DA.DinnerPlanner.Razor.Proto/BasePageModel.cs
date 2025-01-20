@@ -21,6 +21,7 @@ namespace DA.DinnerPlanner.Razor.Proto
 			backgroundJob.Enqueue(() => Console.WriteLine("Hello world from Hangfire"));
 
 			db = context;
+			db.ConnectionString= config["ConnectionStrings:da_dinnerplanner-db"]!;
 		}
 	}
 }
