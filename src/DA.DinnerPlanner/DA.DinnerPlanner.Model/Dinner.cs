@@ -3,6 +3,7 @@
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// <Change Datum="19.12.2024" Entwickler="DA">NumberPersonsAllowed added (Jira-Nr. DPLAN-6)</Change>
+	/// <Change Datum="20.01.2025" Entwickler="DA">prop HasTakenDone added</Change>
 	/// </ChangeLog>
 	/// <summary>
 	/// class for a (planned) dinner, containing the guests, cooks and host
@@ -24,5 +25,6 @@
 		public DateTime DinnerDate { get; set; }
 		public string Dinnerdescription { get; set; } = "";
 		public ICollection<DinnerReview> Reviews { get; set; } = [];
+		public bool HasTakenDone { get; set; }
 	}
 }
