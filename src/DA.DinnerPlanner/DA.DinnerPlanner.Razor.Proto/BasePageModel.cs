@@ -88,6 +88,7 @@ namespace DA.DinnerPlanner.Razor.Proto
 		protected void UpdateAllergiesFromBinding(User editUser, string[] selectedAllergies)
 		{
 			// TODO DA: finde raus, hat sich hier überhaupt was geändert, sonst kommt ne PK-Exception
+
 			editUser.Allergies.Clear();
 			foreach (var allergyId in selectedAllergies.ToList().AsReadOnly())
 			{
