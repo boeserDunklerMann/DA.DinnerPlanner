@@ -8,27 +8,22 @@ namespace DA.DinnerPlanner.Common
 	/// <Create Datum="20.12.2024" Entwickler="DA" />
 	/// <Change Datum="21.12.2024" Entwickler="DA">class made singleton (Jira-Nr. DPLAN-20)</Change>
 	/// https://csharpindepth.com/articles/singleton
+	/// <Change Datum="20.01.2025" Entwickler="DA">context removed, we get it via DI (Jira-Nr. DPLAN-23)</Change>
 	/// </ChangeLog>
 	public sealed class Application
 	{
 		private static readonly Lazy<Application> lazy = new(() => new Application());
 
-		//private Lazy<Model.DinnerPlannerContext>? context;
-		public static Application Instance =>lazy.Value;
+		public static Application Instance => lazy.Value;
 
 		public Application()
 		{
-			//context = null;
 		}
-		public void SetConfig(IConfiguration config)
-		{
-			string? connString = config["ConnectionStrings:da_dinnerplanner-db"];
-			//if (!string.IsNullOrEmpty(connString))
-			//	context = new Lazy<Model.DinnerPlannerContext>(() => new Model.DinnerPlannerContext(connString));
-		}
+
+		#region DB stuff
 		public async Task<ICollection<Model.User>> GetAllUsersAsync(IDinnerPlannerContext context)
 		{
-			if (context== null)
+			if (context == null)
 			{
 				throw new NullReferenceException($"{nameof(context)} not set.");
 			}
@@ -78,11 +73,16 @@ namespace DA.DinnerPlanner.Common
 			{
 				throw new NullReferenceException($"{nameof(context)} not set.");
 			}
-			if (newUser!=null)
+			if (newUser != null)
 			{
 				await context.Users.AddAsync(newUser);
 				await context.Db.SaveChangesAsync();
 			}
 		}
+		#endregion
+
+		#region Applogic stuff
+
+		#endregion
 	}
 }

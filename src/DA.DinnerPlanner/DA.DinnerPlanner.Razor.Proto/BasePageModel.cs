@@ -17,7 +17,6 @@ namespace DA.DinnerPlanner.Razor.Proto
 		protected IDinnerPlannerContext db;
 		public BasePageModel(IConfiguration config, IBackgroundJobClient backgroundJob, IDinnerPlannerContext context)
 		{
-			application.SetConfig(config);
 			backgroundJob.Enqueue(() => Console.WriteLine("Hello world from Hangfire"));
 
 			db = context;
