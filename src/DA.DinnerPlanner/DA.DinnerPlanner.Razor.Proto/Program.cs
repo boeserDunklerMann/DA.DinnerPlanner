@@ -1,4 +1,7 @@
+using DA.DinnerPlanner.Model;
+using DA.DinnerPlanner.Model.Contracts;
 using Hangfire;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DA.DinnerPlanner.Razor.Proto
 {
@@ -17,6 +20,7 @@ namespace DA.DinnerPlanner.Razor.Proto
 			// Add services to the container.
 			builder.Services.AddRazorPages()/*.WithRazorPagesRoot("/dinnerplan")*/;
 			builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);    // there is the connstring which will not be committed to git
+			CreateDIBindings(builder);
 
 			var app = builder.Build();
 
@@ -42,5 +46,12 @@ namespace DA.DinnerPlanner.Razor.Proto
 
 			app.Run();
 		}
+		private static void CreateDIBindings(WebApplicationBuilder? builder)
+		{
+			if (builder == null)
+				throw new NullReferenceException(nameof(builder));
+			builder.Services.AddScoped<IDinnerPlannerContext, DinnerPlannerContext>();
+		}
+
 	}
 }

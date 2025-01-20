@@ -8,7 +8,8 @@ namespace DA.DinnerPlanner.Model
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
 	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
-	/// </ChangeLog>
+	/// <Change Datum="20.01.2025" Entwickler="DA">ConnectionString SaveAsync added (Jira-Nr. DPLAN-23)</Change>
+		/// </ChangeLog>
 	public class DinnerPlannerContext(string connectionString) : DbContext, IDinnerPlannerContext
 	{
 		public DbSet<Country> Countries { get; set; }
@@ -21,7 +22,13 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<EatingHabit> EatingHabits { get; set; }
 		public DbSet<Language> Languages { get; set; }
 		public DbSet<UserImage> UserImages { get; set; }
+		public DbSet<DinnerImage> DinnerImages { get; set; }
 
+		public string ConnectionString { get; set; } = "";
+		public async Task SaveAsync()
+		{
+			await SaveChangesAsync();
+		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
