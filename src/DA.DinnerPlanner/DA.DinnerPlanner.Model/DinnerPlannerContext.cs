@@ -39,7 +39,6 @@ namespace DA.DinnerPlanner.Model
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			// TODO DA: add/modify entity-definitions here
 			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/one-to-many
 			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/many-to-many <--- das ist das Richtige!
 			modelBuilder.Entity<User>(user =>

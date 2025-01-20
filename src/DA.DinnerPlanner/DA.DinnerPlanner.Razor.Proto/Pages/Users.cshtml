@@ -20,7 +20,7 @@
 		{
 			<tr class="border">
 				<td class ="border">@user.GetDefaultDisplayName()</td>
-				<td class="border">@user.Age</td>
+				<td class="border">@if (user.BirthDate > DateTime.MinValue) { @user.Age; }</td>
 				<td class="border">
 					@{
 						foreach(var image in user.UserImages)
@@ -43,9 +43,8 @@
 						}
 					}</td>
 				<td class="border">
-					@{
-						@Html.ActionLink("...", "EditUser");
-					}
+					<!--TODO DA: add permission check here-->
+					<a asp-page="EditUser" asp-route-UserID="@user.Id">...</a>
 				</td>
 			</tr>
 		}
