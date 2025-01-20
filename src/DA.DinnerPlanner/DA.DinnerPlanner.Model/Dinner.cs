@@ -23,6 +23,6 @@
 		public ICollection<User> Guests { get; set; } = [];
 		public DateTime DinnerDate { get; set; }
 		public string Dinnerdescription { get; set; } = "";
-		public ICollection< DinnerReview> Reviews { get; set; } = [];
+		public ICollection<DinnerReview> Reviews { get; set; } = [];
 	}
 }

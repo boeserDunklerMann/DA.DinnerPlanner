@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DA.DinnerPlanner.Model
+﻿namespace DA.DinnerPlanner.Model
 {
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
+	/// <Change Datum="20.01.2025" Entwickler="DA">DinnerImages added</Change>
 	/// </ChangeLog>
 	/// <summary>a review for the dinner itself, the host, the cooks</summary>
 	public class DinnerReview : BaseModel
@@ -27,5 +22,6 @@ namespace DA.DinnerPlanner.Model
 		/// </summary>
 		public User ReviewsAuthor { get; set; } = new();
 		public Dinner Dinner { get; set; } = new();
+		public ICollection<DinnerImage> DinnerImages { get; set; } = [];
 	}
 }
