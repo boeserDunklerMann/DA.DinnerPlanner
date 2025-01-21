@@ -23,6 +23,7 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 
         public async Task<IActionResult> OnPostEditSubmitAsync(int? id,
             string firstName, string lastName, DateTime birthDate, bool asCook,
+            string userComment,
 			string[] selectedAllergies,
             string[] selectedLanguages,
             string[] selectedPets)
@@ -34,6 +35,7 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
             EditUser.LastName = lastName;
             EditUser.BirthDate = birthDate;
             EditUser.AvailableAsCook = asCook;
+            EditUser.UsersComment = userComment;
 
 			UpdateAllergiesFromBinding(EditUser, selectedAllergies);
             UpdateLanguagesFromBinding(EditUser, selectedLanguages);

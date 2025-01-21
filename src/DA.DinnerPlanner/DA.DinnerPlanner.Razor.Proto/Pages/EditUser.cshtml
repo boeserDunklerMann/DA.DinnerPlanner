@@ -84,6 +84,8 @@
 					</table>
 				</div>
 			</div>
+			<label asp-for="@Model.EditUser.UsersComment">My message to the world:</label>
+			<textarea asp-for="@Model.EditUser.UsersComment" name="userComment"></textarea>
 		</div>
 		<input type="submit" class="btn btn-primary" value="ok" />
 		<input type="hidden" asp-for="@Model.EditUser.Id" name="id" />
