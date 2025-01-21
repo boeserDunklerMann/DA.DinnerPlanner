@@ -22,8 +22,8 @@ namespace DA.DinnerPlanner.Razor.Proto
 	/// </ChangeLog>
 	public class BasePageModel : PageModel
 	{
-		protected Application application = Application.Instance;
-		protected IDinnerPlannerContext db;
+		protected readonly Application application = Application.Instance;
+		protected readonly IDinnerPlannerContext db;
 		public BasePageModel(IConfiguration config, IBackgroundJobClient backgroundJob, IDinnerPlannerContext context)
 		{
 			//backgroundJob.Enqueue(() => Console.WriteLine("Hello world from Hangfire"));
@@ -87,8 +87,6 @@ namespace DA.DinnerPlanner.Razor.Proto
 
 		protected void UpdateAllergiesFromBinding(User editUser, string[] selectedAllergies)
 		{
-			// TODO DA: finde raus, hat sich hier überhaupt was geändert, sonst kommt ne PK-Exception
-
 			editUser.Allergies.Clear();
 			foreach (var allergyId in selectedAllergies.ToList().AsReadOnly())
 			{
@@ -99,7 +97,6 @@ namespace DA.DinnerPlanner.Razor.Proto
 
 		protected void UpdateLanguagesFromBinding(User editUser, string[] selectedLanguages)
 		{
-			// TODO DA: finde raus, hat sich hier überhaupt was geändert, sonst kommt ne PK-Exception
 			editUser.Languages.Clear();
 			foreach (var langID in selectedLanguages.ToList().AsReadOnly())
 			{
@@ -110,7 +107,6 @@ namespace DA.DinnerPlanner.Razor.Proto
 
 		protected void UpdatePetsFromBinding(User editUser, string[] selectedPets)
 		{
-			// TODO DA: finde raus, hat sich hier überhaupt was geändert, sonst kommt ne PK-Exception
 			editUser.Pets.Clear();
 			foreach (var petId in selectedPets.ToList().AsReadOnly())
 			{

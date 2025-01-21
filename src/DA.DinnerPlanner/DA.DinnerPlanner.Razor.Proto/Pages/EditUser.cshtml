@@ -18,6 +18,11 @@
 			<br />
 			<label asp-for="@Model.EditUser.AvailableAsCook">I'M a cook</label>
 			<input type="checkbox" asp-for="@Model.EditUser.AvailableAsCook" name="asCook" />
+			<br />
+			<label asp-for="@Model.EditUser.EatingHabit">Eating habit:</label>
+			<select asp-items="@Model.EatingHabitSL" name="eatingHabitId">
+				<option>-- select eating habit --</option>
+			</select>
 			<div class="form-group">
 				<label>Allergies:</label>
 				<div class="table">

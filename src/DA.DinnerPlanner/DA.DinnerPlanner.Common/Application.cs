@@ -38,6 +38,7 @@ namespace DA.DinnerPlanner.Common
 					.Include(nameof(Model.User.UserImages))
 					.Include(nameof(Model.User.Languages))
 					.Include(nameof(Model.User.Pets))
+					.Include(nameof(Model.User.EatingHabit))
 					.Where(u => !u.Deleted).ToListAsync();
 		}
 

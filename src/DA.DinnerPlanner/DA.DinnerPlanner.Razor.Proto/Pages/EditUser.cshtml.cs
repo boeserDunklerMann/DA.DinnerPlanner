@@ -1,7 +1,10 @@
 using DA.DinnerPlanner.Model;
 using DA.DinnerPlanner.Model.Contracts;
+using DA.DinnerPlanner.Model.UnitsTypes;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace DA.DinnerPlanner.Razor.Proto.Pages
 {
@@ -9,9 +12,17 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
     {
         [BindProperty(SupportsGet = true)]
         public int UserID { get; set; }
-        [BindProperty]
         public User? EditUser { get; set; }
 
+        public SelectList? EatingHabitSL { get; set; }
+
+        private void PopulateEatinghabitDropDownList(object? selectedItem=null)
+        {
+            var eatinghabitsQuery = from eh in db.EatingHabits
+                                    orderby eh.Name
+                                    select eh;
+            EatingHabitSL = new SelectList(eatinghabitsQuery.AsNoTracking(), nameof(EatingHabit.Id), nameof(EatingHabit.Name), selectedItem);
+        }
         public async Task OnGetAsync()
         {
             var allUsers = await application.GetAllUsersAsync(db);
@@ -19,11 +30,12 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
             await PopulateUsersAllergiesAsync(EditUser);
             await PopulateUsersLanguagesAsync(EditUser);
             await PopulateUsersPetsAsync(EditUser);
+            PopulateEatinghabitDropDownList(EditUser.EatingHabit?.Id);
         }
 
         public async Task<IActionResult> OnPostEditSubmitAsync(int? id,
             string firstName, string lastName, DateTime birthDate, bool asCook,
-            string userComment,
+            string userComment, int eatingHabitId,
 			string[] selectedAllergies,
             string[] selectedLanguages,
             string[] selectedPets)
@@ -35,7 +47,8 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
             EditUser.LastName = lastName;
             EditUser.BirthDate = birthDate;
             EditUser.AvailableAsCook = asCook;
-            EditUser.UsersComment = userComment;
+            EditUser.UsersComment = userComment??"";
+            EditUser.EatingHabit = await db.EatingHabits.FirstAsync(eh => eh.Id == eatingHabitId);
 
 			UpdateAllergiesFromBinding(EditUser, selectedAllergies);
             UpdateLanguagesFromBinding(EditUser, selectedLanguages);
