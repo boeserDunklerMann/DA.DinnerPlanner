@@ -8,13 +8,16 @@
 	{
 		padding:2mm;
 	}
+	td.commCol
+	{
+		width: 9cm;
+	}
 </style>
 <div>
 	<h2>Edit Communications</h2>
 	<table class="border">
 		<thead>
 			<tr>
-				<td class="border border-2 border-dark">Type</td>
 				<td class="border border-2 border-dark">Communication</td>
 				<td class="border border-2 border-dark">Action</td>
 			</tr>
@@ -24,11 +27,18 @@
 				foreach (var item in Model.Communications!.Where(c=>!c.Deleted))
 				{
 					<tr>
-						<td class="border border-2 border-dark">
-							@item.CommunicationType.Name
-						</td>
-						<td class="border border-2 border-dark">
-							@item.CommunicationValue
+						<td class="border border-2 border-dark commCol">
+							<form method="post" asp-page-handler="Submit">
+								<select asp-items="@Model.CommTypesSL" id="commTypeSelector_@item.Id" name="commTypeId" ></select>
+								<input type="text" value="@item.CommunicationValue" name="commValue" />
+								<input type="image" src="img/diskette.png" width="15" height="15" />
+								<input type="hidden" asp-for="@Model.UserID" name="userId" />
+								<input type="hidden" asp-for="@item.Id" name="commId" />
+							</form>
+<script>
+select = document.getElementById("commTypeSelector_@item.Id");
+select.value="@item.CommunicationType.Id";
+</script>
 						</td>
 						<td class="border border-2 border-dark">
 							<form method="post" asp-page-handler="Delete">
