@@ -1,7 +1,7 @@
 ﻿@page
 @model DA.DinnerPlanner.Razor.Proto.Pages.EditUserModel
 @{
-	ViewData["Title"] = "Users";
+	ViewData["Title"] = "Edit User";
 }
 <div>
 	<h2>Edit User</h2>
@@ -23,6 +23,9 @@
 			<select asp-items="@Model.EatingHabitSL" name="eatingHabitId">
 				<option>-- select eating habit --</option>
 			</select>
+			<br />
+			<a asp-page="EditCommunications" asp-route-UserID="@Model.EditUser.Id">Edit communications</a>
+			<br />
 			<div class="form-group">
 				<label>Allergies:</label>
 				<div class="table">

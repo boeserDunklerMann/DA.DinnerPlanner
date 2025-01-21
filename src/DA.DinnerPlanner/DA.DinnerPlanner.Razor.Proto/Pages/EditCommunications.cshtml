@@ -1,0 +1,49 @@
+﻿@page
+@model DA.DinnerPlanner.Razor.Proto.Pages.EditCommunicationsModel
+@{
+	ViewData["Title"] = "Edit Communications";
+}
+<style>
+	td 
+	{
+		padding:2mm;
+	}
+</style>
+<div>
+	<h2>Edit Communications</h2>
+	<table class="border">
+		<thead>
+			<tr>
+				<td class="border border-2 border-dark">Type</td>
+				<td class="border border-2 border-dark">Communication</td>
+				<td class="border border-2 border-dark">Action</td>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				foreach (var item in Model.Communications!.Where(c=>!c.Deleted))
+				{
+					<tr>
+						<td class="border border-2 border-dark">
+							@item.CommunicationType.Name
+						</td>
+						<td class="border border-2 border-dark">
+							@item.CommunicationValue
+						</td>
+						<td class="border border-2 border-dark">
+							<form method="post" asp-page-handler="Delete">
+								<input type="hidden" asp-for="@Model.UserID" name="userId" />
+								<input type="hidden" asp-for="@item.Id" name="commId" />
+								<input type="image" src="img/delete.png" width="15" height="15" />
+							</form>
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+	<form asp-page-handler="Add">
+		<input type="hidden" asp-for="@Model.UserID" name="userId" />
+		<input type="image" src="img/add.png" width="15" height="15" />
+	</form>
+</div>

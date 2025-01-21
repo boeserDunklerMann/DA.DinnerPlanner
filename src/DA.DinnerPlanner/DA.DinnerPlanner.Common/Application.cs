@@ -30,7 +30,8 @@ namespace DA.DinnerPlanner.Common
 			return await context.Users
 					.Include(nameof(Model.User.AddressList))
 					.Include(nameof(Model.User.Allergies))
-					.Include(nameof(Model.User.CommunicationList))
+					.Include(u => u.CommunicationList)
+						.ThenInclude(cl => cl.CommunicationType)
 					.Include(nameof(Model.User.DinnerAsCook))
 					.Include(nameof(Model.User.DinnerAsGuest))
 					.Include(nameof(Model.User.DinnerAsHost))

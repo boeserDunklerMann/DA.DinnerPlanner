@@ -4,31 +4,36 @@
 @{
 	ViewData["Title"] = "Users";
 }
+<style>
+	td {
+		padding: 2mm;
+	}
+</style>
 <h1>Users</h1>
 <table class="border">
 	<thead>
 		<tr class="border">
-			<th>Name</th>
-			<th>Age</th>
-			<th>Image</th>
-			<th>Languages</th>
-			<th>Action</th>
+			<th class="border border-2 border-dark">Name</th>
+			<th class="border border-2 border-dark">Age</th>
+			<th class="border border-2 border-dark">Image</th>
+			<th class="border border-2 border-dark">Languages</th>
+			<th class="border border-2 border-dark">Action</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach(var user in Model.Users)
 		{
 			<tr class="border">
-				<td class ="border">@user.GetDefaultDisplayName()</td>
-				<td class="border">@if (user.BirthDate > DateTime.MinValue) { @user.Age; }</td>
-				<td class="border">
+				<td class="border border-2 border-dark">@user.GetDefaultDisplayName()</td>
+				<td class="border border-2 border-dark">@if (user.BirthDate > DateTime.MinValue) { @user.Age; }</td>
+				<td class="border border-2 border-dark">
 					@{
 						foreach(var image in user.UserImages)
 						{
 							<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="100" />
 						}
 					}</td>
-				<td class="border">
+				<td class="border border-2 border-dark">
 					@{
 						StringBuilder sb = new StringBuilder();
 						foreach(var language in user.Languages)
@@ -42,9 +47,9 @@
 							@sb.ToString()
 						}
 					}</td>
-				<td class="border">
+				<td class="border border-2 border-dark">
 					<!--TODO DA: add permission check here-->
-					<a asp-page="EditUser" asp-route-UserID="@user.Id">...</a>
+					<a asp-page="EditUser" asp-route-UserID="@user.Id">Edit</a>
 				</td>
 			</tr>
 		}
