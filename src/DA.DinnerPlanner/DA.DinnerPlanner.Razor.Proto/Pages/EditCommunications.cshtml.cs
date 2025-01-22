@@ -3,16 +3,15 @@ using DA.DinnerPlanner.Model.Contracts;
 using DA.DinnerPlanner.Model.UnitsTypes;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace DA.DinnerPlanner.Razor.Proto.Pages
 {
-    /// <ChangeLog>
-    /// <Create Datum="21.01.2025" Entwickler="DA" />
-    /// </ChangeLog>
-    public class EditCommunicationsModel(IConfiguration config, IBackgroundJobClient backgroundJob, IDinnerPlannerContext context)
+	/// <ChangeLog>
+	/// <Create Datum="21.01.2025" Entwickler="DA" />
+	/// </ChangeLog>
+	public class EditCommunicationsModel(IConfiguration config, IBackgroundJobClient backgroundJob, IDinnerPlannerContext context)
         : BasePageModel(config, backgroundJob, context)
     {
 		[BindProperty(SupportsGet = true)]

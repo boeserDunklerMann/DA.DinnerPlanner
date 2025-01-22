@@ -1,0 +1,70 @@
+﻿@page
+@model DA.DinnerPlanner.Razor.Proto.Pages.EditAddressesModel
+@{
+	ViewData["Title"] = "Edit Addresses";
+}
+<style>
+	td {
+		padding: 2mm;
+	}
+	input.Street 
+	{
+		width: 5cm;
+	}
+	input.HouseNumber
+	{
+		width: 1cm;
+	}
+	input[type=text]::-webkit-input-placeholder
+	{
+		font-size: 6pt;
+	}
+</style>
+<div>
+	<h2>Edit Addresses</h2>
+	<table class="border">
+		<thead>
+			<tr>
+				<td class="border border-2 border-dark"></td>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				foreach(var addr in Model.Addresses!.Where(a=>!a.Deleted))
+				{
+					<tr>
+						<td class="border border-2 border-dark">
+							<form method="post" asp-page-handler="Submit">
+								<input type="hidden" asp-for="@Model.UserID" name="userId" />
+								<input type="hidden" asp-for="@addr.Id" name="addrId" />
+								<input type="text" value="@addr.Street" name="Street" class="Street" placeholder="Street" />
+								<input type="text" value="@addr.HouseNumber" name="HouseNumber" class="HouseNumber" placeholder="No" />
+								<input type="text" value="@addr.HouseNumberExtension" name="HouseNumberExt" class="HouseNumber" placeholder="No Ext" />
+								<input type="text" value="@addr.ZipCode" name="zipCode" placeholder="ZIP code" />
+								<input type="text" value="@addr.City" name="city" placeholder="City" />
+								<select asp-items="@Model.CountriesSL" id="countrySelector_@addr.Id" name="countryId"></select>
+								<input type="checkbox" @Html.Raw(@addr.Primary?"checked=\"checked\"":"") name="primary" value="@addr.Id" /> primary
+								<input type="image" src="img/diskette.png" width="15" height="15" />
+							</form>
+<script>
+select = document.getElementById("countrySelector_@addr.Id");
+select.value="@addr.Country.Id";
+</script>
+						</td>
+						<td class="border border-2 border-dark">
+							<form method="post" asp-page-handler="Delete">
+								<input type="hidden" asp-for="@Model.UserID" name="userId" />
+								<input type="hidden" asp-for="@addr.Id" name="addrId" />
+								<input type="image" src="img/delete.png" width="15" height="15" />
+							</form>
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+	<form asp-page-handler="Add">
+		<input type="hidden" asp-for="@Model.UserID" name="userId" />
+		<input type="image" src="img/add.png" width="15" height="15" />
+	</form>
+</div>
