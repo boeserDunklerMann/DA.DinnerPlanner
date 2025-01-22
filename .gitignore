@@ -309,3 +309,4 @@ paket-files/
 /Wpf/bins/DA.lib.MVVM.Framework.dll
 Testing Apps/
 /src/DA.DinnerPlanner/DA.DinnerPlanner.EFCore.Setup.Cons/Program.cs
+/src/DA.DinnerPlanner/DA.DinnerPlanner.Razor.Proto/Properties/launchSettings.json
