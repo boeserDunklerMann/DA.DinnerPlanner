@@ -36,7 +36,7 @@
 			<label>Name/Description:</label>
 			<input type="text" asp-for="@Model.NewDinner.Dinnerdescription"/>
 			<label>Date:</label>
-			<input type="datetime" asp-for="@Model.NewDinner.DinnerDate"/>
+			<input type="datetime" asp-for="@Model.NewDinner.DinnerDate" asp-format="{0:yyyy-MM-ddTHH:mm}" />
 		</div>
 		<input type="submit" class="btn btn-primary" value="create"/>
 	</form>
