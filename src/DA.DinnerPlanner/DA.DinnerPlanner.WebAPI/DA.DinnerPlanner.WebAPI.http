@@ -1,0 +1,6 @@
+@DA.DinnerPlanner.WebAPI_HostAddress = http://localhost:5144
+
+GET {{DA.DinnerPlanner.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

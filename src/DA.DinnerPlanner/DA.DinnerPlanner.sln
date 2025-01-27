@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.DinnerPlanner.Razor.Prot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.DinnerPlanner.Common", "DA.DinnerPlanner.Common\DA.DinnerPlanner.Common.csproj", "{D2CF64E6-8627-4F31-88AC-DD565CB8DD89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.DinnerPlanner.WebAPI", "DA.DinnerPlanner.WebAPI\DA.DinnerPlanner.WebAPI.csproj", "{413755AE-BEE6-44BB-AEFC-A11FF128E948}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D2CF64E6-8627-4F31-88AC-DD565CB8DD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2CF64E6-8627-4F31-88AC-DD565CB8DD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2CF64E6-8627-4F31-88AC-DD565CB8DD89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{413755AE-BEE6-44BB-AEFC-A11FF128E948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{413755AE-BEE6-44BB-AEFC-A11FF128E948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{413755AE-BEE6-44BB-AEFC-A11FF128E948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{413755AE-BEE6-44BB-AEFC-A11FF128E948}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
