@@ -3,16 +3,50 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DA.DinnerPlanner.Razor.Proto</title>
+    <title>@ViewData["Title"] - DA.DinnerPlanner</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DA.DinnerPlanner.Razor.Proto.styles.css" asp-append-version="true" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+        function onSignIn(googleuser)
+        {
+            var profile=googleuser.getBasicProfile();
+            console.log('ID: ' + profile.getId());
+            console.log('Full Name: ' + profile.getName());
+            console.log('Given Name: ' + profile.getGivenName());
+            console.log('Family Name: ' + profile.getFamilyName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+
+            var id_token=googleuser.getAuthResponse().id_token;
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('POST', 'https://andre-nas.servebeer.com/auth.php');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function()
+            {
+                console.log('Signed in as:'+xhr.responseText);
+            };
+            xhr.send('idtoken='+id_token);
+
+        }
+        function SignOut()
+        {
+            var auth2=gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function()
+            {
+                console.log('Signed out');
+            });
+        }
+</script>
+    <meta name="google-signin-client_id" content="282543294427-a1em8ev32ar6t0s190tf3l1e203q3c1m.apps.googleusercontent.com">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="img/kitchen_tools.png" />DA.DinnerPlanner.Razor.Proto</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="img/kitchen_tools.png" />DA.DinnerPlanner</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,6 +64,10 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="Users">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                            <a href="#" onclick="SignOut();">Sign out</a>
                         </li>
                     </ul>
                 </div>
