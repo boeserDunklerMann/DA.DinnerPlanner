@@ -67,4 +67,5 @@ select.value="@addr.Country.Id";
 		<input type="hidden" asp-for="@Model.UserID" name="userId" />
 		<input type="image" src="img/add.png" width="15" height="15" />
 	</form>
+	<a asp-page="EditUser" asp-route-UserID="@Model.UserID">back</a>
 </div>
