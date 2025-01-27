@@ -8,6 +8,7 @@ namespace DA.DinnerPlanner.Model.Contracts
 	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
 	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// <Change Datum="20.01.2025" Entwickler="DA">DinnerImages added</Change>
+	/// <Change Datum="27.01.2025" Entwickler="DA">GoogleUsers added (Jira-Nr. DPLAN-38)</Change>
 	/// </ChangeLog>
 	public interface IDinnerPlannerContext
 	{
@@ -22,6 +23,7 @@ namespace DA.DinnerPlanner.Model.Contracts
 		DbSet<Pet> Pets { get; set; }
 		DbSet<UserImage> UserImages { get; set; }
 		DbSet<User> Users { get; set; }
+		DbSet<Auth.GoogleUser> GoogleUsers { get; set; }
 
 		string ConnectionString { get; set; }
 		Task SaveAsync();

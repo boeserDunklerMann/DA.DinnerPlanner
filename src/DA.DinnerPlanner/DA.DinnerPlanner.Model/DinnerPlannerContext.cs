@@ -9,7 +9,8 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="19.12.2024" Entwickler="DA">EatingHabits added (Jira-Nr. DPLAN-4)</Change>
 	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// <Change Datum="20.01.2025" Entwickler="DA">ConnectionString SaveAsync added (Jira-Nr. DPLAN-23)</Change>
-		/// </ChangeLog>
+	/// <Change Datum="27.01.2025" Entwickler="DA">GoogleUsers added (Jira-Nr. DPLAN-38)</Change>
+	/// </ChangeLog>
 	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext
 	{
 		public DbSet<Country> Countries { get; set; }
@@ -23,6 +24,7 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<Language> Languages { get; set; }
 		public DbSet<UserImage> UserImages { get; set; }
 		public DbSet<DinnerImage> DinnerImages { get; set; }
+		public DbSet<Auth.GoogleUser> GoogleUsers { get; set; }
 
 		public string ConnectionString { get; set; } = "";
 		public async Task SaveAsync()
@@ -49,8 +51,7 @@ namespace DA.DinnerPlanner.Model
 				user.HasMany(u => u.CommunicationList).WithOne(c => c.User);
 				user.HasMany(u => u.Pets);
 				user.Property(u => u.GoogleId).IsRequired(false);
-				user.HasIndex(u => u.GoogleId).HasFilter("LABEL IS NOT NULL")
-				.IsUnique();
+				user.HasIndex(u => u.GoogleId).HasFilter("LABEL IS NOT NULL").IsUnique();
 			});
 			modelBuilder.Entity<Allergy>(allergy =>
 			{
@@ -89,6 +90,10 @@ namespace DA.DinnerPlanner.Model
 			{
 				image.HasKey(i => i.Id);
 				image.HasOne(i => i.User).WithMany(u => u.UserImages);
+			});
+			modelBuilder.Entity<Auth.GoogleUser>(guser =>
+			{
+				guser.HasKey(gu => gu.Id);
 			});
 		}
 	}
