@@ -37,11 +37,7 @@ namespace DA.DinnerPlanner.Razor.Proto
 				// Once a user is authenticated, the OAuth2 token info is stored in cookies.
 				o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
-			}).AddCookie().AddGoogleOpenIdConnect(options =>
-			{
-				options.ClientId = "insert here";
-				options.ClientSecret = "insert here";
-			});
+			}).AddCookie();
 
 			var app = builder.Build();
 
