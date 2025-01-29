@@ -25,6 +25,7 @@ see also [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentic
 5.1. add package `Google.Apis.Auth.AspNetCore3`
 5.2. in `program.cs` add following:
 			```
+   
 			IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
 			builder.Services.AddAuthentication(opts =>
 			{
