@@ -3,7 +3,7 @@
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "EditCommunications?UserID=1",
+      "launchUrl": "EditAddresses?UserID=1",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

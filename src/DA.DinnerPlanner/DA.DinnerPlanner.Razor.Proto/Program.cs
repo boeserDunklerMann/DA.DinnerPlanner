@@ -1,6 +1,8 @@
 using DA.DinnerPlanner.Model;
 using DA.DinnerPlanner.Model.Contracts;
+using Google.Apis.Auth.AspNetCore3;
 using Hangfire;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DA.DinnerPlanner.Razor.Proto
@@ -22,6 +24,25 @@ namespace DA.DinnerPlanner.Razor.Proto
 			builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);    // there is the connstring which will not be committed to git
 			CreateDIBindings(builder);
 
+			// This configures Google.Apis.Auth.AspNetCore3 for use in this app.
+			builder.Services.AddAuthentication(o =>
+			{
+				// This forces challenge results to be handled by Google OpenID Handler, so there's no
+				// need to add an AccountController that emits challenges for Login.
+				o.DefaultChallengeScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+				// This forces forbid results to be handled by Google OpenID Handler, which checks if
+				// extra scopes are required and does automatic incremental auth.
+				o.DefaultForbidScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+				// Default scheme that will handle everything else.
+				// Once a user is authenticated, the OAuth2 token info is stored in cookies.
+				o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+			}).AddCookie().AddGoogleOpenIdConnect(options =>
+			{
+				options.ClientId = "137038503822-bmvd8hqfuha7dq431591fje2vll1bp9n.apps.googleusercontent.com";
+				options.ClientSecret = "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";
+			});
+
 			var app = builder.Build();
 
 			// https://www.endycahyono.com/article/aspnetcore3-running-under-subdirectory-on-nginx
@@ -37,7 +58,9 @@ namespace DA.DinnerPlanner.Razor.Proto
 			app.UseStaticFiles();
 
 			app.UseHangfireDashboard();
-			
+			app.UseAuthentication();
+			app.UseAuthorization();
+
 			app.UseRouting();
 
 			app.UseAuthorization();

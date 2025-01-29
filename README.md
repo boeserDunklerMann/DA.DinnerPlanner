@@ -14,6 +14,7 @@ Console project for setting up the database and generating some testdata
 Webapp-prototype with DB-access via EFCore
 
 ## External IDP How-To
+**DEbug this with IIS Express because of HTTPS**
 
 ### Google
 1. Go to [Google API-Console](https://console.cloud.google.com/auth/clients?inv=1&invt=AboIKg)
@@ -48,4 +49,26 @@ see also [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentic
 
 			app.UseAuthentication();
 			app.UseAuthorization();
+```
+
+### Facebook
+see also [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/facebook-logins?view=aspnetcore-8.0#create-the-app-in-facebook)
+
+1. Add package `Microsoft.AspNetCore.Authentication.Facebook`
+2. Go to [Facebook Developers page](https://developers.facebook.com/) and create developer account
+3. create a new App
+3.1. fill **Client OAuth settings** page
+3.2. use defaults, fill **redirect URIs**: `https://localhost:{Port}/signin-facebook`
+4. Linke Navigation: Settings->Allgemein
+4.1. App-ID und App-Secrets merken (vorerst in appsettings.json speichern)
+4.2. Rest ausfüllen
+
+#### Configure WwebApp for FB Auth
+```
+
+services.AddAuthentication().AddFacebook(facebookOptions =>
+    {
+        facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
+        facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+    });
 ```
