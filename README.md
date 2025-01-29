@@ -21,3 +21,30 @@ Webapp-prototype with DB-access via EFCore
 3. Add OAuth 2.0 Client ID copy&paste Client-ID and -credentials
 4. in section **Authorized redirect URIs** add `https://localhost:{PORT}/signin-google`
 see also [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/google-logins?view=aspnetcore-8.0#create-the-google-oauth-20-client-id-and-secret)
+5. create WebApp in VS
+5.1. add package `Google.Apis.Auth.AspNetCore3`
+5.2. in `program.cs` add following:
+			```
+			IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+			builder.Services.AddAuthentication(opts =>
+			{
+				// This forces challenge results to be handled by Google OpenID Handler, so there's no
+				// need to add an AccountController that emits challenges for Login.
+				opts.DefaultChallengeScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+				// This forces forbid results to be handled by Google OpenID Handler, which checks if
+				// extra scopes are required and does automatic incremental auth.
+				opts.DefaultForbidScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+				// Default scheme that will handle everything else.
+				// Once a user is authenticated, the OAuth2 token info is stored in cookies.
+				opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+			})
+				.AddCookie()
+				.AddGoogleOpenIdConnect(options =>
+			{
+				options.ClientId = googleAuthNSection["ClientID"];
+				options.ClientSecret = googleAuthNSection["ClientSecret"];
+			});
+
+			app.UseAuthentication();
+			app.UseAuthorization();
+```
