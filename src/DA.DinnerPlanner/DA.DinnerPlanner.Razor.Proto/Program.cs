@@ -39,8 +39,8 @@ namespace DA.DinnerPlanner.Razor.Proto
 
 			}).AddCookie().AddGoogleOpenIdConnect(options =>
 			{
-				options.ClientId = "137038503822-bmvd8hqfuha7dq431591fje2vll1bp9n.apps.googleusercontent.com";
-				options.ClientSecret = "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";
+				options.ClientId = "insert here";
+				options.ClientSecret = "insert here";
 			});
 
 			var app = builder.Build();
