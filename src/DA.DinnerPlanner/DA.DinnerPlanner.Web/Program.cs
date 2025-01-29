@@ -1,5 +1,6 @@
 using DA.DinnerPlanner.Web.Data;
 using Google.Apis.Auth.AspNetCore3;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace DA.DinnerPlanner.Web
 
 			// Add services to the container.
 			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+			builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);    // there are some secrets which will not be committed to git
 			builder.Services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(connectionString));
 			builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -25,6 +27,7 @@ namespace DA.DinnerPlanner.Web
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			builder.Services.AddRazorPages();
 			IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+			IConfigurationSection facebookAuthSection = builder.Configuration.GetSection("Authentication:FB");
 			builder.Services.AddAuthentication(opts =>
 			{
 				// This forces challenge results to be handled by Google OpenID Handler, so there's no
@@ -42,12 +45,25 @@ namespace DA.DinnerPlanner.Web
 			{
 				options.ClientId = googleAuthNSection["ClientID"];
 				options.ClientSecret = googleAuthNSection["ClientSecret"];
-			});
-			IConfigurationSection facebookAuthSection = builder.Configuration.GetSection("Authentication:FB");
-			builder.Services.AddAuthentication().AddFacebook(opts =>
+				options.AccessDeniedPath = "/IDPAccessDenied";
+			})
+				.AddFacebook(opts =>
 			{
 				opts.AppId = facebookAuthSection["AppID"]!;
 				opts.AppSecret = facebookAuthSection["AppSecret"]!;
+				opts.AccessDeniedPath = "/IDPAccessDenied";
+				
+				opts.Events.OnCreatingTicket = ctx =>
+				{
+					List<AuthenticationToken> tokens = ctx.Properties.GetTokens().ToList();
+					tokens.Add(new AuthenticationToken()
+					{
+						Name = "TicketCreated",
+						Value = DateTime.UtcNow.ToString()
+					});
+					ctx.Properties.StoreTokens(tokens);
+					return Task.CompletedTask;
+				};
 			});
 			
 			var app = builder.Build();

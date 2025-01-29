@@ -15,7 +15,7 @@ Webapp-prototype with DB-access via EFCore
 
 ## External IDP How-To
 **DEbug this with IIS Express because of HTTPS**
-
+**WebApp with "Individual User Accounts"**
 ### Google
 1. Go to [Google API-Console](https://console.cloud.google.com/auth/clients?inv=1&invt=AboIKg)
 2. Create a project first!

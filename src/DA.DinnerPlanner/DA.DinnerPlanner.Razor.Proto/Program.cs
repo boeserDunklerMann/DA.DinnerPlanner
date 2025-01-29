@@ -3,7 +3,6 @@ using DA.DinnerPlanner.Model.Contracts;
 using Google.Apis.Auth.AspNetCore3;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DA.DinnerPlanner.Razor.Proto
 {
