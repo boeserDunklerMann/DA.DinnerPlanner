@@ -17,6 +17,7 @@ namespace DA.DinnerPlanner.Razor.Proto
 			.UseSimpleAssemblyNameTypeSerializer()
 			);
 			builder.Services.AddHangfireServer();
+			
 
 			// Add services to the container.
 			builder.Services.AddRazorPages()/*.WithRazorPagesRoot("/dinnerplan")*/;

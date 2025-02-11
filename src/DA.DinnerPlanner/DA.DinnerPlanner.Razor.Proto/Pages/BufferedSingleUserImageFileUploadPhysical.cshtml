@@ -1,0 +1,27 @@
+﻿@page
+@model DA.DinnerPlanner.Razor.Proto.Pages.BufferedSingleUserImageFileUploadPhysicalModel
+@{
+	ViewData["Title"] = "Buffered Single User Image File Upload (Physical)";
+}
+<h1>Upload one buffered file to disk</h1>
+<form enctype="multipart/form-data" method="post">
+	<dl>
+		<dt>
+			<label asp-for="FileUpload.FormFile"></label>
+		</dt>
+		<dd>
+			<input asp-for="FileUpload.FormFile" type="file" />
+			<span asp-asp-validation-for="FileUpload.FormFile"></span>
+		</dd>
+	</dl>
+	<input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
+</form>
+
+<p class="result">
+	@Model.Result
+</p>
+
+@section Scripts
+{
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
