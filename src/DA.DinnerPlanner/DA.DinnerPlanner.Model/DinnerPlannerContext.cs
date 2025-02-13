@@ -10,7 +10,8 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// <Change Datum="20.01.2025" Entwickler="DA">ConnectionString SaveAsync added (Jira-Nr. DPLAN-23)</Change>
 	/// <Change Datum="27.01.2025" Entwickler="DA">GoogleUsers added (Jira-Nr. DPLAN-38)</Change>
-	/// </ChangeLog>
+	/// <Change Datum="13.02.2025" Entwickler="DA">SaveChangesAsync overridden (Jira-Nr. DPLAN-41)</Change>
+		/// </ChangeLog>
 	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext
 	{
 		public DbSet<Country> Countries { get; set; }
@@ -30,6 +31,18 @@ namespace DA.DinnerPlanner.Model
 		public async Task SaveAsync()
 		{
 			await SaveChangesAsync();
+		}
+		public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+		{
+			DateTime now = DateTime.UtcNow;
+			ChangeTracker.Entries()
+				.Where(entry => entry.State == EntityState.Added).ToList().ForEach(e =>
+				e.Property(nameof(ICurrentTimestamps.CreationDate)).CurrentValue = now);
+			ChangeTracker.Entries()
+				.Where(entry => entry.State == EntityState.Modified).ToList().ForEach(e =>
+				e.Property(nameof(ICurrentTimestamps.ChangeDate)).CurrentValue = now);
+
+			return await base.SaveChangesAsync(cancellationToken);
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

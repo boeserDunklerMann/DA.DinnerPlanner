@@ -40,25 +40,31 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
             string[] selectedLanguages,
             string[] selectedPets)
         {
-            if (id == null)
-                return NotFound();
-            EditUser = (await application.GetAllUsersAsync(db)).First(u => u.Id == id);
-            EditUser.FirstName = firstName;
-            EditUser.LastName = lastName;
-            EditUser.BirthDate = birthDate;
-            EditUser.AvailableAsCook = asCook;
-            EditUser.UsersComment = userComment??"";
-            EditUser.EatingHabit = await db.EatingHabits.FirstAsync(eh => eh.Id == eatingHabitId);
+            if (ModelState.IsValid)
+            {
+                if (id == null)
+                    return NotFound();
+                EditUser = (await application.GetAllUsersAsync(db)).First(u => u.Id == id);
+                EditUser.FirstName = firstName;
+                EditUser.LastName = lastName;
+                EditUser.BirthDate = birthDate;
+                EditUser.AvailableAsCook = asCook;
+                EditUser.UsersComment = userComment ?? "";
+                EditUser.EatingHabit = await db.EatingHabits.FirstAsync(eh => eh.Id == eatingHabitId);
 
-			UpdateAllergiesFromBinding(EditUser, selectedAllergies);
-            UpdateLanguagesFromBinding(EditUser, selectedLanguages);
-            UpdatePetsFromBinding(EditUser, selectedPets);
+                UpdateAllergiesFromBinding(EditUser, selectedAllergies);
+                UpdateLanguagesFromBinding(EditUser, selectedLanguages);
+                UpdatePetsFromBinding(EditUser, selectedPets);
 
-            await db.SaveAsync();
-            await PopulateUsersAllergiesAsync(EditUser);
-			await PopulateUsersLanguagesAsync(EditUser);
-			await PopulateUsersPetsAsync(EditUser);
-
+                await db.SaveAsync();
+                await PopulateUsersAllergiesAsync(EditUser);
+                await PopulateUsersLanguagesAsync(EditUser);
+                await PopulateUsersPetsAsync(EditUser);
+            }
+            else
+            {
+                return Page();
+            }
 			return Redirect("Users");
         }
     }
