@@ -38,7 +38,7 @@ namespace DA.DinnerPlanner.Model
 		public bool? Smoker { get; set; }
 		public ICollection<UserImage> UserImages { get; set; } = [];
 		[NotMapped]
-		public int Age => (int)(Math.Floor((DateTime.UtcNow - BirthDate).TotalDays/365));
+		public int Age => (int)(Math.Floor((DateTime.UtcNow - BirthDate).TotalDays / 365));
 		/// <summary>
 		/// Is this user also assignable as cook
 		/// </summary>
@@ -62,6 +62,7 @@ namespace DA.DinnerPlanner.Model
 
 	/// <ChangeLog>
 	/// <Create Datum="19.12.2024" Entwickler="DA" />
+	/// <Change Datum="13.02.2025" Entwickler="DA">GetHashCode added</Change>
 	/// </ChangeLog>
 	public class UserImage : BaseModel
 	{
@@ -72,5 +73,10 @@ namespace DA.DinnerPlanner.Model
 			return Id == ((BaseModel)obj).Id;
 		}
 		public User User { get; set; } = new();
+
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
 	}
 }
