@@ -3,7 +3,7 @@
 @{
 	ViewData["Title"] = "Buffered Single User Image File Upload (Physical)";
 }
-<h1>Upload one buffered file to disk</h1>
+<h1>Upload one buffered file for @Model.EditUser!.DisplayName</h1>
 <form enctype="multipart/form-data" method="post">
 	<dl>
 		<dt>
@@ -15,6 +15,7 @@
 		</dd>
 	</dl>
 	<input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
+	<input type="hidden" asp-for="@Model.UserID" name="UserId" />
 </form>
 
 <p class="result">
