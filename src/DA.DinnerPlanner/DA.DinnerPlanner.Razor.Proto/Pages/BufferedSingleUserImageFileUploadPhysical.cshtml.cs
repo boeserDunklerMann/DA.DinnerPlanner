@@ -92,7 +92,9 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 			if (!ModelState.IsValid)
 				return Page();
 			await LoadUserDataAsync();
-			EditUser!.UserImages.First(img => img.Id == imageId).Deleted = true;
+			if (EditUser == null)
+				return NotFound();
+			EditUser.UserImages.First(img => img.Id == imageId).Deleted = true;
 			await db.SaveAsync();
 			return Page();
 		}
