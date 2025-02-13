@@ -9,7 +9,8 @@ namespace DA.DinnerPlanner.Common
 	/// <Change Datum="21.12.2024" Entwickler="DA">class made singleton (Jira-Nr. DPLAN-20)</Change>
 	/// https://csharpindepth.com/articles/singleton
 	/// <Change Datum="20.01.2025" Entwickler="DA">context removed, we get it via DI (Jira-Nr. DPLAN-23)</Change>
-	/// </ChangeLog>
+	/// <Change Datum="13.02.2025" Entwickler="DA">dont load deleted objects (Jira-Nr. DPLAN-42)</Change>
+		/// </ChangeLog>
 	public sealed class Application
 	{
 		private static readonly Lazy<Application> lazy = new(() => new Application());
@@ -28,15 +29,15 @@ namespace DA.DinnerPlanner.Common
 				throw new NullReferenceException($"{nameof(context)} not set.");
 			}
 			return await context.Users
-					.Include(nameof(Model.User.AddressList))
-					.Include(nameof(Model.User.Allergies))
-					.Include(u => u.CommunicationList)
+					.Include(u=>u.AddressList.Where(a=>!a.Deleted))
+					.Include(user=>user.Allergies.Where(allergy=>!allergy.Deleted))
+					.Include(user=>user.CommunicationList.Where(comm=>!comm.Deleted))
 						.ThenInclude(cl => cl.CommunicationType)
 					.Include(nameof(Model.User.DinnerAsCook))
 					.Include(nameof(Model.User.DinnerAsGuest))
 					.Include(nameof(Model.User.DinnerAsHost))
 					.Include(nameof(Model.User.Reviews))
-					.Include(nameof(Model.User.UserImages))
+					.Include(u=>u.UserImages.Where(img=>!img.Deleted))
 					.Include(nameof(Model.User.Languages))
 					.Include(nameof(Model.User.Pets))
 					.Include(nameof(Model.User.EatingHabit))

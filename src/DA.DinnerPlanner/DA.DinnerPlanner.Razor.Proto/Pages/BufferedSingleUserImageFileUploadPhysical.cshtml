@@ -6,7 +6,7 @@
 <h1>Upload one buffered file for @Model.EditUser!.DisplayName</h1>
 <h2>Available Images</h2>
 @{
-	foreach(var image in Model.EditUser.UserImages.Where(img=>!img.Deleted))
+	foreach(var image in Model.EditUser.UserImages)
 	{
 		<form method="post" asp-page-handler="Delete">
 			<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="300" />
