@@ -35,12 +35,24 @@ namespace DA.DinnerPlanner.Model
 		public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
 			DateTime now = DateTime.UtcNow;
-			ChangeTracker.Entries()
-				.Where(entry => entry.State == EntityState.Added).ToList().ForEach(e =>
-				e.Property(nameof(ICurrentTimestamps.CreationDate)).CurrentValue = now);
-			ChangeTracker.Entries()
-				.Where(entry => entry.State == EntityState.Modified).ToList().ForEach(e =>
-				e.Property(nameof(ICurrentTimestamps.ChangeDate)).CurrentValue = now);
+			var createdEntries = ChangeTracker.Entries()
+				.Where(entry => entry.State == EntityState.Added).ToList();
+			createdEntries.ForEach(e =>
+			{
+				var prop = e.Properties.FirstOrDefault(prop => prop.Metadata.Name.Equals(nameof(ICurrentTimestamps.CreationDate)));
+				if (prop != null)
+					prop.CurrentValue = now;
+			});
+
+			//	e.Property(nameof(ICurrentTimestamps.CreationDate)).CurrentValue = now);
+			var changedEntries = ChangeTracker.Entries().Where(entry => entry.State == EntityState.Modified).ToList();
+			changedEntries.ForEach(e =>
+			{
+				var prop = e.Properties.FirstOrDefault(prop => prop.Metadata.Name.Equals(nameof(ICurrentTimestamps.ChangeDate)));
+				if (prop != null)
+					prop.CurrentValue = now;
+			});
+			//	e.Property(nameof(ICurrentTimestamps.ChangeDate)).CurrentValue = now);
 
 			return await base.SaveChangesAsync(cancellationToken);
 		}
