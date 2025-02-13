@@ -4,6 +4,18 @@
 	ViewData["Title"] = "Buffered Single User Image File Upload (Physical)";
 }
 <h1>Upload one buffered file for @Model.EditUser!.DisplayName</h1>
+<h2>Available Images</h2>
+@{
+	foreach(var image in Model.EditUser.UserImages.Where(img=>!img.Deleted))
+	{
+		<form method="post" asp-page-handler="Delete">
+			<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="300" />
+			<input type="hidden" asp-for="@Model.UserID" name="userId" />
+			<input type="hidden" asp-for="@image.Id" name="imageId" />
+			<input type="image" src="img/delete.png" width="15" height="15" />
+		</form>
+	}
+}
 <form enctype="multipart/form-data" method="post">
 	<dl>
 		<dt>

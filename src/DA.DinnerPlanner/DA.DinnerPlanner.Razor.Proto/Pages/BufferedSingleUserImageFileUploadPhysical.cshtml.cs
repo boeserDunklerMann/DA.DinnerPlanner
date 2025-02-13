@@ -86,9 +86,24 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 			await db.SaveAsync();
 			return RedirectToPage("Index");
 		}
+
+		public async Task<IActionResult> OnPostDeleteAsync(int userId, int imageId)
+		{
+			if (!ModelState.IsValid)
+				return Page();
+			await LoadUserDataAsync();
+			EditUser!.UserImages.First(img => img.Id == imageId).Deleted = true;
+			await db.SaveAsync();
+			return Page();
+		}
+
 		private async Task LoadUserDataAsync()
 		{
 			EditUser = (await application.GetAllUsersAsync(db)).First(u => u.Id == UserID);
+			if (EditUser == null)
+				throw new NullReferenceException(nameof(EditUser));
+			if (string.IsNullOrEmpty(EditUser.DisplayName))
+				EditUser.DisplayName = EditUser.GetDefaultDisplayName();
 		}
 	}
 
@@ -97,12 +112,8 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 	/// </ChangeLog>
 	public class BufferedSingleFileUploadPhysical
     {
-        [Required]
-        [Display(Name = "File")]
+        //[Required]
+        [Display(Name = "Add File")]
         public IFormFile? FormFile { get; set; }
-
-        [Display(Name = "Note")]
-        [StringLength(50, MinimumLength = 0)]
-        public string? Note { get; set; }
     }
 }
