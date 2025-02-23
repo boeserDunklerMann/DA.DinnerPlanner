@@ -1,4 +1,5 @@
-﻿using DA.DinnerPlanner.Model.UnitsTypes;
+﻿using DA.DinnerPlanner.Model.Auth;
+using DA.DinnerPlanner.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
 
 namespace DA.DinnerPlanner.Model.Contracts
@@ -9,7 +10,8 @@ namespace DA.DinnerPlanner.Model.Contracts
 	/// <Change Datum="19.12.2024" Entwickler="DA">Languages added (Jira-Nr. DPLAN-8)</Change>
 	/// <Change Datum="20.01.2025" Entwickler="DA">DinnerImages added</Change>
 	/// <Change Datum="27.01.2025" Entwickler="DA">GoogleUsers added (Jira-Nr. DPLAN-38)</Change>
-	/// </ChangeLog>
+	/// <Change Datum="23.02.2025" Entwickler="DA">Roles added (Jira-Nr. DPLAN-44)</Change>
+		/// </ChangeLog>
 	public interface IDinnerPlannerContext
 	{
 		DbSet<Allergy> Allergies { get; set; }
@@ -24,7 +26,7 @@ namespace DA.DinnerPlanner.Model.Contracts
 		DbSet<UserImage> UserImages { get; set; }
 		DbSet<User> Users { get; set; }
 		DbSet<Auth.GoogleUser> GoogleUsers { get; set; }
-
+		DbSet<Role> Roles { get; set; }
 		string ConnectionString { get; set; }
 		Task SaveAsync();
 	}

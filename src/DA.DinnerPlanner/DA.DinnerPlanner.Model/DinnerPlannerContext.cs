@@ -1,6 +1,8 @@
-﻿using DA.DinnerPlanner.Model.Contracts;
+﻿using DA.DinnerPlanner.Model.Auth;
+using DA.DinnerPlanner.Model.Contracts;
 using DA.DinnerPlanner.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace DA.DinnerPlanner.Model
 {
@@ -11,7 +13,9 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="20.01.2025" Entwickler="DA">ConnectionString SaveAsync added (Jira-Nr. DPLAN-23)</Change>
 	/// <Change Datum="27.01.2025" Entwickler="DA">GoogleUsers added (Jira-Nr. DPLAN-38)</Change>
 	/// <Change Datum="13.02.2025" Entwickler="DA">SaveChangesAsync overridden (Jira-Nr. DPLAN-41)</Change>
-		/// </ChangeLog>
+	/// <Change Datum="23.02.2025" Entwickler="DA">Roles added (Jira-Nr. DPLAN-44)</Change>
+	/// <Change Datum="23.02.2025" Entwickler="DA">UpdateChangeDates added (Jira-Nr. DPLAN-41)</Change>
+	/// </ChangeLog>
 	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext
 	{
 		public DbSet<Country> Countries { get; set; }
@@ -25,35 +29,22 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<Language> Languages { get; set; }
 		public DbSet<UserImage> UserImages { get; set; }
 		public DbSet<DinnerImage> DinnerImages { get; set; }
-		public DbSet<Auth.GoogleUser> GoogleUsers { get; set; }
-
+		public DbSet<GoogleUser> GoogleUsers { get; set; }
+		public DbSet<Role> Roles { get; set; }
 		public string ConnectionString { get; set; } = "";
 		public async Task SaveAsync()
 		{
 			await SaveChangesAsync();
 		}
+
+		public override int SaveChanges()
+		{
+			UpdateChangeDates();
+			return base.SaveChanges();
+		}
 		public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
-			DateTime now = DateTime.UtcNow;
-			var createdEntries = ChangeTracker.Entries()
-				.Where(entry => entry.State == EntityState.Added).ToList();
-			createdEntries.ForEach(e =>
-			{
-				var prop = e.Properties.FirstOrDefault(prop => prop.Metadata.Name.Equals(nameof(ICurrentTimestamps.CreationDate)));
-				if (prop != null)
-					prop.CurrentValue = now;
-			});
-
-			//	e.Property(nameof(ICurrentTimestamps.CreationDate)).CurrentValue = now);
-			var changedEntries = ChangeTracker.Entries().Where(entry => entry.State == EntityState.Modified).ToList();
-			changedEntries.ForEach(e =>
-			{
-				var prop = e.Properties.FirstOrDefault(prop => prop.Metadata.Name.Equals(nameof(ICurrentTimestamps.ChangeDate)));
-				if (prop != null)
-					prop.CurrentValue = now;
-			});
-			//	e.Property(nameof(ICurrentTimestamps.ChangeDate)).CurrentValue = now);
-
+			UpdateChangeDates();
 			return await base.SaveChangesAsync(cancellationToken);
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -78,6 +69,12 @@ namespace DA.DinnerPlanner.Model
 				user.Property(u => u.GoogleId).IsRequired(false);
 				user.HasIndex(u => u.GoogleId).HasFilter("LABEL IS NOT NULL").IsUnique();
 			});
+			modelBuilder.Entity<Role>(role =>
+			{
+				role.ToTable($"Auth_{nameof(Role)}");
+				role.HasKey(r => r.Id);
+			});
+
 			modelBuilder.Entity<Allergy>(allergy =>
 			{
 				allergy.HasKey(a => a.Id);
@@ -119,6 +116,26 @@ namespace DA.DinnerPlanner.Model
 			modelBuilder.Entity<Auth.GoogleUser>(guser =>
 			{
 				guser.HasKey(gu => gu.Id);
+			});
+		}
+		private void UpdateChangeDates()
+		{
+			DateTime now = DateTime.UtcNow;
+			var createdEntries = ChangeTracker.Entries()
+				.Where(entry => entry.State == EntityState.Added).ToList();
+			createdEntries.ForEach(e =>
+			{
+				var prop = e.Properties.FirstOrDefault(prop => prop.Metadata.Name.Equals(nameof(ICurrentTimestamps.CreationDate)));
+				if (prop != null)
+					prop.CurrentValue = now;
+			});
+
+			var changedEntries = ChangeTracker.Entries().Where(entry => entry.State == EntityState.Modified).ToList();
+			changedEntries.ForEach(e =>
+			{
+				var prop = e.Properties.FirstOrDefault(prop => prop.Metadata.Name.Equals(nameof(ICurrentTimestamps.ChangeDate)));
+				if (prop != null)
+					prop.CurrentValue = now;
 			});
 		}
 	}
