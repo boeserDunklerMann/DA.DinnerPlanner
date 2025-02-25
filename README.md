@@ -66,7 +66,7 @@ see also [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentic
 4.1. App-ID und App-Secrets merken (vorerst in appsettings.json speichern)
 4.2. Rest ausfüllen
 
-#### Configure WwbApp for FB Auth
+#### Configure WebApp for FB Auth
 ~~~
 
 services.AddAuthentication().AddFacebook(facebookOptions =>
@@ -78,7 +78,7 @@ services.AddAuthentication().AddFacebook(facebookOptions =>
 # Docker support
 ## Install on RaspiOS
 ### Add docker's official GPG key
-Run following command as root:
+Run following commands as root:
 
 ~~~
  apt-get install ca-certificates curl
@@ -87,8 +87,7 @@ curl -fsSL https://download.docker.com/linux/raspbian/gpg -o /etc/apt/keyrings/d
 chmod a+r /etc/apt/keyrings/docker.asc
 ~~~
 ### Add the repository to Apt sources
-Run following command as root:
-
+Run following commands as root:
 ~~~
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/raspbian \
@@ -96,4 +95,9 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt-get update
+~~~
+### Install latest Docker packages
+Run following commands as root:
+~~~
+apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ~~~
