@@ -101,3 +101,7 @@ Run following commands as root:
 ~~~
 apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ~~~
+### Verify installation by running `hello-world` image
+~~~
+docker run hello-world
+~~~
