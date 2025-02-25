@@ -14,7 +14,8 @@ Console project for setting up the database and generating some testdata
 Webapp-prototype with DB-access via EFCore
 
 ## External IDP How-To
-**DEbug this with IIS Express because of HTTPS**
+**Debug this with IIS Express because of HTTPS**
+
 **WebApp with "Individual User Accounts"**
 ### Google
 1. Go to [Google API-Console](https://console.cloud.google.com/auth/clients?inv=1&invt=AboIKg)
@@ -24,7 +25,6 @@ Webapp-prototype with DB-access via EFCore
 see also [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/google-logins?view=aspnetcore-8.0#create-the-google-oauth-20-client-id-and-secret)
 
 5. create WebApp in VS
-
 5.1. add package `Google.Apis.Auth.AspNetCore3`
 5.2. in `program.cs` add following:
 
@@ -53,6 +53,7 @@ see also [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentic
 			app.UseAuthentication();
 			app.UseAuthorization();
 ```
+
 
 ### Facebook
 see also [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/facebook-logins?view=aspnetcore-8.0#create-the-app-in-facebook)
