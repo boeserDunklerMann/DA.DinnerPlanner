@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.DinnerPlanner.Common", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.DinnerPlanner.Web", "DA.DinnerPlanner.Web\DA.DinnerPlanner.Web.csproj", "{5AD62460-495A-4A1E-A0BA-4ECFC96636C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.DinnerPlanner.Blazor.App", "DA.DinnerPlanner.Blazor.App\DA.DinnerPlanner.Blazor.App.csproj", "{D22092EE-C2DD-484F-B9F3-6B1B1BB00B4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{5AD62460-495A-4A1E-A0BA-4ECFC96636C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AD62460-495A-4A1E-A0BA-4ECFC96636C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AD62460-495A-4A1E-A0BA-4ECFC96636C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D22092EE-C2DD-484F-B9F3-6B1B1BB00B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D22092EE-C2DD-484F-B9F3-6B1B1BB00B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D22092EE-C2DD-484F-B9F3-6B1B1BB00B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D22092EE-C2DD-484F-B9F3-6B1B1BB00B4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
