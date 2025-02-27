@@ -44,7 +44,7 @@ namespace DA.DinnerPlanner.Model
 		{
 			configuration = cfg;
 			if (configuration != null)
-				ConnectionString = configuration["ConnectionStrings:da_dinnerplanner - db"]!;
+				ConnectionString = configuration["ConnectionStrings:da_dinnerplanner-db"]!;
 		}
 
 		public async Task SaveAsync()
