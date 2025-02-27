@@ -2,7 +2,8 @@
 using DA.DinnerPlanner.Model.Contracts;
 using DA.DinnerPlanner.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
+using Microsoft.Extensions.Configuration;
+
 
 namespace DA.DinnerPlanner.Model
 {
@@ -15,9 +16,14 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="13.02.2025" Entwickler="DA">SaveChangesAsync overridden (Jira-Nr. DPLAN-41)</Change>
 	/// <Change Datum="23.02.2025" Entwickler="DA">Roles added (Jira-Nr. DPLAN-44)</Change>
 	/// <Change Datum="23.02.2025" Entwickler="DA">UpdateChangeDates added (Jira-Nr. DPLAN-41)</Change>
+	/// <Change Datum="27.02.2025" Entwickler="DA">IConfiguration added</Change>
 	/// </ChangeLog>
 	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext
 	{
+		#region Private fields
+		private readonly IConfiguration? configuration;
+		#endregion
+		#region DBSets
 		public DbSet<Country> Countries { get; set; }
 		public DbSet<CommunicationType> CommunicationTypes { get; set; }
 		public DbSet<Allergy> Allergies { get; set; }
@@ -32,6 +38,15 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<GoogleUser> GoogleUsers { get; set; }
 		public DbSet<Role> Roles { get; set; }
 		public string ConnectionString { get; set; } = "";
+		#endregion
+
+		public DinnerPlannerContext(IConfiguration? cfg = null) : base()
+		{
+			configuration = cfg;
+			if (configuration != null)
+				ConnectionString = configuration["ConnectionStrings:da_dinnerplanner - db"]!;
+		}
+
 		public async Task SaveAsync()
 		{
 			await SaveChangesAsync();
