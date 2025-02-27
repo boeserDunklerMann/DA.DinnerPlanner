@@ -1,0 +1,134 @@
+﻿@page "/EditUser/{UserID:int}"
+@using DA.DinnerPlanner.Model;
+@using DA.DinnerPlanner.Model.UnitsTypes
+@inject DinnerPlannerContext dpcontext
+@if (EditingUser != null)
+{
+	<h3>EditUser</h3>
+	<EditForm Model="@EditingUser" OnSubmit="OnEditUserSubmitAsync">
+		<div class="form-group">
+			<label>Lastname:</label>
+			<InputText @bind-Value="@EditingUser.LastName"></InputText>
+			<br />
+			<label>Firstname:</label>
+			<InputText @bind-Value="@EditingUser.FirstName"></InputText>
+			<br />
+			<label>Birthdate:</label>
+			<InputDate @bind-Value="@EditingUser.BirthDate"/>
+			<br />
+			<label>I'm a cook</label>
+			<InputCheckbox @bind-Value="@EditingUser.AvailableAsCook"></InputCheckbox>
+			<br />
+			<label>Eating habit:</label>
+			<InputSelect class="form-select" @bind-Value="@EditingUser.EatingHabit!.Id">
+				@foreach(EatingHabit habit in dpcontext.EatingHabits)
+				{
+					<option value="@habit.Id">@habit.Name</option>
+				}
+			</InputSelect>
+			<br />
+			<a href="EditCommunications/@EditingUser.Id">Edit communications</a>
+			<br />
+			<a href="EditAddresses/@EditingUser.Id">Edit addresses</a>
+			<br />
+			<a href="EditUserImages/@UserID">User's pictures</a>
+			<br />
+			<div class="form-group">
+				<label>Allergies:</label>
+				<div class="table">
+					<table>
+						<tr>
+							@{
+								int count = 0;
+								foreach(Allergy allergy in dpcontext.Allergies)
+								{
+									if (count++ %4 ==0)
+									{
+										@:</tr><tr>
+									}
+									<td>
+										@if (EditingUser.Allergies.Contains(allergy))	// TODO DA: mach das irgendwie eleganter mit nem Einzeiler
+										{
+											<input type="checkbox" name="selectedAllergies" value="@allergy.Id" checked="checked" />
+											@allergy.Name
+										}
+										else
+										{
+											<input type="checkbox" name="selectedAllergies" value="@allergy.Id" />
+											@allergy.Name
+										}
+									</td>
+								}
+							}
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Languages:</label>
+				<div class="table">
+					<table>
+						<tr>
+							@{
+								int langcount = 0;
+								foreach(Language language in dpcontext.Languages)
+								{
+									if (langcount++ % 3 == 0)
+									{
+										@:</tr><tr>
+									}
+									<td>
+									@if (EditingUser.Languages.Contains(language))
+									{
+										<input type="checkbox" name="selectedLanguages" value="@language.Id" checked="checked" />
+											@language.Name
+									}
+									else
+									{
+										<input type="checkbox" name="selectedLanguages" value="@language.Id" />
+											@language.Name
+									}
+									</td>
+								}
+							}
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Pets:</label>
+				<div class="table">
+					<table>
+						<tr>
+							@{
+								int petcount = 0;
+								foreach(Pet pet in dpcontext.Pets)
+								{
+									if (petcount++ % 3 == 0)
+									{
+										@:</tr><tr>
+									}
+									<td>
+									@if (EditingUser.Pets.Contains(pet))
+									{
+										<input type="checkbox" name="selectedLanguages" value="@pet.Id" checked="checked" />
+											@pet.Name
+									}
+									else
+									{
+										<input type="checkbox" name="selectedLanguages" value="@pet.Id" />
+											@pet.Name
+									}
+									</td>
+								}
+							}
+						</tr>
+					</table>
+				</div>
+			</div>
+		<label>My message to the world:</label>
+		<InputTextArea @bind-Value="EditingUser.UsersComment"></InputTextArea>
+	</div>
+	<button type="submit">OK</button>
+</EditForm>
+}
