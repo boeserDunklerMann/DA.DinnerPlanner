@@ -67,17 +67,17 @@
 </table>
 <div>
 	<h2>Create new user</h2>
-	<form asp-page-handler="create" method="post">
+	<EditForm Model="@NewUser" OnSubmit="NewUserSubmittedAsync">
 		<div class="form-group">
 			<label>Lastname:</label>
-			<input type="text" asp-for="@NewUser.LastName" />
+			<InputText @bind-Value="@NewUser.LastName" />
 			<br />
 			<label>Firstname:</label>
-			<input type="text" asp-for="@NewUser.FirstName" />
+			<InputText @bind-Value="@NewUser.FirstName" />
 			<br />
 			<label>Birthdate:</label>
-			<input type="date" asp-for="@NewUser.BirthDate" />
+			<InputDate @bind-Value="@NewUser.BirthDate" />
 		</div>
-		<input type="submit" class="btn btn-primary" value="create" />
-	</form>
+		<button type="submit" class="btn btn-primary" >create</button>
+	</EditForm>
 </div>

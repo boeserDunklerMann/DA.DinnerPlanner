@@ -17,5 +17,11 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			Users = await Application.Instance.GetAllUsersAsync(context);
 			await base.OnInitializedAsync();
 		}
+
+		private async Task NewUserSubmittedAsync()
+		{
+			await Application.Instance.CreateUserAsync(context, NewUser);
+			Users = await Application.Instance.GetAllUsersAsync(context);
+		}
 	}
 }
