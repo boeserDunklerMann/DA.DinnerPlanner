@@ -105,3 +105,5 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docke
 ~~~
 docker run hello-world
 ~~~
+# DA.DinnerPlanner.Blator.App
+Blazor WebApp with Docker support.
