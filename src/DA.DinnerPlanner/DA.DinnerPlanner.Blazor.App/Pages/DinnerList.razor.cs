@@ -1,20 +1,21 @@
 ﻿using DA.DinnerPlanner.Common;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DA.DinnerPlanner.Blazor.App.Pages
 {
 	/// <ChangeLog>
 	/// <Create Datum="27.02.2025" Entwickler="DA" />
 	/// </ChangeLog>
-	public partial class UserList : ComponentBase
+	public partial class DinnerList : ComponentBase
 	{
-		public ICollection<Model.User> Users { get; private set; } = [];
+		public ICollection<Model.Dinner> Dinners { get; private set; } = [];
 		//[BindProperty]
-		public Model.User NewUser { get; set; } = new();
+		public Model.Dinner NewDinner { get; set; } = new();
 
 		protected override async Task OnInitializedAsync()
 		{
-			Users = await Application.Instance.GetAllUsersAsync(context);
+			Dinners = await Application.Instance.GetAllDinnersAsync(context);
 			await base.OnInitializedAsync();
 		}
 	}
