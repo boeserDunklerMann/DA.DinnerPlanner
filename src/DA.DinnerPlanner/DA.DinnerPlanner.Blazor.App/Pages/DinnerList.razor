@@ -30,3 +30,15 @@
 		}
 	</tbody>
 </table>
+<div>
+	<h2>create new dinner</h2>
+	<EditForm Model="@NewDinner" OnSubmit="NewDinnerSubmittedAsync">
+		<div class="form-group">
+			<label>Name/Description:</label>
+			<InputText @bind-Value="@NewDinner.Dinnerdescription" />
+ 			<label>Date:</label>
+			<InputDate @bind-Value="@NewDinner.DinnerDate" />
+ 		</div>
+		<button type="submit" class="btn btn-primary">create</button>
+	</EditForm>
+</div>

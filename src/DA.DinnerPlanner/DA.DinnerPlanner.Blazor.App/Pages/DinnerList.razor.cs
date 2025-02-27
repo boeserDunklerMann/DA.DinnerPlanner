@@ -1,6 +1,5 @@
 ﻿using DA.DinnerPlanner.Common;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DA.DinnerPlanner.Blazor.App.Pages
 {
@@ -17,6 +16,12 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		{
 			Dinners = await Application.Instance.GetAllDinnersAsync(context);
 			await base.OnInitializedAsync();
+		}
+
+		private async Task NewDinnerSubmittedAsync()
+		{
+			await Application.Instance.CreateDinnerAsync(context, NewDinner);
+			Dinners = await Application.Instance.GetAllDinnersAsync(context);
 		}
 	}
 }
