@@ -1,0 +1,80 @@
+﻿@page "/UserList"
+@using DA.DinnerPlanner.Model;
+@using System.Text
+@inject DinnerPlannerContext context
+
+<h1>UserList</h1>
+
+<style>
+	td {
+	padding: 2mm;
+	}
+</style>
+<h1>Users</h1>
+<table class="border">
+	<thead>
+		<tr class="border">
+			<th class="border border-2 border-dark">Name</th>
+			<th class="border border-2 border-dark">Age</th>
+			<th class="border border-2 border-dark">Image</th>
+			<th class="border border-2 border-dark">Languages</th>
+			<th class="border border-2 border-dark">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Users)
+		{
+			<tr class="border">
+				<td class="border border-2 border-dark">@user.GetDefaultDisplayName()</td>
+				<td class="border border-2 border-dark">@if (user.BirthDate > DateTime.MinValue)
+					{
+						@user.Age
+						;
+					}</td>
+				<td class="border border-2 border-dark">
+					@{
+						foreach (var image in user.UserImages)
+						{
+							<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="100" />
+						}
+					}
+				</td>
+				<td class="border border-2 border-dark">
+					@{
+						StringBuilder sb = new StringBuilder();
+						foreach (var language in user.Languages)
+						{
+							sb.Append(language.Name);
+							sb.Append(", ");
+						}
+						if (sb.Length > 0)
+						{
+							sb.Length -= 2;
+							@sb.ToString()
+						}
+					}
+				</td>
+				<td class="border border-2 border-dark">
+					<!--TODO DA: add permission check here-->
+@* 					<a asp-page="EditUser" asp-route-UserID="@user.Id">Edit</a>*@
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<div>
+	<h2>Create new user</h2>
+	<form asp-page-handler="create" method="post">
+		<div class="form-group">
+			<label>Lastname:</label>
+			<input type="text" asp-for="@NewUser.LastName" />
+			<br />
+			<label>Firstname:</label>
+			<input type="text" asp-for="@NewUser.FirstName" />
+			<br />
+			<label>Birthdate:</label>
+			<input type="date" asp-for="@NewUser.BirthDate" />
+		</div>
+		<input type="submit" class="btn btn-primary" value="create" />
+	</form>
+</div>

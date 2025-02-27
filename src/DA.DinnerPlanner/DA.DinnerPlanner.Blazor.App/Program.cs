@@ -1,13 +1,15 @@
-using DA.DinnerPlanner.Blazor.App.Data;
+using DA.DinnerPlanner.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettings.local.json", optional: false);    // there is the connstring which will not be committed to git
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<DinnerPlannerContext>();
 
 var app = builder.Build();
 

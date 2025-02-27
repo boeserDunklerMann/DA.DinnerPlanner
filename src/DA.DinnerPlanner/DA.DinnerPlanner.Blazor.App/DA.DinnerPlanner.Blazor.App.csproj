@@ -12,4 +12,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DA.DinnerPlanner.Common\DA.DinnerPlanner.Common.csproj" />
+    <ProjectReference Include="..\DA.DinnerPlanner.Model\DA.DinnerPlanner.Model.csproj" />
+  </ItemGroup>
+
 </Project>
