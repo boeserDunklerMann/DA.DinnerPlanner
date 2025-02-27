@@ -4,6 +4,10 @@
 @inject DinnerPlannerContext context
 
 <h1>UserList</h1>
+@if (Users == null)
+{
+	<p><em>Loading...</em></p>
+}
 
 <style>
 	td {
