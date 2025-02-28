@@ -5,7 +5,7 @@
 @if (EditingUser != null)
 {
 	<h3>EditUser</h3>
-	<EditForm Model="@EditingUser" OnSubmit="OnEditUserSubmitAsync">
+	<EditForm Model="@EditingUser" OnSubmit="OnEditUserSubmit">
 		<div class="form-group">
 			<label>Lastname:</label>
 			<InputText @bind-Value="@EditingUser.LastName"></InputText>
@@ -37,26 +37,22 @@
 				<label>Allergies:</label>
 				<div class="table">
 					<table>
+						<!-- https://stackoverflow.com/a/68598661/14454399 -->
 						<tr>
 							@{
 								int count = 0;
-								foreach(Allergy allergy in dpcontext.Allergies)
+								foreach(AllergyCarrier allergy in Allergies)
 								{
 									if (count++ %4 ==0)
 									{
 										@:</tr><tr>
 									}
 									<td>
-										@if (EditingUser.Allergies.Contains(allergy))	// TODO DA: mach das irgendwie eleganter mit nem Einzeiler
-										{
-											<input type="checkbox" name="selectedAllergies" value="@allergy.Id" checked="checked" />
-											@allergy.Name
-										}
-										else
-										{
-											<input type="checkbox" name="selectedAllergies" value="@allergy.Id" />
-											@allergy.Name
-										}
+										<form>
+										<!-- DONE DA: mach das irgendwie eleganter mit nem Einzeiler -->
+											<input type="checkbox" name="selectedAllergies" @oninput="(args)=>ToggleAllergyAsync(args, allergy)" value="@allergy.Allergy!.Id" checked="@allergy.Selected" />
+											@allergy.Allergy.Name
+										</form>
 									</td>
 								}
 							}
@@ -71,23 +67,17 @@
 						<tr>
 							@{
 								int langcount = 0;
-								foreach(Language language in dpcontext.Languages)
+								foreach(LanguageCarrier language in Languages)
 								{
 									if (langcount++ % 3 == 0)
 									{
 										@:</tr><tr>
 									}
 									<td>
-									@if (EditingUser.Languages.Contains(language))
-									{
-										<input type="checkbox" name="selectedLanguages" value="@language.Id" checked="checked" />
-											@language.Name
-									}
-									else
-									{
-										<input type="checkbox" name="selectedLanguages" value="@language.Id" />
-											@language.Name
-									}
+										<form>
+											<input type="checkbox" name="selectedLanguages" @oninput="(args)=>ToggleLanguageAsync(args, language)" value="@language.Language!.Id" checked="@language.Selected" />
+											@language.Language.Name
+										</form>
 									</td>
 								}
 							}
@@ -102,23 +92,17 @@
 						<tr>
 							@{
 								int petcount = 0;
-								foreach(Pet pet in dpcontext.Pets)
+								foreach(PetCarrier pet in Pets)
 								{
 									if (petcount++ % 3 == 0)
 									{
 										@:</tr><tr>
 									}
 									<td>
-									@if (EditingUser.Pets.Contains(pet))
-									{
-										<input type="checkbox" name="selectedLanguages" value="@pet.Id" checked="checked" />
-											@pet.Name
-									}
-									else
-									{
-										<input type="checkbox" name="selectedLanguages" value="@pet.Id" />
-											@pet.Name
-									}
+										<form>
+											<input type="checkbox" name="selectedLanguages" @oninput="(args)=>TogglePetAsync(args, pet)" value="@pet.Pet!.Id" checked="@pet.Selected" />
+											@pet.Pet!.Name
+										</form>
 									</td>
 								}
 							}
@@ -130,5 +114,6 @@
 		<InputTextArea @bind-Value="EditingUser.UsersComment"></InputTextArea>
 	</div>
 	<button type="submit">OK</button>
+	<label hidden="@HideSavedLabel" class="hint">User saved</label>
 </EditForm>
 }
