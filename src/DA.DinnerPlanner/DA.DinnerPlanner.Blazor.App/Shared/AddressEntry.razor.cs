@@ -21,12 +21,9 @@ namespace DA.DinnerPlanner.Blazor.App.Shared
 		#endregion
 
 		private int countryId { 
-			get => Address.Country.Id;
-			set => Address.Country = dpcontext.Countries.Single(c => c.Id == value && !c.Deleted);
+			get => Address!.Country.Id;
+			set => Address!.Country = dpcontext.Countries.Single(c => c.Id == value && !c.Deleted);
 		}
-		protected override async Task OnInitializedAsync()
-		{
-			await Task.CompletedTask;
-		}
+
 	}
 }

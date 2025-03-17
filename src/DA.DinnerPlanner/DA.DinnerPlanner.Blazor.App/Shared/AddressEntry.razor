@@ -4,21 +4,18 @@
 @if (Address != null)
 {
 <form method="post" asp-page-handler="Submit">
-	<input type="hidden" asp-for="@UserID" name="userId" />
-	<input type="hidden" asp-for="@Address.Id" name="addrId" />
-	<input type="text" value="@Address.Street" name="Street" class="Street" placeholder="Street" />
-	<input type="text" value="@Address.HouseNumber" name="HouseNumber" class="HouseNumber" placeholder="No" />
-	<input type="text" value="@Address.HouseNumberExtension" name="HouseNumberExt" class="HouseNumber" placeholder="No Ext" />
-	<input type="text" value="@Address.ZipCode" name="zipCode" placeholder="ZIP code" />
-	<input type="text" value="@Address.City" name="city" placeholder="City" />
+	<input type="text" @bind-value="@Address.Street" name="Street" class="Street" placeholder="Street" />
+	<input type="text" @bind-value="@Address.HouseNumber" name="HouseNumber" class="HouseNumber" placeholder="No" />
+	<input type="text" @bind-value="@Address.HouseNumberExtension" name="HouseNumberExt" class="HouseNumber" placeholder="No Ext" />
+	<input type="text" @bind-value="@Address.ZipCode" name="zipCode" placeholder="ZIP code" />
+	<input type="text" @bind-value="@Address.City" name="city" placeholder="City" />
 	<InputSelect TValue="int" class="form-select" @bind-Value="countryId">
 		@foreach (Country country in Countries!)
 		{
 			<option value="@country.Id">@country.CountryName</option>
 		}
 	</InputSelect>
-	<input type="checkbox" @Html.Raw(@addr.Primary?"checked=\"checked\"":"") name="primary" value="@addr.Id" /> primary
-	<input type="image" src="img/diskette.png" width="15" height="15" />
+	<input type="checkbox" name="primary" value="@Address.Id" /> primary
 </form>
 <script>
 		select = document.getElementById("countrySelector_@Address.Id");

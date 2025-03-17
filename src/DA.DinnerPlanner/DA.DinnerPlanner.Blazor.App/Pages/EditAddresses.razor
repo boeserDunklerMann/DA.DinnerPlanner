@@ -19,20 +19,14 @@
 						<AddressEntry Address="addr" UserID="UserID" Countries="dpcontext.Countries.OrderBy(c => c.CountryName).Where(c=>!c.Deleted).ToList()" />
 					</td>
 					<td class="border border-2 border-dark">
-						<form method="post" asp-page-handler="Delete">
-							<input type="hidden" asp-for="@UserID" name="userId" />
-							<input type="hidden" asp-for="@addr.Id" name="addrId" />
-							<input type="image" src="img/delete.png" width="15" height="15" />
-						</form>
+						<input type="image" src="img/delete.png" width="15" height="15" @onclick="(args)=>OnAddressDeleteAsync(addr)" />
+						<input type="image" src="img/diskette.png" width="15" height="15" @onclick="OnSaveAsync" />
 					</td>
 				</tr>
 			}
 		}
 	</tbody>
 </table>
-<form asp-page-handler="Add">
-	<input type="hidden" asp-for="@UserID" name="userId" />
-	<input type="image" src="img/add.png" width="15" height="15" />
-</form>
+<input type="image" src="img/add.png" width="15" height="15" @onclick="AddAddressAsync" />
 <a href="EditUser/@UserID">back</a>
 }
