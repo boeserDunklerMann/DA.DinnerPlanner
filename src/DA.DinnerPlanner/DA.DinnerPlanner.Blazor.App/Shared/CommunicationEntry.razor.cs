@@ -13,7 +13,6 @@ namespace DA.DinnerPlanner.Blazor.App.Shared
 		public int UserID { get; set; }
 		[Parameter]
 		public Communication? Communication { get; set; }
-		private readonly Application application = Application.Instance;
 		private int CommTypeId
 		{
 			get => Communication!.CommunicationType.Id;

@@ -1,0 +1,38 @@
+﻿@page "/EditAddresses/{UserID:int}"
+@using DA.DinnerPlanner.Model;
+@inject DinnerPlannerContext dpcontext
+<h3>Edit Addresses</h3>
+@if (EditingUser!=null)
+{
+<table class="border">
+	<thead>
+		<tr>
+			<td class="border border-2 border-dark"></td>
+		</tr>
+	</thead>
+	<tbody>
+		@{
+			foreach (var addr in EditingUser!.AddressList!.Where(a => !a.Deleted))
+			{
+				<tr>
+					<td class="border border-2 border-dark">
+						<AddressEntry Address="addr" UserID="UserID" Countries="dpcontext.Countries.OrderBy(c => c.CountryName).Where(c=>!c.Deleted).ToList()" />
+					</td>
+					<td class="border border-2 border-dark">
+						<form method="post" asp-page-handler="Delete">
+							<input type="hidden" asp-for="@UserID" name="userId" />
+							<input type="hidden" asp-for="@addr.Id" name="addrId" />
+							<input type="image" src="img/delete.png" width="15" height="15" />
+						</form>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+<form asp-page-handler="Add">
+	<input type="hidden" asp-for="@UserID" name="userId" />
+	<input type="image" src="img/add.png" width="15" height="15" />
+</form>
+<a href="EditUser/@UserID">back</a>
+}
