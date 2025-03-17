@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DA.DinnerPlanner.Common\DA.DinnerPlanner.Common.csproj" />
     <ProjectReference Include="..\DA.DinnerPlanner.Model\DA.DinnerPlanner.Model.csproj" />
   </ItemGroup>
 

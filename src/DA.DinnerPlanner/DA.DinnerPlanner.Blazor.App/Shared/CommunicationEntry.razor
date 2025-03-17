@@ -1,0 +1,13 @@
+﻿@using DA.DinnerPlanner.Model;
+@using DA.DinnerPlanner.Model.UnitsTypes
+@inject DinnerPlannerContext dpcontext
+
+<InputSelect TValue="int" class="form-select" @bind-Value="CommTypeId">
+	@foreach(CommunicationType ctype in dpcontext.CommunicationTypes)
+	{
+	<option value="@ctype.Id">@ctype.Name</option>
+	}
+</InputSelect>
+
+@code {
+}

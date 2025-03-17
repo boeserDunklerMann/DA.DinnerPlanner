@@ -4,7 +4,7 @@
 @inject DinnerPlannerContext dpcontext
 @if (EditingUser != null)
 {
-	<h3>EditUser</h3>
+	<h3>Edit User</h3>
 	<EditForm Model="@EditingUser" OnSubmit="OnEditUserSubmit">
 		<div class="form-group">
 			<label>Lastname:</label>
@@ -27,7 +27,7 @@
 				}
 			</InputSelect>
 			<br />
-			<a href="EditCommunications/@EditingUser.Id">Edit communications</a>
+			<a href="EditCommunication/@EditingUser.Id">Edit communications</a>
 			<br />
 			<a href="EditAddresses/@EditingUser.Id">Edit addresses</a>
 			<br />
@@ -113,7 +113,7 @@
 		<label>My message to the world:</label>
 		<InputTextArea @bind-Value="EditingUser.UsersComment"></InputTextArea>
 	</div>
-	<button type="submit">OK</button>
+	<button type="submit">Save data</button>
 	<label hidden="@HideSavedLabel" class="hint">User saved</label>
 </EditForm>
 }
