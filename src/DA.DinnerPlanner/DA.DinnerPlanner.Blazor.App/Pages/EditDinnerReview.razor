@@ -1,0 +1,79 @@
+﻿@page "/EditDinnerReview/{DinnerID:int}"
+@using DA.DinnerPlanner.Model;
+@inject DinnerPlannerContext dpcontext
+
+<h3>Edit Dinner's Review</h3>
+@if (EditingDinner != null && UsersReview != null)
+{
+	<h4>@EditingDinner.Dinnerdescription</h4>
+	<div>
+		Average rating: 
+		<ShowRatingsStars Dinner="EditingDinner"/>
+	</div>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Date and Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>@EditingDinner!.Dinnerdescription</td>
+				<td>@EditingDinner.DinnerDate</td>
+			</tr>
+		</tbody>
+	</table>
+	<div id="rateDinner">
+		<table>
+			<tr>
+				<td colspan="2" class="fw-bold">
+					Rate the evening
+				</td>
+			</tr>
+			<tr>
+				<td>No. of stars</td>
+				<td><InputNumber @bind-Value="UsersReview.NumberStars4Dinner"/></td>
+			</tr>
+			<tr>
+				<td>add some text</td>
+				<td><InputText @bind-Value="UsersReview.ReviewDinner" /></td>
+			</tr>
+		</table>
+	</div>
+	<div id="rateHost">
+		<table>
+			<tr>
+				<td colspan="2" class="fw-bold">
+					Rate the host in person
+				</td>
+			</tr>
+			<tr>
+				<td>No. of stars</td>
+				<td><InputNumber @bind-Value="UsersReview.NumberStars4Host" /></td>
+			</tr>
+			<tr>
+				<td>add some text</td>
+				<td><InputText @bind-Value="UsersReview.ReviewHost" /></td>
+			</tr>
+		</table>
+	</div>
+	<div id="rateCook">
+		<table>
+			<tr>
+				<td colspan="2" class="fw-bold">
+					Rate the meal
+				</td>
+			</tr>
+			<tr>
+				<td>No. of stars</td>
+				<td><InputNumber @bind-Value="UsersReview.NumberStars4Cook" /></td>
+			</tr>
+			<tr>
+				<td>add some text</td>
+				<td><InputText @bind-Value="UsersReview.ReviewCook" /></td>
+			</tr>
+		</table>
+	</div>
+	<input type="image" src="img/diskette.png" width="15" height="15" @onclick="SaveAsync" />
+}

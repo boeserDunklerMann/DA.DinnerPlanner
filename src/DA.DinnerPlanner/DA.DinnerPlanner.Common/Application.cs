@@ -15,7 +15,8 @@ namespace DA.DinnerPlanner.Common
 	/// <Change Datum="23.02.2025" Entwickler="DA">CalculateDinerAsync added (Jira-Nr. DPLAN-45)</Change>
 	/// <Change Datum="18.03.2025" Entwickler="DA">GetUserByIdAsync added</Change>
 	/// <Change Datum="18.03.2025" Entwickler="DA">added Reviews in GetAllDinnersAsync (Jira-Nr. DPLAN-64)</Change>
-		/// </ChangeLog>
+	/// <Change Datum="18.03.2025" Entwickler="DA">GetDinnerByIdAsync added (Jira-Nr. DPLAN-65)</Change>
+	/// </ChangeLog>
 	public sealed class Application
 	{
 		private static readonly Lazy<Application> lazy = new(() => new Application());
@@ -65,6 +66,16 @@ namespace DA.DinnerPlanner.Common
 			return await context.Dinners
 				.Include(nameof(Dinner.Reviews))
 				.Where(d => !d.Deleted).ToListAsync();
+		}
+		public async Task<Dinner> GetDinnerByIdAsync(IDinnerPlannerContext context, int dinnerId)
+		{
+			if (context == null)
+			{
+				throw new NullReferenceException($"{nameof(context)} not set.");
+			}
+			return await context.Dinners
+				.Include(nameof(Dinner.Reviews))
+				.FirstAsync(d => !d.Deleted && d.Id == dinnerId);
 		}
 
 		/// <summary>

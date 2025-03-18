@@ -29,9 +29,9 @@
 						<input type="image" src="img/delete.png" width="15" height="15"
 						@onclick="(a)=>DelDinner(dinner)"/>
 					}
-					@if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereits statt, kann es bewertet werden
+					@* @if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereits statt, kann es bewertet werden *@
 					{
-						<a>rate</a>
+						<a href="EditDinnerReview/@dinner.Id">rate</a>
 					}
 				</td>
 				<td class="border border-2 border-dark">
