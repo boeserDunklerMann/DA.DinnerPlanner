@@ -1,0 +1,13 @@
+﻿@using DA.DinnerPlanner.Model;
+@if (Dinner != null && rating>0)
+{
+	int nRate = (int)Math.Floor(rating);
+	for (int index =0; index<nRate; index++)
+	{
+		<img src="img/star.png" width="15" height="15"/>
+	}
+	for (int index = nRate; index < 5; index++)
+	{
+		<img src="img/nostar.png" width="15" height="15" />
+	}
+}
