@@ -16,11 +16,14 @@
 			{
 				<tr>
 					<td class="border border-2 border-dark">
-						<AddressEntry Address="addr" UserID="UserID" Countries="dpcontext.Countries.OrderBy(c => c.CountryName).Where(c=>!c.Deleted).ToList()" />
+						<AddressEntry
+							Address="addr"
+							UserID="UserID"
+							Countries="dpcontext.Countries.OrderBy(c => c.CountryName).Where(c=>!c.Deleted).ToList()"
+							OnPrimaryChangedEvent="PrimaryAddressChanged" />
 					</td>
 					<td class="border border-2 border-dark">
 						<input type="image" src="img/delete.png" width="15" height="15" @onclick="(args)=>OnAddressDeleteAsync(addr)" />
-						<input type="image" src="img/diskette.png" width="15" height="15" @onclick="OnSaveAsync" />
 					</td>
 				</tr>
 			}
@@ -29,4 +32,5 @@
 </table>
 <input type="image" src="img/add.png" width="15" height="15" @onclick="AddAddressAsync" />
 <a href="EditUser/@UserID">back</a>
+<input type="image" src="img/diskette.png" width="15" height="15" @onclick="OnSaveAsync" />
 }

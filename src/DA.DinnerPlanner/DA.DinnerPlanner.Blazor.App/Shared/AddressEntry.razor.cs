@@ -8,6 +8,7 @@ namespace DA.DinnerPlanner.Blazor.App.Shared
 {
 	/// <ChangeLog>
 	/// <Create Datum="17.03.2025" Entwickler="DA" />
+	/// <Change Datum="18.03.2025" Entwickler="DA">event OnPrimaryChangedEvent added</Change>
 	/// </ChangeLog>
 	public partial class AddressEntry : ComponentBase
 	{
@@ -18,12 +19,17 @@ namespace DA.DinnerPlanner.Blazor.App.Shared
 		public Address? Address { get; set; }
 		[Parameter]
 		public ICollection<Country>? Countries { get; set; }
+		[Parameter]
+		public EventCallback<Address> OnPrimaryChangedEvent { get; set; }
 		#endregion
-
-		private int countryId { 
+		private int countryId
+		{
 			get => Address!.Country.Id;
-			set => Address!.Country = dpcontext.Countries.Single(c => c.Id == value && !c.Deleted);
+			set => Address!.Country = Countries!.Single(c => c.Id == value && !c.Deleted);
 		}
-
+		private async Task OnPrimaryChangeAsync()
+		{
+			await OnPrimaryChangedEvent.InvokeAsync(Address!);
+		}
 	}
 }

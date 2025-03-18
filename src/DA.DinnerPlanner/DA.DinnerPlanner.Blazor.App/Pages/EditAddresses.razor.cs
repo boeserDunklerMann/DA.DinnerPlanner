@@ -25,12 +25,12 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		private async Task OnAddressDeleteAsync(Address	address2delete)
 		{
 			address2delete.Deleted = true;
-			dpcontext.SaveChanges();
+			await dpcontext.SaveAsync();
 			await Task.CompletedTask;
 		}
 		private async Task OnSaveAsync()
 		{
-			dpcontext.SaveChanges();
+			await dpcontext.SaveAsync();
 			await Task.CompletedTask;
 		}
 
@@ -39,7 +39,26 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			if (UserID >0)
 			{
 				EditingUser!.AddressList.Add(new());
-				dpcontext.SaveChanges();
+				await dpcontext.SaveAsync();
+			}
+			await Task.CompletedTask;
+		}
+
+		private async Task PrimaryAddressChanged(Address changedAddress)
+		{
+			if (UserID > 0)
+			{
+				bool newValue = !changedAddress.Primary;    // the bound value is not yet updated
+				if (newValue)   // if this is our new primary address, all others must not be primary
+				{
+					foreach (Address item in EditingUser!.AddressList)
+					{
+						if (item.Id != changedAddress.Id)
+							item.Primary = false;
+					}
+					changedAddress.Primary = newValue;	// update value because binding is not yet done, we need this for saving
+					await dpcontext.SaveAsync();
+				}
 			}
 			await Task.CompletedTask;
 		}

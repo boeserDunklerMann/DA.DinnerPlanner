@@ -1,6 +1,5 @@
 ﻿@using DA.DinnerPlanner.Model;
 @using DA.DinnerPlanner.Model.UnitsTypes
-@inject DinnerPlannerContext dpcontext
 @if (Address != null)
 {
 <form method="post" asp-page-handler="Submit">
@@ -15,7 +14,7 @@
 			<option value="@country.Id">@country.CountryName</option>
 		}
 	</InputSelect>
-	<input type="checkbox" name="primary" value="@Address.Id" /> primary
+	<InputCheckbox @bind-Value="@Address.Primary" @onclick="OnPrimaryChangeAsync" /> Primary
 </form>
 <script>
 		select = document.getElementById("countrySelector_@Address.Id");
