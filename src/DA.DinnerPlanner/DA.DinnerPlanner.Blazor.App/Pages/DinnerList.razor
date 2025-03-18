@@ -8,9 +8,11 @@
 	<thead>
 		<tr>
 			<th class="border border-2 border-dark">Name</th>
-			<th class="border border-2 border-dark">Date</th>
+			<th class="border border-2 border-dark">Date and Time</th>
+			<th class="border border-2 border-dark">No of persons allowed</th>
 			<th class="border border-2 border-dark">No of guests (including cooks)</th>
 			<th class="border border-2 border-dark">Actions</th>
+			<th class="border border-2 border-dark">Ratings</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -19,14 +21,20 @@
 			<tr>
 				<td class="border border-2 border-dark">@dinner.Dinnerdescription</td>
 				<td class="border border-2 border-dark">@dinner.DinnerDate</td>
+				<td class="border border-2 border-dark">@dinner.NumberPersonsAllowed</td>
 				<td class="border border-2 border-dark">@((dinner.Guests.Count + dinner.Cooks.Count).ToString())</td>
 				<td class="border border-2 border-dark">
 					@if (dinner.DinnerDate > DateTime.UtcNow)   // liegt das Dinner in der Zukunft, darf es gelöscht werden
 					{
 						<input type="image" src="img/delete.png" width="15" height="15"
-							@onclick="(a)=>DelDinner(dinner)"/>
+						@onclick="(a)=>DelDinner(dinner)"/>
+					}
+					@if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereeits statt, kann es bewertet werden
+					{
+						<a>rate</a>
 					}
 				</td>
+				<td class="border border-2 border-dark"></td>
 			</tr>
 		}
 	</tbody>
