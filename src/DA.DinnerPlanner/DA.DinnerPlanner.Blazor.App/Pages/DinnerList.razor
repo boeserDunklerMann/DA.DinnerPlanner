@@ -1,29 +1,30 @@
 ﻿@page "/DinnerList"
 @using DA.DinnerPlanner.Model;
 @using System.Text
-@inject DinnerPlannerContext context
+@inject DinnerPlannerContext dpcontext
 
 <h1>Dinners</h1>
-<table>
+<table class="border">
 	<thead>
 		<tr>
-			<th>Name</th>
-			<th>Date</th>
-			<th>No of guests (including cooks)</th>
-			<th>Actions</th>
+			<th class="border border-2 border-dark">Name</th>
+			<th class="border border-2 border-dark">Date</th>
+			<th class="border border-2 border-dark">No of guests (including cooks)</th>
+			<th class="border border-2 border-dark">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var dinner in Dinners)
 		{
 			<tr>
-				<td>@dinner.Dinnerdescription</td>
-				<td>@dinner.DinnerDate</td>
-				<td>@((dinner.Guests.Count + dinner.Cooks.Count).ToString())</td>
-				<td>
+				<td class="border border-2 border-dark">@dinner.Dinnerdescription</td>
+				<td class="border border-2 border-dark">@dinner.DinnerDate</td>
+				<td class="border border-2 border-dark">@((dinner.Guests.Count + dinner.Cooks.Count).ToString())</td>
+				<td class="border border-2 border-dark">
 					@if (dinner.DinnerDate > DateTime.UtcNow)   // liegt das Dinner in der Zukunft, darf es gelöscht werden
 					{
-						@:"löschen"
+						<input type="image" src="img/delete.png" width="15" height="15"
+							@onclick="(a)=>DelDinner(dinner)"/>
 					}
 				</td>
 			</tr>
@@ -38,6 +39,8 @@
 			<InputText @bind-Value="@NewDinner.Dinnerdescription" />
  			<label>Date:</label>
 			<InputDate @bind-Value="@NewDinner.DinnerDate" />
+			<label>No. of Persons allowed:</label>
+			<InputNumber @bind-Value="@NewDinner.NumberPersonsAllowed"/>
  		</div>
 		<button type="submit" class="btn btn-primary">create</button>
 	</EditForm>

@@ -1,4 +1,5 @@
 ﻿using DA.DinnerPlanner.Common;
+using DA.DinnerPlanner.Model;
 using Microsoft.AspNetCore.Components;
 
 namespace DA.DinnerPlanner.Blazor.App.Pages
@@ -14,14 +15,20 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 
 		protected override async Task OnInitializedAsync()
 		{
-			Dinners = await Application.Instance.GetAllDinnersAsync(context);
+			Dinners = await Application.Instance.GetAllDinnersAsync(dpcontext);
 			await base.OnInitializedAsync();
 		}
 
 		private async Task NewDinnerSubmittedAsync()
 		{
-			await Application.Instance.CreateDinnerAsync(context, NewDinner);
-			Dinners = await Application.Instance.GetAllDinnersAsync(context);
+			await Application.Instance.CreateDinnerAsync(dpcontext, NewDinner);
+			Dinners = await Application.Instance.GetAllDinnersAsync(dpcontext);
+		}
+
+		private async Task DelDinner(Dinner dinner)
+		{
+			dinner.Deleted = true;
+			await dpcontext.SaveAsync();
 		}
 	}
 }
