@@ -1,0 +1,28 @@
+﻿@page "/UserImages/{UserID:int}"
+@using DA.DinnerPlanner.Model;
+@inject DinnerPlannerContext dpcontext
+@inject IConfiguration configuration
+<h1>User's Images</h1>
+@if (EditingUser!=null)
+{
+	<h2>Available Images</h2>
+	<table>
+		<tbody>
+		@foreach (var image in EditingUser.UserImages.Where(img=>!img.Deleted))
+		{
+			<tr>
+				<td>
+					<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="300" />
+				</td>
+				<td>
+					<input type="image" src="img/delete.png" width="15" height="15" @onclick="(args)=>OnImageDeleteAsync(image)" />
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+	<div>
+	<InputFile OnChange="LoadileAsync" multiple />
+	</div>
+	<a href="EditUser/@UserID">back</a>
+}

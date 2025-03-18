@@ -18,7 +18,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		{
 			if (UserID > 0)
 			{
-				EditingUser = (await application.GetAllUsersAsync(dpcontext)).First(u => u.Id == UserID);
+				EditingUser = await application.GetUserByIdAsync(dpcontext, UserID);
 			}
 		}
 
@@ -26,12 +26,10 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		{
 			address2delete.Deleted = true;
 			await dpcontext.SaveAsync();
-			await Task.CompletedTask;
 		}
 		private async Task OnSaveAsync()
 		{
 			await dpcontext.SaveAsync();
-			await Task.CompletedTask;
 		}
 
 		private async Task AddAddressAsync()
@@ -41,7 +39,6 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 				EditingUser!.AddressList.Add(new());
 				await dpcontext.SaveAsync();
 			}
-			await Task.CompletedTask;
 		}
 
 		private async Task PrimaryAddressChanged(Address changedAddress)

@@ -19,7 +19,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		{
 			if (UserID > 0)
 			{
-				EditingUser = (await application.GetAllUsersAsync(dpcontext)).First(u => u.Id == UserID);
+				EditingUser = await application.GetUserByIdAsync(dpcontext, UserID);
 				await LoadCheckboxesAsync();
 			}
 			await base.OnInitializedAsync();
