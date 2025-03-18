@@ -27,7 +27,12 @@
 				{
 					<tr>
 						<td class="border border-2 border-dark commCol">
-							<CommunicationEntry UserID="@UserID" Communication="item" @ref="communicationEntries[item.Id]"/>
+							<CommunicationEntry
+								UserID="@UserID"
+								Communication="item"
+								@ref="communicationEntries[item.Id]"
+								CommunicationTypes="@dpcontext.CommunicationTypes.ToList()"
+								/>
 							<input type="text" @bind-value="@item.CommunicationValue" name="commValue" />
 						</td>
 						<td class="border border-2 border-dark">

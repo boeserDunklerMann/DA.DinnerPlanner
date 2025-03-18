@@ -1,5 +1,5 @@
-﻿using DA.DinnerPlanner.Common;
-using DA.DinnerPlanner.Model;
+﻿using DA.DinnerPlanner.Model;
+using DA.DinnerPlanner.Model.UnitsTypes;
 using Microsoft.AspNetCore.Components;
 
 namespace DA.DinnerPlanner.Blazor.App.Shared
@@ -13,10 +13,12 @@ namespace DA.DinnerPlanner.Blazor.App.Shared
 		public int UserID { get; set; }
 		[Parameter]
 		public Communication? Communication { get; set; }
+		[Parameter]
+		public ICollection<CommunicationType>? CommunicationTypes { get; set; }
 		private int CommTypeId
 		{
 			get => Communication!.CommunicationType.Id;
-			set => Communication!.CommunicationType = dpcontext.CommunicationTypes.Single(ct => ct.Id == value && !ct.Deleted);
+			set => Communication!.CommunicationType = CommunicationTypes!.Single(ct => ct.Id == value && !ct.Deleted);
 		}
 	}
 }
