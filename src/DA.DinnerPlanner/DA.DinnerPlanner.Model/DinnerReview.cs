@@ -8,13 +8,22 @@
 	public class DinnerReview : BaseModel
 	{
 		public DinnerReview() { }
+		/// <summary>
+		/// Rating for the evening itself.
+		/// </summary>
 		public int NumberStars4Dinner { get; set; }
 		/// <summary>
 		/// reviewtext for the dinner itself
 		/// </summary>
 		public string ReviewDinner { get; set; } = "";
+		/// <summary>
+		/// Rating for the host in person
+		/// </summary>
 		public int NumberStars4Host { get; set; }
 		public string ReviewHost { get; set; } = "";
+		/// <summary>
+		/// Rating for the cook/the meal.
+		/// </summary>
 		public int NumberStars4Cook { get; set; }
 		public string ReviewCook { get; set; } = "";
 		/// <summary>
