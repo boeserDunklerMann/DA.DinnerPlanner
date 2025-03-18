@@ -13,6 +13,7 @@ namespace DA.DinnerPlanner.Common
 	/// <Change Datum="20.01.2025" Entwickler="DA">context removed, we get it via DI (Jira-Nr. DPLAN-23)</Change>
 	/// <Change Datum="13.02.2025" Entwickler="DA">dont load deleted objects (Jira-Nr. DPLAN-42)</Change>
 	/// <Change Datum="23.02.2025" Entwickler="DA">CalculateDinerAsync added (Jira-Nr. DPLAN-45)</Change>
+	/// <Change Datum="18.03.2025" Entwickler="DA">GetUserByIdAsync added</Change>
 	/// </ChangeLog>
 	public sealed class Application
 	{
@@ -47,6 +48,13 @@ namespace DA.DinnerPlanner.Common
 					.Where(u => !u.Deleted).ToListAsync();
 		}
 
+		public async Task<User> GetUserByIdAsync(IDinnerPlannerContext context, int userId)
+		{
+			User retval = (await GetAllUsersAsync(context)).Single(u => u.Id == userId);
+			if (retval == null)
+				throw new Exception($"User not found Id: {userId}");    // TODO DA: create own Exceptionclass for this
+			return retval;
+		}
 		public async Task<ICollection<Model.Dinner>> GetAllDinnersAsync(IDinnerPlannerContext context)
 		{
 			if (context == null)
