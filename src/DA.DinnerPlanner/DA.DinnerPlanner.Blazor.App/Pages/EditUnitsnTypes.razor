@@ -1,0 +1,152 @@
+﻿@page "/EditUnitsnTypes"
+@using DA.DinnerPlanner.Model;
+@using DA.DinnerPlanner.Model.UnitsTypes;
+@inject DinnerPlannerContext dpcontext
+@inject IConfiguration configuration
+
+<h3>Config Units and Types</h3>
+<h4>Allergies</h4>
+<table class="border">
+	@foreach(var allergy in dpcontext.Allergies.Where(a=>!a.Deleted))
+	{
+		<tr>
+			<td class ="border border-2 border-dark">
+				<InputText @bind-Value="allergy.Name" />
+			</td>
+			<td class="border border-2 border-dark">
+				<input type="image" src="img/delete.png" width="15" height="15" @onclick="(a)=>DelAllergy(allergy)"/>
+			</td>
+		</tr>
+	}
+	<tr>
+		<td class="border border-2 border-dark">
+			<InputText @bind-Value="NewAllergy" />
+		</td>
+		<td class="border border-2 border-dark">
+			<input type="image" src="img/add.png" width="15" height="15" @onclick="AddAllergy"/>
+		</td>
+	</tr>
+</table>
+
+<h4>Communication types</h4>
+<table class="border">
+	@foreach (var ctype in dpcontext.CommunicationTypes.Where(c => !c.Deleted))
+	{
+		<tr>
+			<td class="border border-2 border-dark">
+				<InputText @bind-Value="ctype.Name" />
+			</td>
+			<td class="border border-2 border-dark">
+				<input type="image" src="img/delete.png" width="15" height="15" @onclick="(a)=>DelCommType(ctype)" />
+			</td>
+		</tr>
+	}
+	<tr>
+		<td class="border border-2 border-dark">
+			<InputText @bind-Value="NewCommType" />
+		</td>
+		<td class="border border-2 border-dark">
+			<input type="image" src="img/add.png" width="15" height="15" @onclick="AddCommType" />
+		</td>
+	</tr>
+</table>
+
+<h4>Countries</h4>
+<table class="border">
+	@foreach (var ctry in dpcontext.Countries.Where(c => !c.Deleted))
+	{
+		<tr>
+			<td class="border border-2 border-dark">
+				<InputText @bind-Value="ctry.CountryName" />
+			</td>
+			<td class="border border-2 border-dark">
+				<InputText @bind-Value="ctry.CountryCode" />
+			</td>
+			<td class="border border-2 border-dark">
+				<input type="image" src="img/delete.png" width="15" height="15" @onclick="(a)=>DelCountry(ctry)" />
+			</td>
+		</tr>
+	}
+	<tr>
+		<td class="border border-2 border-dark">
+			<InputText @bind-Value="NewCountry" />
+		</td>
+		<td class="border border-2 border-dark">
+			<InputText @bind-Value="NewCountryCode" />
+		</td>
+		<td class="border border-2 border-dark">
+			<input type="image" src="img/add.png" width="15" height="15" @onclick="AddCountry" />
+		</td>
+	</tr>
+</table>
+
+<h4>Eating habits</h4>
+<table class="border">
+	@foreach (var habit in dpcontext.EatingHabits.Where(h => !h.Deleted))
+	{
+		<tr>
+			<td class="border border-2 border-dark">
+				<InputText @bind-Value="habit.Name" />
+			</td>
+			<td class="border border-2 border-dark">
+				<input type="image" src="img/delete.png" width="15" height="15" @onclick="(a)=>DelEatingHabit(habit)" />
+			</td>
+		</tr>
+	}
+	<tr>
+		<td class="border border-2 border-dark">
+			<InputText @bind-Value="NewEatingHabit" />
+		</td>
+		<td class="border border-2 border-dark">
+			<input type="image" src="img/add.png" width="15" height="15" @onclick="AddEatingHabit" />
+		</td>
+	</tr>
+</table>
+
+<h4>Languages</h4>
+<table class="border">
+	@foreach (var lang in dpcontext.Languages.Where(l => !l.Deleted))
+	{
+		<tr>
+			<td class="border border-2 border-dark">
+				<InputText @bind-Value="lang.Name" />
+			</td>
+			<td class="border border-2 border-dark">
+				<input type="image" src="img/delete.png" width="15" height="15" @onclick="(a)=>DelLanguage(lang)" />
+			</td>
+		</tr>
+	}
+	<tr>
+		<td class="border border-2 border-dark">
+			<InputText @bind-Value="NewLanguage" />
+		</td>
+		<td class="border border-2 border-dark">
+			<input type="image" src="img/add.png" width="15" height="15" @onclick="AddLanguage" />
+		</td>
+	</tr>
+</table>
+
+<h4>Pets</h4>
+<table class="border">
+	@foreach (var pet in dpcontext.Pets.Where(p => !p.Deleted))
+	{
+		<tr>
+			<td class="border border-2 border-dark">
+				<InputText @bind-Value="pet.Name" />
+			</td>
+			<td class="border border-2 border-dark">
+				<input type="image" src="img/delete.png" width="15" height="15" @onclick="(a)=>DelPet(pet)" />
+			</td>
+		</tr>
+	}
+	<tr>
+		<td class="border border-2 border-dark">
+			<InputText @bind-Value="NewPet" />
+		</td>
+		<td class="border border-2 border-dark">
+			<input type="image" src="img/add.png" width="15" height="15" @onclick="AddPet" />
+		</td>
+	</tr>
+</table>
+
+<input type="image" src="img/diskette.png" width="15" height="15" @onclick="Save" />
