@@ -22,7 +22,7 @@ namespace DA.DinnerPlanner.Model
 		/// </summary>
 		public bool Primary { get; set; }
 		[JsonIgnore]
-		public virtual User User { get; set; }
+		public virtual User User { get; set; } = new();
 
 		public override void Delete()
 		{

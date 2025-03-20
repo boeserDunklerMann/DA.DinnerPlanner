@@ -25,7 +25,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var user in Users)
+		@foreach (var user in Users!)
 		{
 			<tr class="border">
 				<td class="border border-2 border-dark">@user.GetDefaultDisplayName()</td>
