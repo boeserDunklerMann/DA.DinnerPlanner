@@ -91,7 +91,7 @@ namespace DA.DinnerPlanner.Model
 
 		public override void Delete()
 		{
-			throw new NotImplementedException();
+			Deleted = true;
 		}
 	}
 }
