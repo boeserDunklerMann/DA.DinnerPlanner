@@ -18,12 +18,14 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="23.02.2025" Entwickler="DA">UpdateChangeDates added (Jira-Nr. DPLAN-41)</Change>
 	/// <Change Datum="27.02.2025" Entwickler="DA">IConfiguration added</Change>
 	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (Jira-Nr. DPLAN-63)</Change>
-	/// </ChangeLog>
+	/// <Change Datum="20.03.2025" Entwickler="DA">Notifications added (Jira-Nr. DPLAN-68)</Change>
+		/// </ChangeLog>
 	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext
 	{
 		#region Private fields
 		private readonly IConfiguration? configuration;
 		#endregion
+
 		#region DBSets
 		public DbSet<Country> Countries { get; set; }
 		public DbSet<CommunicationType> CommunicationTypes { get; set; }
@@ -38,6 +40,7 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<DinnerImage> DinnerImages { get; set; }
 		public DbSet<GoogleUser> GoogleUsers { get; set; }
 		public DbSet<Role> Roles { get; set; }
+		public DbSet<Notifications.Notification> Notifications { get; set; }
 		public string ConnectionString { get; set; } = "";
 		#endregion
 

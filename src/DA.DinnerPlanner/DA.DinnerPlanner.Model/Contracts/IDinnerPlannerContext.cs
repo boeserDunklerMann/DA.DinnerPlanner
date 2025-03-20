@@ -11,7 +11,8 @@ namespace DA.DinnerPlanner.Model.Contracts
 	/// <Change Datum="20.01.2025" Entwickler="DA">DinnerImages added</Change>
 	/// <Change Datum="27.01.2025" Entwickler="DA">GoogleUsers added (Jira-Nr. DPLAN-38)</Change>
 	/// <Change Datum="23.02.2025" Entwickler="DA">Roles added (Jira-Nr. DPLAN-44)</Change>
-		/// </ChangeLog>
+	/// <Change Datum="20.03.2025" Entwickler="DA">Notifications added (Jira-Nr. DPLAN-68)</Change>
+	/// </ChangeLog>
 	public interface IDinnerPlannerContext
 	{
 		DbSet<Allergy> Allergies { get; set; }
@@ -27,6 +28,7 @@ namespace DA.DinnerPlanner.Model.Contracts
 		DbSet<User> Users { get; set; }
 		DbSet<Auth.GoogleUser> GoogleUsers { get; set; }
 		DbSet<Role> Roles { get; set; }
+		DbSet<Notifications.Notification> Notifications { get; set; }
 		string ConnectionString { get; set; }
 		Task SaveAsync();
 	}

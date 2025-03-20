@@ -6,11 +6,11 @@
 	/// <summary>
 	/// the notification itself
 	/// </summary>
-	class Notification : BaseModel
+	public class Notification : BaseModel
 	{
 		public string Content { get; set; } = "";
-		public virtual DeliveryType DeliveryType { get; set; } = new();
-		public virtual ContentType ContentType { get; set; } = new();
+		public DeliveryType DeliveryType { get; set; }
+		public ContentType ContentType { get; set; }
 		public override void Delete()
 		{
 			Deleted = true;
