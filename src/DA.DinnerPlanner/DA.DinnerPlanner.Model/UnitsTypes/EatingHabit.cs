@@ -17,6 +17,6 @@ namespace DA.DinnerPlanner.Model.UnitsTypes
 			if (obj == null || !(obj is EatingHabit)) return false;
 			return Id == ((EatingHabit)obj).Id;
 		}
-		public ICollection<User> Users { get; set; } = [];
+		public virtual ICollection<User> Users { get; set; } = [];
 	}
 }

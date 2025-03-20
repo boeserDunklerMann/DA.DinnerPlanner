@@ -5,10 +5,11 @@ namespace DA.DinnerPlanner.Model
 {
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
+	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (virtal) (Jira-Nr. DPLAN-63)</Change>
 	/// </ChangeLog>
 	public class Communication : BaseModel
 	{
-		public CommunicationType CommunicationType { get; set; }=new CommunicationType();
+		public virtual CommunicationType CommunicationType { get; set; }=new CommunicationType();
 		/// <summary>
 		/// the communication value itself, like mailaddress, mobilenumber, ...
 		/// </summary>

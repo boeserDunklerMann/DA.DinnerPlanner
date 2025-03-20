@@ -6,6 +6,7 @@ namespace DA.DinnerPlanner.Model
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// <Change Datum="22.01.2025" Entwickler="DA">property Primary added (Jira-Nr. DPLAN-25)</Change>
+	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (virtal) (Jira-Nr. DPLAN-63)</Change>
 	/// </ChangeLog>
 	public class Address : BaseModel
 	{
@@ -14,7 +15,7 @@ namespace DA.DinnerPlanner.Model
 		public string HouseNumberExtension { get; set; } = "";
 		public string City { get; set; } = "";
 		public string ZipCode { get; set; } = "";
-		public Country Country { get; set; } = new Country();
+		public virtual Country Country { get; set; } = new Country();
 		/// <summary>
 		/// Hauptwohnsitz/-adresse
 		/// </summary>

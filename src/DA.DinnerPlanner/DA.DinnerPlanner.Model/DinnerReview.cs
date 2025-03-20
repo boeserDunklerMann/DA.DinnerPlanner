@@ -3,6 +3,7 @@
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// <Change Datum="20.01.2025" Entwickler="DA">DinnerImages added</Change>
+	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (virtal) (Jira-Nr. DPLAN-63)</Change>
 	/// </ChangeLog>
 	/// <summary>a review for the dinner itself, the host, the cooks</summary>
 	public class DinnerReview : BaseModel
@@ -29,8 +30,8 @@
 		/// <summary>
 		/// Who wrote the review
 		/// </summary>
-		public User ReviewsAuthor { get; set; } = new();
-		public Dinner Dinner { get; set; } = new();
-		public ICollection<DinnerImage> DinnerImages { get; set; } = [];
+		public virtual User ReviewsAuthor { get; set; } = new();
+		public virtual Dinner Dinner { get; set; } = new();
+		public virtual ICollection<DinnerImage> DinnerImages { get; set; } = [];
 	}
 }

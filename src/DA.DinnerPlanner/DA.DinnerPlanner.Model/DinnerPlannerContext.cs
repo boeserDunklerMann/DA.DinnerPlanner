@@ -17,6 +17,7 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="23.02.2025" Entwickler="DA">Roles added (Jira-Nr. DPLAN-44)</Change>
 	/// <Change Datum="23.02.2025" Entwickler="DA">UpdateChangeDates added (Jira-Nr. DPLAN-41)</Change>
 	/// <Change Datum="27.02.2025" Entwickler="DA">IConfiguration added</Change>
+	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (Jira-Nr. DPLAN-63)</Change>
 	/// </ChangeLog>
 	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext
 	{
@@ -66,7 +67,9 @@ namespace DA.DinnerPlanner.Model
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
 			// MariaDB 11+ doesnt work because of nullable PKs?
-			optionsBuilder.UseMySQL(ConnectionString);  // MariaDB10
+			optionsBuilder
+				.UseLazyLoadingProxies()
+				.UseMySQL(ConnectionString);  // MariaDB10
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

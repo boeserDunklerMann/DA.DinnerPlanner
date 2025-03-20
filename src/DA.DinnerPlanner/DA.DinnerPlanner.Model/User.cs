@@ -11,6 +11,7 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="19.12.2024" Entwickler="DA">UserImages added (Jira-Nr. DPLAN-9)</Change>
 	/// <Change Datum="20.01.2025" Entwickler="DA">prop AvailableAsCook added</Change>
 	/// <Change Datum="23.02.2025" Entwickler="DA">prop Role added (Jira-Nr. DPLAN-44)</Change>
+	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (virtal) (Jira-Nr. DPLAN-63)</Change>
 	/// </ChangeLog>
 	public class User : BaseModel
 	{
@@ -27,30 +28,30 @@ namespace DA.DinnerPlanner.Model
 		/// <summary>
 		/// a user can have more then one address
 		/// </summary>
-		public ICollection<Address> AddressList { get; set; } = [];
-		public ICollection<Allergy> Allergies { get; set; } = [];
-		public ICollection<Communication> CommunicationList { get; set; } = [];
-		public ICollection<Dinner> DinnerAsHost { get; set; } = [];
-		public ICollection<Dinner> DinnerAsCook { get; set; } = [];
-		public ICollection<Dinner> DinnerAsGuest { get; set; } = [];
-		public ICollection<DinnerReview> Reviews { get; set; } = [];
-		public ICollection<Pet> Pets { get; set; } = [];
-		public EatingHabit? EatingHabit { get; set; }
+		public virtual ICollection<Address> AddressList { get; set; } = [];
+		public virtual ICollection<Allergy> Allergies { get; set; } = [];
+		public virtual ICollection<Communication> CommunicationList { get; set; } = [];
+		public virtual ICollection<Dinner> DinnerAsHost { get; set; } = [];
+		public virtual ICollection<Dinner> DinnerAsCook { get; set; } = [];
+		public virtual ICollection<Dinner> DinnerAsGuest { get; set; } = [];
+		public virtual ICollection<DinnerReview> Reviews { get; set; } = [];
+		public virtual ICollection<Pet> Pets { get; set; } = [];
+		public virtual EatingHabit? EatingHabit { get; set; }
 		public bool? Smoker { get; set; }
-		public ICollection<UserImage> UserImages { get; set; } = [];
+		public virtual ICollection<UserImage> UserImages { get; set; } = [];
 		[NotMapped]
 		public int Age => (int)(Math.Floor((DateTime.UtcNow - BirthDate).TotalDays / 365));
 		/// <summary>
 		/// Is this user also assignable as cook
 		/// </summary>
 		public bool AvailableAsCook { get; set; }
-		public Auth.Role? Role { get; set; }
+		public virtual Auth.Role? Role { get; set; }
 		public override bool Equals(object? obj)
 		{
 			if (obj == null || !(obj is User)) return false;
 			return Id == ((User)obj).Id;
 		}
-		public ICollection<Language> Languages { get; set; } = [];
+		public virtual ICollection<Language> Languages { get; set; } = [];
 
 		public override int GetHashCode()
 		{
@@ -74,7 +75,7 @@ namespace DA.DinnerPlanner.Model
 			if (obj == null || !(obj is UserImage)) return false;
 			return Id == ((BaseModel)obj).Id;
 		}
-		public User User { get; set; } = new();
+		public virtual User User { get; set; } = new();
 
 		public override int GetHashCode()
 		{

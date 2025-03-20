@@ -34,7 +34,7 @@ Griechisch
 			if (obj == null || !(obj is Language)) return false;
 			return Id == ((BaseModel)obj).Id;
 		}
-		public ICollection<User> Users { get; set; } = [];
+		public virtual ICollection<User> Users { get; set; } = [];
 
 	}
 }
