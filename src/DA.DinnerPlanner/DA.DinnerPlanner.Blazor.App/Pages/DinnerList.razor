@@ -50,7 +50,7 @@
 					@* @string.Join(", ", dinner.Guests.Select(g=>g.GetDefaultDisplayName())) *@
 					@foreach(var guest in dinner.Guests)
 					{
-						<a href="EditUser/@guest.Id">@guest.GetDefaultDisplayName()</a>, 
+						<a href="EditUser/@guest.Id">@guest.GetDefaultDisplayName()</a> 
 					}
 				</td>
 			</tr>

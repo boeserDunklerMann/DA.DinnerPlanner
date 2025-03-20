@@ -310,3 +310,4 @@ paket-files/
 Testing Apps/
 /src/DA.DinnerPlanner/DA.DinnerPlanner.EFCore.Setup.Cons/Program.cs
 launchSettings.json
+/2025-03-20-db_backup_dataonly.sql
