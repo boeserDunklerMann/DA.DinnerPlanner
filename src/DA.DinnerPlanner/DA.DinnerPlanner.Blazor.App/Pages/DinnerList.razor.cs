@@ -30,5 +30,10 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			dinner.Deleted = true;
 			await dpcontext.SaveAsync();
 		}
+
+		private async Task InviteGuestsAsync(Dinner dinner)
+		{
+			await Application.Instance.CalculateDinerAsync(dpcontext, dinner);
+		}
 	}
 }

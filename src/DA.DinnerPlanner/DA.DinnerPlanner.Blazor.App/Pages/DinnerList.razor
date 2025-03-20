@@ -13,6 +13,7 @@
 			<th class="border border-2 border-dark">No of guests (including cooks)</th>
 			<th class="border border-2 border-dark">Actions</th>
 			<th class="border border-2 border-dark">Ratings</th>
+			<th class="border border-2 border-dark">Host</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -28,6 +29,8 @@
 					{
 						<input type="image" src="img/delete.png" width="15" height="15"
 						@onclick="(a)=>DelDinner(dinner)"/>
+						<input type="button" value="Invite guests"
+						@onclick="(a)=>InviteGuestsAsync(dinner)"/>
 					}
 					@* @if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereits statt, kann es bewertet werden *@
 					{
@@ -36,6 +39,19 @@
 				</td>
 				<td class="border border-2 border-dark">
 					<ShowRatingsStars Dinner="dinner" />
+				</td>
+				<td class="border border-2 border-dark">@dinner.Host.GetDefaultDisplayName()</td>
+			</tr>
+			<tr>
+				<th class="border border-2 border-dark" colspan="7">Guests</th>
+			</tr>
+			<tr>
+				<td class="border border-2 border-dark" colspan="7">
+					@* @string.Join(", ", dinner.Guests.Select(g=>g.GetDefaultDisplayName())) *@
+					@foreach(var guest in dinner.Guests)
+					{
+						<a href="EditUser/@guest.Id">@guest.GetDefaultDisplayName()</a>
+					}
 				</td>
 			</tr>
 		}

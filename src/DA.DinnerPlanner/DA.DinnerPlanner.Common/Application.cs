@@ -3,6 +3,7 @@ using DA.DinnerPlanner.Model.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.Extensions.Configuration;
+using System.Collections.ObjectModel;
 
 namespace DA.DinnerPlanner.Common
 {
@@ -22,7 +23,7 @@ namespace DA.DinnerPlanner.Common
 		private static readonly Lazy<Application> lazy = new(() => new Application());
 
 		public static Application Instance => lazy.Value;
-
+		private Random random = new Random(DateTime.Now.Millisecond);
 		public Application()
 		{
 		}
@@ -35,15 +36,15 @@ namespace DA.DinnerPlanner.Common
 				throw new NullReferenceException($"{nameof(context)} not set.");
 			}
 			return await context.Users
-					.Include(u=>u.AddressList.Where(a=>!a.Deleted))
-					.Include(user=>user.Allergies.Where(allergy=>!allergy.Deleted))
-					.Include(user=>user.CommunicationList.Where(comm=>!comm.Deleted))
+					.Include(u => u.AddressList.Where(a => !a.Deleted))
+					.Include(user => user.Allergies.Where(allergy => !allergy.Deleted))
+					.Include(user => user.CommunicationList.Where(comm => !comm.Deleted))
 						.ThenInclude(cl => cl.CommunicationType)
 					.Include(nameof(Model.User.DinnerAsCook))
 					.Include(nameof(Model.User.DinnerAsGuest))
 					.Include(nameof(Model.User.DinnerAsHost))
 					.Include(nameof(Model.User.Reviews))
-					.Include(u=>u.UserImages.Where(img=>!img.Deleted))
+					.Include(u => u.UserImages.Where(img => !img.Deleted))
 					.Include(nameof(Model.User.Languages))
 					.Include(nameof(Model.User.Pets))
 					.Include(nameof(Model.User.EatingHabit))
@@ -54,7 +55,7 @@ namespace DA.DinnerPlanner.Common
 		{
 			User retval = (await GetAllUsersAsync(context)).Single(u => u.Id == userId);
 			if (retval == null)
-				throw new Exception($"User not found Id: {userId}");    // TODO DA: create own Exceptionclass for this
+				throw new Exception($"User not found Id: {userId}");    // DONE DA: create own Exceptionclass for this -> .Single will throw exc
 			return retval;
 		}
 		public async Task<ICollection<Model.Dinner>> GetAllDinnersAsync(IDinnerPlannerContext context)
@@ -65,6 +66,7 @@ namespace DA.DinnerPlanner.Common
 			}
 			return await context.Dinners
 				.Include(nameof(Dinner.Reviews))
+				.Include(nameof(Dinner.Host))
 				.Where(d => !d.Deleted).ToListAsync();
 		}
 		public async Task<Dinner> GetDinnerByIdAsync(IDinnerPlannerContext context, int dinnerId)
@@ -75,6 +77,7 @@ namespace DA.DinnerPlanner.Common
 			}
 			return await context.Dinners
 				.Include(nameof(Dinner.Reviews))
+				.Include(nameof(Dinner.Host))
 				.FirstAsync(d => !d.Deleted && d.Id == dinnerId);
 		}
 
@@ -120,8 +123,23 @@ namespace DA.DinnerPlanner.Common
 		{
 			// 1. Find users who talks the sam languages as the host
 			var languages = dinner2Calculate.Host.Languages;
-			var possibleUsers=context.Users.Where(u => u.Languages.Any(l => languages.Contains(l)));
-			return await Task.FromResult(dinner2Calculate);
+			var possibleUsers = context.Users.Where(u => u.Languages.Any(l => languages.Contains(l) &&!l.Deleted) && u.Id != dinner2Calculate.Host.Id);
+			Address hostsAddress = dinner2Calculate.Host.AddressList.First(a => a.Primary &&!a.Deleted);
+			List<User> usersInTown = new();
+			// 2. Find users who live in the same city as the host
+			possibleUsers.ToList().ForEach(u =>
+			{
+				if (u.AddressList.Where(addr=>!addr.Deleted).Select(a => a.City).Contains(hostsAddress.City))
+				{
+					usersInTown.Add(u);
+				}
+			});
+			var mixedUsers = usersInTown.OrderBy(_ => Guid.NewGuid());
+			int skipper = random.Next(0, mixedUsers.Count());
+			var guests = mixedUsers.Skip(skipper).Take(dinner2Calculate.NumberPersonsAllowed - 1);
+			dinner2Calculate.Guests = guests.ToList();
+			await context.SaveAsync();
+			return dinner2Calculate;
 		}
 		#endregion
 	}
