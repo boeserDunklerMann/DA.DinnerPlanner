@@ -27,7 +27,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 
 		private async Task DelDinner(Dinner dinner)
 		{
-			dinner.Deleted = true;
+			dinner.Delete();
 			await dpcontext.SaveAsync();
 		}
 

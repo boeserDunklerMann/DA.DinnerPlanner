@@ -26,12 +26,12 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		}
 		private void DelAllergy(Allergy allergy)
 		{
-			allergy.Deleted = true;
+			allergy.Delete();
 			dpcontext.SaveChanges();
 		}
 		private void DelCommType(CommunicationType communicationType)
 		{
-			communicationType.Deleted = true;
+			communicationType.Delete();
 			dpcontext.SaveChanges();
 		}
 		private void AddCommType()
@@ -48,7 +48,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		}
 		private void DelCountry(Country country)
 		{
-			country.Deleted = true;
+			country.Delete();
 			dpcontext.SaveChanges();
 		}
 		private void AddEatingHabit()
@@ -59,7 +59,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		}
 		private void DelEatingHabit(EatingHabit habit)
 		{
-			habit.Deleted = true;
+			habit.Delete();
 			dpcontext.SaveChanges();
 		}
 		private void AddLanguage()
@@ -70,7 +70,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		}
 		private void DelLanguage(Language lang)
 		{
-			lang.Deleted = true;
+			lang.Delete();
 			dpcontext.SaveChanges();
 		}
 		private void AddPet()
@@ -81,7 +81,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		}
 		private void DelPet(Pet pet)
 		{
-			pet.Deleted= true;
+			pet.Delete();
 			dpcontext.SaveChanges();
 		}
 

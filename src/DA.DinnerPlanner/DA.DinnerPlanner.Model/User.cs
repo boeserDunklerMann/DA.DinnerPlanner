@@ -12,6 +12,7 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="20.01.2025" Entwickler="DA">prop AvailableAsCook added</Change>
 	/// <Change Datum="23.02.2025" Entwickler="DA">prop Role added (Jira-Nr. DPLAN-44)</Change>
 	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (virtal) (Jira-Nr. DPLAN-63)</Change>
+	/// <Change Datum="20.03.2025" Entwickler="DA">method Delete added (Jira-Nr. DPLAN-60)</Change>
 	/// </ChangeLog>
 	public class User : BaseModel
 	{
@@ -48,7 +49,7 @@ namespace DA.DinnerPlanner.Model
 		public virtual Auth.Role? Role { get; set; }
 		public override bool Equals(object? obj)
 		{
-			if (obj == null || !(obj is User)) return false;
+			if (obj == null || obj is not User) return false;
 			return Id == ((User)obj).Id;
 		}
 		public virtual ICollection<Language> Languages { get; set; } = [];
@@ -61,18 +62,24 @@ namespace DA.DinnerPlanner.Model
 		{
 			return $"{LastName}, {FirstName}";
 		}
+
+		public override void Delete()
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	/// <ChangeLog>
 	/// <Create Datum="19.12.2024" Entwickler="DA" />
 	/// <Change Datum="13.02.2025" Entwickler="DA">GetHashCode added</Change>
+	/// <Change Datum="20.03.2025" Entwickler="DA">method Delete added (Jira-Nr. DPLAN-60)</Change>
 	/// </ChangeLog>
 	public class UserImage : BaseModel
 	{
 		public byte[] Image { get; set; } = [];
 		public override bool Equals(object? obj)
 		{
-			if (obj == null || !(obj is UserImage)) return false;
+			if (obj == null || obj is not UserImage) return false;
 			return Id == ((BaseModel)obj).Id;
 		}
 		public virtual User User { get; set; } = new();
@@ -80,6 +87,11 @@ namespace DA.DinnerPlanner.Model
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();
+		}
+
+		public override void Delete()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

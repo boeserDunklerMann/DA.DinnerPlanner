@@ -24,7 +24,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 
 		private async Task OnAddressDeleteAsync(Address	address2delete)
 		{
-			address2delete.Deleted = true;
+			address2delete.Delete();
 			await dpcontext.SaveAsync();
 		}
 		private async Task OnSaveAsync()

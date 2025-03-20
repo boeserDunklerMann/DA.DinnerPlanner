@@ -36,10 +36,10 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
             if (editUser == null)
                 return NotFound();
             Communication comm = editUser.CommunicationList.First(c => c.Id == CommID);
-            comm.Deleted = true;
+            comm.Delete();
             comm.CommunicationValue = comm.CommunicationValue ?? "";
             await db.SaveAsync();
-            Communications!.First(c => c.Id == CommID).Deleted = true;
+            Communications!.First(c => c.Id == CommID).Delete();
 			return Page();
         }
         public async Task<IActionResult> OnPostAddAsync(int userId)

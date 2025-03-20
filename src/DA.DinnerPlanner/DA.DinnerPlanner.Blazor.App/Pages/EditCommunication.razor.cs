@@ -16,7 +16,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		private ICollection<Communication> Communications { get; set; } = [];
 		
 		private readonly Application application = Application.Instance;
-		private Dictionary<int, CommunicationEntry> communicationEntries = new Dictionary<int, CommunicationEntry>();
+		private readonly Dictionary<int, CommunicationEntry> communicationEntries = [];
 		protected override async Task OnInitializedAsync()
 		{
 			if (UserID > 0)
@@ -41,10 +41,8 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		{
 			if (UserID >0)
 			{
-				Communication? delComm = EditingUser?.CommunicationList.First(c => c.Id == commId2Del);
-				if (delComm == null)
-					throw new Exception($"Communication.Id=={commId2Del} not found for User.Id=={UserID}!");
-				delComm.Deleted = true;
+				Communication? delComm = (EditingUser?.CommunicationList.First(c => c.Id == commId2Del)) ?? throw new Exception($"Communication.Id=={commId2Del} not found for User.Id=={UserID}!");
+				delComm.Delete();
 				dpcontext.SaveChanges();
 			}
 			await Task.CompletedTask;

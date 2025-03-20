@@ -7,6 +7,7 @@ namespace DA.DinnerPlanner.Model
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
 	/// <Change Datum="22.01.2025" Entwickler="DA">property Primary added (Jira-Nr. DPLAN-25)</Change>
 	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (virtal) (Jira-Nr. DPLAN-63)</Change>
+	/// <Change Datum="20.03.2025" Entwickler="DA">method Delete added (Jira-Nr. DPLAN-60)</Change>
 	/// </ChangeLog>
 	public class Address : BaseModel
 	{
@@ -22,9 +23,15 @@ namespace DA.DinnerPlanner.Model
 		public bool Primary { get; set; }
 		[JsonIgnore]
 		public virtual User User { get; set; }
+
+		public override void Delete()
+		{
+			throw new NotImplementedException();
+		}
+
 		public override bool Equals(object? obj)
 		{
-			if (obj == null || !(obj is Address)) return false;
+			if (obj == null || obj is not Address) return false;
 			return Id.Equals(((Address)obj).Id);
 		}
 	}

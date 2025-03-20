@@ -69,9 +69,9 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 			if (editUser == null)
 				return NotFound();
 			Address address = editUser.AddressList.First(a => a.Id == addrId);
-			address.Deleted = true;
+			address.Delete();
 			await db.SaveAsync();
-			Addresses!.First(a => a.Id == addrId).Deleted = true;
+			Addresses!.First(a => a.Id == addrId).Delete();
 			return Page();
 		}
 

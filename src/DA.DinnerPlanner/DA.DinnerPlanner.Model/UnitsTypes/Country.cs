@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DA.DinnerPlanner.Model.UnitsTypes
+﻿namespace DA.DinnerPlanner.Model.UnitsTypes
 {
 	/// <ChangeLog>
 	/// <Create Datum="16.12.2024" Entwickler="DA" />
+	/// <Change Datum="20.03.2025" Entwickler="DA">method Delete added (Jira-Nr. DPLAN-60)</Change>
 	/// </ChangeLog>
 	public class Country : BaseModel
 	{
@@ -17,9 +12,17 @@ namespace DA.DinnerPlanner.Model.UnitsTypes
 		/// </summary>
 		/// <example>de-DE</example>
 		public string CountryCode { get; set; } = "";
+		public virtual ICollection<Address> Addresses { get; set; } = [];
+		public override void Delete()
+		{
+			if (Addresses.Count > 0)
+				throw new Exceptions.DeleteReferenceException($"CountryId {Id} is in use by {nameof(Address)}");
+			Deleted = true;
+		}
+
 		public override bool Equals(object? obj)
 		{
-			if (obj == null || !(obj is Country)) return false;
+			if (obj == null || obj is not Country) return false;
 			return Id.Equals(((Country)obj).Id);
 		}
 	}

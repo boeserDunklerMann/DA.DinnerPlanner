@@ -32,7 +32,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 
 		private async Task OnImageDeleteAsync(UserImage image)
 		{
-			image.Deleted = true;
+			image.Delete();
 			await dpcontext.SaveAsync();
 		}
 
