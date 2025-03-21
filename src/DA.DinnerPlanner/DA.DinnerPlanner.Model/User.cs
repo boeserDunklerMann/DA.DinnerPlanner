@@ -37,6 +37,7 @@ namespace DA.DinnerPlanner.Model
 		public virtual ICollection<Dinner> DinnerAsGuest { get; set; } = [];
 		public virtual ICollection<DinnerReview> Reviews { get; set; } = [];
 		public virtual ICollection<Pet> Pets { get; set; } = [];
+		public virtual ICollection<Notifications.Notification> Notifications { get; set; } = [];
 		public virtual EatingHabit? EatingHabit { get; set; }
 		public bool? Smoker { get; set; }
 		public virtual ICollection<UserImage> UserImages { get; set; } = [];

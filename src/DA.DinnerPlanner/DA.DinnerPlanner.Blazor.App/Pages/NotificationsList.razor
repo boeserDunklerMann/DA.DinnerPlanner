@@ -1,0 +1,29 @@
+﻿@page "/NotificationList"
+@using DA.DinnerPlanner.Model
+@using DA.DinnerPlanner.Model.Notifications
+@inject DinnerPlannerContext dpcontext
+<h3>Notifications</h3>
+@if (Notifications!=null && Notifications.Count>0)
+{
+<table>
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Content</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(Notification noti in Notifications)
+		{
+			<tr>
+				<td>@noti.CreationDate</td>
+				<td>@noti.Content</td>
+				<td>
+						<input type="image" src="img/delete.png" width="15" height="15" @onclick="(a)=>OnDeleteNotificationAsync(noti)" />
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+}

@@ -11,6 +11,7 @@
 		public string Content { get; set; } = "";
 		public DeliveryType DeliveryType { get; set; }
 		public ContentType ContentType { get; set; }
+		public virtual User User { get; set; } = new();
 		public override void Delete()
 		{
 			Deleted = true;

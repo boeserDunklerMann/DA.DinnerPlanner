@@ -1,9 +1,6 @@
 ﻿using DA.DinnerPlanner.Model;
 using DA.DinnerPlanner.Model.Contracts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Json;
-using Microsoft.Extensions.Configuration;
-using System.Collections.ObjectModel;
 
 namespace DA.DinnerPlanner.Common
 {
