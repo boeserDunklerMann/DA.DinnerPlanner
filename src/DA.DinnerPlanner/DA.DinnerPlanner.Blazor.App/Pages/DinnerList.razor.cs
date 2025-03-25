@@ -34,6 +34,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		private async Task InviteGuestsAsync(Dinner dinner)
 		{
 			await Application.Instance.CalculateDinerAsync(dpcontext, dinner);
+			await Application.Instance.InviteGuests4Dinner(cfg, dpcontext, dinner);
 		}
 	}
 }

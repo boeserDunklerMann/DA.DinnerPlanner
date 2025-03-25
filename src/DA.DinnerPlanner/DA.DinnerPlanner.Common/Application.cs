@@ -1,6 +1,9 @@
 ﻿using DA.DinnerPlanner.Model;
 using DA.DinnerPlanner.Model.Contracts;
+using DA.DinnerPlanner.Model.Notifications;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Immutable;
 
 namespace DA.DinnerPlanner.Common
 {
@@ -14,6 +17,7 @@ namespace DA.DinnerPlanner.Common
 	/// <Change Datum="18.03.2025" Entwickler="DA">GetUserByIdAsync added</Change>
 	/// <Change Datum="18.03.2025" Entwickler="DA">added Reviews in GetAllDinnersAsync (Jira-Nr. DPLAN-64)</Change>
 	/// <Change Datum="18.03.2025" Entwickler="DA">GetDinnerByIdAsync added (Jira-Nr. DPLAN-65)</Change>
+	/// <Change Datum="25.03.2025" Entwickler="DA">InviteGuests4Dinner added (Jira-Nr. DPLAN-66)</Change>
 	/// </ChangeLog>
 	public sealed class Application
 	{
@@ -137,6 +141,33 @@ namespace DA.DinnerPlanner.Common
 			dinner2Calculate.Guests = guests.ToList();
 			await context.SaveAsync();
 			return dinner2Calculate;
+		}
+
+		public async Task InviteGuests4Dinner(IConfiguration cfg, IDinnerPlannerContext context, Dinner dinner)
+		{
+			// send invitations to guests
+			dinner.Guests.ToImmutableList().ForEach(u =>
+			{
+				context.Notifications.Add(new()
+				{
+					Content = cfg["Notification:GuestInvitationTemplate"]!,
+					ContentType = ContentType.Invitation,
+					DeliveryType = DeliveryType.Web,
+					User = u
+				});
+			});
+			// send invitations to cooks
+			dinner.Cooks.ToImmutableList().ForEach(u =>
+			{
+				context.Notifications.Add(new()
+				{
+					Content = cfg["Notification:CookInvitationTemplate"]!,
+					ContentType = ContentType.Invitation,
+					DeliveryType = DeliveryType.Web,
+					User = u
+				});
+			});
+			await context.SaveAsync();
 		}
 		#endregion
 	}
