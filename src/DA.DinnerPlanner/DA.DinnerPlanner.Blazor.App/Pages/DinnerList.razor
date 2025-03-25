@@ -4,6 +4,7 @@
 @using DA.DinnerPlanner.Model.Contracts
 @inject IDinnerPlannerContext dpcontext
 @inject IConfiguration cfg
+@inject IGeoCoder geo
 <h1>Dinners</h1>
 <table class="border">
 	<thead>
@@ -48,7 +49,6 @@
 			</tr>
 			<tr>
 				<td class="border border-2 border-dark" colspan="7">
-					@* @string.Join(", ", dinner.Guests.Select(g=>g.GetDefaultDisplayName())) *@
 					@foreach(var guest in dinner.Guests)
 					{
 						<a href="EditUser/@guest.Id">@guest.GetDefaultDisplayName()</a> 
@@ -71,4 +71,5 @@
  		</div>
 		<button type="submit" class="btn btn-primary">create</button>
 	</EditForm>
+	<button @onclick="AddHangfireJob">Click</button>
 </div>

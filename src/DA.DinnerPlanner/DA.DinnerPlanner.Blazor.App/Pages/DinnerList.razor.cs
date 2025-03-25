@@ -1,6 +1,8 @@
 ﻿using DA.DinnerPlanner.Common;
 using DA.DinnerPlanner.Model;
+using Hangfire;
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics;
 
 namespace DA.DinnerPlanner.Blazor.App.Pages
 {
@@ -35,6 +37,10 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		{
 			await Application.Instance.CalculateDinerAsync(dpcontext, dinner);
 			await Application.Instance.InviteGuests4Dinner(cfg, dpcontext, dinner);
+		}
+		private void AddHangfireJob()
+		{
+			BackgroundJob.Enqueue<ProcessServer.GeoCoder>(gc => gc.ProcessAllUsersAsync(null, dpcontext.ConnectionString, geo));
 		}
 	}
 }

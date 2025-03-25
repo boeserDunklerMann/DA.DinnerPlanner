@@ -1,9 +1,19 @@
 using DA.DinnerPlanner.Model;
 using DA.DinnerPlanner.Model.Contracts;
 using DA.DinnerPlanner.Model.GeoCode;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// init Hangfire stuff
+builder.Services.AddHangfire(cfg => cfg.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+	.UseInMemoryStorage()
+	.UseSimpleAssemblyNameTypeSerializer()
+	.UseRecommendedSerializerSettings()
+);
+builder.Services.AddHangfireServer();
+
+// add local appsettings
 builder.Configuration.AddJsonFile("appsettings.local.json", optional: false);    // there is the connstring which will not be committed to git
 
 // Add services to the container.
@@ -25,6 +35,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseHangfireDashboard();
 
 app.UseRouting();
 

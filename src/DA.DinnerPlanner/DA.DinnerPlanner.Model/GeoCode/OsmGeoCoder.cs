@@ -2,6 +2,7 @@
 using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -67,6 +68,7 @@ namespace DA.DinnerPlanner.Model.GeoCode
 
 		private async Task<string?> GetNominationJssonAsync(Uri uri)
 		{
+			Debug.WriteLine(uri);
 			using HttpClient client = new();
 			client.DefaultRequestHeaders.UserAgent.ParseAdd("DA.DinnerPlanner.Blazor");
 			HttpRequestMessage requestMessage = new()
@@ -75,11 +77,21 @@ namespace DA.DinnerPlanner.Model.GeoCode
 				RequestUri = uri,
 				Content = new StringContent("", Encoding.UTF8, "application/json")
 			};
-			HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
-			if (!responseMessage.IsSuccessStatusCode)
-				return null;
-			else
-				return await responseMessage!.Content.ReadAsStringAsync();
+			HttpResponseMessage? responseMessage = null;
+			try
+			{
+				responseMessage = await client.SendAsync(requestMessage);
+			}
+			catch (Exception e /* we swallow all exceptions */ )
+			{
+				Debug.WriteLine(e.Message);
+			}
+			if (responseMessage != null)
+				if (!responseMessage.IsSuccessStatusCode)
+					return null;
+				else
+					return await responseMessage!.Content.ReadAsStringAsync();
+			return null;
 		}
 	}
 }
