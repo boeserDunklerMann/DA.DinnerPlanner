@@ -1,0 +1,37 @@
+﻿@page "/NotificationList"
+@using DA.DinnerPlanner.Model
+@using DA.DinnerPlanner.Model.Contracts
+@using DA.DinnerPlanner.Model.Notifications
+@inject IDinnerPlannerContext dpcontext
+@inject NavigationManager navMgr
+<h3>Notifications</h3>
+@if (Notifications!=null && Notifications.Count>0)
+{
+	<table class="border">
+	<thead>
+		<tr class="border">
+			<th class="border border-2 border-dark">Date</th>
+			<th class="border border-2 border-dark">Content</th>
+			<th class="border border-2 border-dark">Action</th>
+			<th class="border border-2 border-dark">Type</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(Notification noti in Notifications)
+		{
+			<tr class="border">
+				<td class="border border-2 border-dark">@noti.CreationDate</td>
+				<td class="border border-2 border-dark">@noti.Content</td>
+				<td class="border border-2 border-dark">
+					<button @onclick="(a)=>OnDeleteNotificationAsync(noti)" >
+						<img src="img/delete.png" width="15" height="15" style="vertical-align: middle;"/>
+					</button>
+				</td>
+				<td class="border border-2 border-dark">
+					<img src="img/@noti.GetContentTypeImageFile()" alt="@noti.ContentType.ToString()" width="15" height="15"/>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+}

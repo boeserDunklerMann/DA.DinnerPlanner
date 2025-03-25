@@ -16,5 +16,7 @@
 		{
 			Deleted = true;
 		}
+
+		public string GetContentTypeImageFile() => ContentType.ToString().ToLower() + ".png";
 	}
 }
