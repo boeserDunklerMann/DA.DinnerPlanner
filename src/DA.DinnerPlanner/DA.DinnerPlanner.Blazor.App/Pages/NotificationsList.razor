@@ -1,7 +1,8 @@
 ﻿@page "/NotificationList"
 @using DA.DinnerPlanner.Model
+@using DA.DinnerPlanner.Model.Contracts
 @using DA.DinnerPlanner.Model.Notifications
-@inject DinnerPlannerContext dpcontext
+@inject IDinnerPlannerContext dpcontext
 <h3>Notifications</h3>
 @if (Notifications!=null && Notifications.Count>0)
 {

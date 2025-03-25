@@ -1,4 +1,5 @@
 ﻿using DA.DinnerPlanner.Common;
+using DA.DinnerPlanner.Model;
 using Microsoft.AspNetCore.Components;
 
 namespace DA.DinnerPlanner.Blazor.App.Pages
@@ -10,7 +11,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 	{
 		public ICollection<Model.User> Users { get; private set; } = [];
 		//[BindProperty]
-		public Model.User NewUser { get; set; } = new();
+		public User NewUser { get; set; } = new();
 
 		protected override async Task OnInitializedAsync()
 		{
@@ -22,6 +23,25 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		{
 			await Application.Instance.CreateUserAsync(context, NewUser);
 			Users = await Application.Instance.GetAllUsersAsync(context);
+		}
+
+		private async Task OnGeoCodeAsync(User user)
+		{
+			Address? usersPrimaryAddress = null;
+			try
+			{
+				usersPrimaryAddress = user.AddressList.First(a => a.Primary);
+			}
+			catch (InvalidOperationException)
+			{
+				// user has no primary address, so we take the first one
+				usersPrimaryAddress = user.AddressList.First();
+			}
+			if (usersPrimaryAddress != null)
+			{
+				usersPrimaryAddress.GeoLocation = await geo.Address2LocationAsync(usersPrimaryAddress);
+				await context.SaveAsync();
+			}
 		}
 	}
 }

@@ -1,7 +1,8 @@
 ﻿@page "/DinnerList"
 @using DA.DinnerPlanner.Model;
 @using System.Text
-@inject DinnerPlannerContext dpcontext
+@using DA.DinnerPlanner.Model.Contracts
+@inject IDinnerPlannerContext dpcontext
 
 <h1>Dinners</h1>
 <table class="border">

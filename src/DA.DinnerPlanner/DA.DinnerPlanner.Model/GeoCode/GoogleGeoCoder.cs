@@ -11,7 +11,7 @@ namespace DA.DinnerPlanner.Model.GeoCode
 	/// </ChangeLog>
 	public class GoogleGeoCoder : Contracts.IGeoCoder
 	{
-		public Task<GeoLocation> Address2LocationAsync(Address address)
+		public async Task<GeoLocation> Address2LocationAsync(Address address)
 		{
 			throw new NotImplementedException();
 		}

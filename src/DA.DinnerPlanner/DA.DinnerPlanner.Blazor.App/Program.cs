@@ -1,6 +1,6 @@
 using DA.DinnerPlanner.Model;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using DA.DinnerPlanner.Model.Contracts;
+using DA.DinnerPlanner.Model.GeoCode;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +9,8 @@ builder.Configuration.AddJsonFile("appsettings.local.json", optional: false);   
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<DinnerPlannerContext>();
+builder.Services.AddSingleton<IDinnerPlannerContext, DinnerPlannerContext>();   // TODO DA: get this info from Cfg
+builder.Services.AddSingleton<IGeoCoder, OsmGeoCoder>();	// TODO DA: get this info from Cfg
 
 var app = builder.Build();
 

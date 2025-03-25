@@ -31,5 +31,6 @@ namespace DA.DinnerPlanner.Model.Contracts
 		DbSet<Notifications.Notification> Notifications { get; set; }
 		string ConnectionString { get; set; }
 		Task SaveAsync();
+		int SaveChanges();
 	}
 }

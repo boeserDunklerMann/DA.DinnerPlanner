@@ -8,7 +8,17 @@
     /// </summary>
     public enum GeoCodeResult
     {
+        /// <summary>
+        /// Location found
+        /// </summary>
         OK = 1,
-        NotFound = 2
+        /// <summary>
+        /// location not found
+        /// </summary>
+        NotFound = 2,
+        /// <summary>
+        /// location not found due to an unspecified server error
+        /// </summary>
+        Error=3
     }
 }

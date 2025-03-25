@@ -1,8 +1,9 @@
 ﻿@page "/UserList"
 @using DA.DinnerPlanner.Model;
 @using System.Text
-@inject DinnerPlannerContext context
-
+@using DA.DinnerPlanner.Model.Contracts
+@inject IDinnerPlannerContext context
+@inject IGeoCoder geo
 <h1>UserList</h1>
 @if (Users == null)
 {
@@ -60,6 +61,7 @@
 				<td class="border border-2 border-dark">
 					<!--TODO DA: add permission check here-->
 					<a href="EditUser/@user.Id">Edit</a>
+					<input type="button" @onclick="(a)=>OnGeoCodeAsync(user)" value="Geocode primary addr." />
 				</td>
 			</tr>
 		}

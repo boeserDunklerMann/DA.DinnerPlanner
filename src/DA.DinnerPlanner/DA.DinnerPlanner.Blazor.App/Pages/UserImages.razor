@@ -1,6 +1,7 @@
 ﻿@page "/UserImages/{UserID:int}"
 @using DA.DinnerPlanner.Model;
-@inject DinnerPlannerContext dpcontext
+@using DA.DinnerPlanner.Model.Contracts
+@inject IDinnerPlannerContext dpcontext
 @inject IConfiguration configuration
 <h1>User's Images</h1>
 @if (EditingUser!=null)

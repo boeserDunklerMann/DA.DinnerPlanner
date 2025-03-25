@@ -1,7 +1,8 @@
 ﻿@page "/EditCommunication/{UserID:int}"
 @using DA.DinnerPlanner.Model;
+@using DA.DinnerPlanner.Model.Contracts
 @using DA.DinnerPlanner.Model.UnitsTypes
-@inject DinnerPlannerContext dpcontext
+@inject IDinnerPlannerContext dpcontext
 <style>
 	td {
 		padding: 2mm;

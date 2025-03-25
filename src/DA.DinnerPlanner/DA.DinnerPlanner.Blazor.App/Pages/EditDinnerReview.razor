@@ -1,6 +1,7 @@
 ﻿@page "/EditDinnerReview/{DinnerID:int}"
 @using DA.DinnerPlanner.Model;
-@inject DinnerPlannerContext dpcontext
+@using DA.DinnerPlanner.Model.Contracts
+@inject IDinnerPlannerContext dpcontext
 
 <h3>Edit Dinner's Review</h3>
 @if (EditingDinner != null && UsersReview != null)

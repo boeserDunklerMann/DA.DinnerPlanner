@@ -1,7 +1,8 @@
 ﻿@page "/EditUser/{UserID:int}"
 @using DA.DinnerPlanner.Model;
+@using DA.DinnerPlanner.Model.Contracts
 @using DA.DinnerPlanner.Model.UnitsTypes
-@inject DinnerPlannerContext dpcontext
+@inject IDinnerPlannerContext dpcontext
 @if (EditingUser != null)
 {
 	<h3>Edit User</h3>

@@ -1,6 +1,7 @@
 ﻿@page "/EditAddresses/{UserID:int}"
 @using DA.DinnerPlanner.Model;
-@inject DinnerPlannerContext dpcontext
+@using DA.DinnerPlanner.Model.Contracts
+@inject IDinnerPlannerContext dpcontext
 <h3>Edit Addresses</h3>
 @if (EditingUser!=null)
 {
