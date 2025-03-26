@@ -40,7 +40,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		}
 		private void AddHangfireJob()
 		{
-			BackgroundJob.Enqueue<ProcessServer.GeoCoder>(gc => gc.ProcessAllUsersAsync(null, dpcontext.ConnectionString, geo));
+			BackgroundJob.Enqueue<ProcessServer.GeoCoderProcess>(gc => gc.ProcessAllUsersAsync(null, dpcontext.ConnectionString, geo));
 		}
 	}
 }

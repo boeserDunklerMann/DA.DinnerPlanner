@@ -1,6 +1,5 @@
 ﻿using DA.DinnerPlanner.Model;
 using DA.DinnerPlanner.Model.Contracts;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace DA.DinnerPlanner.Blazor.App.ProcessServer
@@ -8,12 +7,12 @@ namespace DA.DinnerPlanner.Blazor.App.ProcessServer
 	/// <ChangeLog>
 	/// <Create Datum="25.03.2025" Entwickler="DA" />
 	/// </ChangeLog>
-	public class GeoCoder : IGeoCoder
+	public class GeoCoderProcess : IGeoCoderProcess
 	{
 		private IDinnerPlannerContext? context;
-		public async Task ProcessAllUsersAsync(IDinnerPlannerContext? ctx, string? ConnectionString, Model.Contracts.IGeoCoder geo)
+		public async Task ProcessAllUsersAsync(IDinnerPlannerContext? ctx, string? ConnectionString, IGeoCoder geo)
 		{
-			Debug.WriteLine($"Hello from {nameof(ProcessAllUsersAsync)}");
+			// When running as a Hangfire-Job, we need to create a new DB-Context
 			if (ctx == null)
 			{
 				context = new DinnerPlannerContext();
