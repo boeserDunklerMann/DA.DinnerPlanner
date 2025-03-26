@@ -86,7 +86,8 @@ namespace DA.DinnerPlanner.Common
 		/// adds a new dinner to the ctx and saves it to db
 		/// </summary>
 		/// <param name="newDinner">the new dinner</param>
-		public async Task CreateDinnerAsync(IDinnerPlannerContext context, Model.Dinner newDinner)
+		/// <param name="host">the host of the new dinner</param>
+		public async Task CreateDinnerAsync(IDinnerPlannerContext context, Dinner newDinner, User host)
 		{
 			if (context == null)
 			{
@@ -95,11 +96,12 @@ namespace DA.DinnerPlanner.Common
 			if (newDinner != null)
 			{
 				context.Dinners.Add(newDinner);
-				await context.Db.SaveChangesAsync();
+				newDinner.Host = host;
+				await context.SaveAsync();
 			}
 		}
 
-		public async Task CreateUserAsync(IDinnerPlannerContext context, Model.User newUser)
+		public async Task CreateUserAsync(IDinnerPlannerContext context, User newUser)
 		{
 			if (context == null)
 			{
@@ -108,7 +110,7 @@ namespace DA.DinnerPlanner.Common
 			if (newUser != null)
 			{
 				await context.Users.AddAsync(newUser);
-				await context.Db.SaveChangesAsync();
+				await context.SaveAsync();
 			}
 		}
 		#endregion

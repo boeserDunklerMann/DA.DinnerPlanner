@@ -6,6 +6,7 @@
 @inject IConfiguration cfg
 @inject IGeoCoder geo
 @inject IDbContextFactory<DinnerPlannerContext> contextFactory
+@inject NavigationManager navMgr
 <h1>Dinners</h1>
 <table class="border">
 	<thead>
@@ -37,7 +38,7 @@
 					}
 					@* @if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereits statt, kann es bewertet werden *@
 					{
-						<a href="EditDinnerReview/@dinner.Id">rate</a>
+					<a href="EditDinnerReview/@dinner.Id">rate</a>
 					}
 				</td>
 				<td class="border border-2 border-dark">
@@ -65,10 +66,17 @@
 		<div class="form-group">
 			<label>Name/Description:</label>
 			<InputText @bind-Value="@NewDinner.Dinnerdescription" />
- 			<label>Date:</label>
+			<label>Date:</label>
 			<InputDate @bind-Value="@NewDinner.DinnerDate" />
 			<label>No. of Persons allowed:</label>
 			<InputNumber @bind-Value="@NewDinner.NumberPersonsAllowed"/>
+			<label>Host:</label>
+			<InputSelect TValue="int" @bind-Value="@NewDinnerHostId">
+				@foreach(var u in Users)
+				{
+					<option value="@u.Id">@u.GetDefaultDisplayName()</option>
+				}
+			</InputSelect>
  		</div>
 		<button type="submit" class="btn btn-primary">create</button>
 	</EditForm>

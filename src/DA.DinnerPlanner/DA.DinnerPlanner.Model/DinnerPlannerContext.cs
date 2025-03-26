@@ -35,7 +35,6 @@ namespace DA.DinnerPlanner.Model
 		public DbSet<User> Users { get; set; }
 		public DbSet<Dinner> Dinners { get; set; }
 		public DbSet<Pet> Pets { get; set; }
-		public DbContext Db => this;
 		public DbSet<EatingHabit> EatingHabits { get; set; }
 		public DbSet<Language> Languages { get; set; }
 		public DbSet<UserImage> UserImages { get; set; }

@@ -18,7 +18,6 @@ namespace DA.DinnerPlanner.Model.Contracts
 		DbSet<Allergy> Allergies { get; set; }
 		DbSet<CommunicationType> CommunicationTypes { get; set; }
 		DbSet<Country> Countries { get; set; }
-		DbContext Db { get; }
 		DbSet<DinnerImage> DinnerImages { get; set; }
 		DbSet<Dinner> Dinners { get; set; }
 		DbSet<EatingHabit> EatingHabits { get; set; }

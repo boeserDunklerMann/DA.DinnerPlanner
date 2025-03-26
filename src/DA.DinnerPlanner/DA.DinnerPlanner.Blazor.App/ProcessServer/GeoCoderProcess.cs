@@ -25,7 +25,7 @@ namespace DA.DinnerPlanner.Blazor.App.ProcessServer
 				// gib mir alle user, die min. eine geoloc mit null haben ODER wo die geoloc.result != ok ist
 				var usersWOLocation = (from user in context.Users
 									   where user.AddressList.Count(al => al.GeoLocation == null || al.GeoLocation.GeoCodeResult != Model.GeoCode.GeoCodeResult.OK) >= 1
-									   select user).Take(10);
+									   select user);
 
 				usersWOLocation.ToList().ForEach(async u =>
 				{

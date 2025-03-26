@@ -22,7 +22,7 @@ namespace DA.DinnerPlanner.Razor.Proto.Pages
 
 		public async Task<IActionResult> OnPostCreateAsync()
 		{
-			await application.CreateDinnerAsync(db, NewDinner);
+			//await application.CreateDinnerAsync(db, NewDinner);
 			return Redirect("Index");
 		}
 	}

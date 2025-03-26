@@ -6,6 +6,7 @@
 	/// <Change Datum="20.01.2025" Entwickler="DA">prop HasTakenDone added</Change>
 	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (virtal) (Jira-Nr. DPLAN-63)</Change>
 	/// <Change Datum="20.03.2025" Entwickler="DA">method Delete added (Jira-Nr. DPLAN-60)</Change>
+	/// <Change Datum="26.03.2025" Entwickler="DA">Host nullable (dirty workaround) (Jira-Nr. DPLAN-81)</Change>
 	/// </ChangeLog>
 	/// <summary>
 	/// class for a (planned) dinner, containing the guests, cooks and host
@@ -16,7 +17,7 @@
 		{
 		}
 
-		public virtual User Host { get; set; } = new();
+		public virtual User? Host { get; set; }
 		/// <summary>
 		/// max. Anzahl der Gäste (incl. Host), die eingeladen werden dürfen
 		/// </summary>
