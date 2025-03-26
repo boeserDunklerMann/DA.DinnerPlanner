@@ -22,51 +22,50 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		{
 			//	using (var dpcontext = contextFactory.CreateDbContext())
 			if (dpcontext == null)
-				dpcontext = contextFactory.CreateDbContext();
-			
-				dpcontext.ConnectionString = cfg.GetConnectionString("da_dinnerplanner-db")!;
-				Dinners = await Application.Instance.GetAllDinnersAsync(dpcontext);
-				Users = await Application.Instance.GetAllUsersAsync(dpcontext);
-				await base.OnInitializedAsync();
-			
+				dpcontext = await contextFactory.CreateDbContextAsync();
+			dpcontext.ConnectionString = cfg.GetConnectionString("da_dinnerplanner-db")!;
+			Dinners = await Application.Instance.GetAllDinnersAsync(dpcontext);
+			Users = await Application.Instance.GetAllUsersAsync(dpcontext);
+			await base.OnInitializedAsync();
+
 		}
 
 		private async Task NewDinnerSubmittedAsync()
 		{
-		//	using (var dpcontext = contextFactory.CreateDbContext())
-			{
-				dpcontext.ConnectionString = cfg.GetConnectionString("da_dinnerplanner-db")!;
-				var host = Users.Single(u => u.Id == NewDinnerHostId && !u.Deleted);
-				await Application.Instance.CreateDinnerAsync(dpcontext, NewDinner, host).ConfigureAwait(true);    // TODO: der legt hier einen neuen User (Host) an
-				navMgr.NavigateTo(nameof(DinnerList), true);
-			}
+			if (dpcontext == null)
+				dpcontext = await contextFactory.CreateDbContextAsync();
+
+			dpcontext.ConnectionString = cfg.GetConnectionString("da_dinnerplanner-db")!;
+			var host = Users.Single(u => u.Id == NewDinnerHostId && !u.Deleted);
+			await Application.Instance.CreateDinnerAsync(dpcontext, NewDinner, host).ConfigureAwait(true);    // TODO: der legt hier einen neuen User (Host) an
+			navMgr.NavigateTo(nameof(DinnerList), true);
 		}
 
 		private async Task DelDinner(Dinner dinner)
 		{
-			using (var dpcontext = contextFactory.CreateDbContext())
-			{
-				dpcontext.ConnectionString = cfg["ConnectionStrings:da_dinnerplanner-db"]!;
-				dinner.Delete();
-				await dpcontext.SaveAsync();
-			}
+			if (dpcontext == null)
+				dpcontext = await contextFactory.CreateDbContextAsync();
+
+			dpcontext.ConnectionString = cfg["ConnectionStrings:da_dinnerplanner-db"]!;
+			dinner.Delete();
+			await dpcontext.SaveAsync();
+			navMgr.NavigateTo(nameof(DinnerList), true);
 		}
 		private async Task InviteGuestsAsync(Dinner dinner)
 		{
-			using (var dpcontext = contextFactory.CreateDbContext())
-			{
-				dpcontext.ConnectionString = cfg["ConnectionStrings:da_dinnerplanner-db"]!;
-				await Application.Instance.CalculateDinerAsync(dpcontext, dinner);
-				await Application.Instance.InviteGuests4Dinner(cfg, dpcontext, dinner);
-			}
+			if (dpcontext == null)
+				dpcontext = await contextFactory.CreateDbContextAsync();
+
+			dpcontext.ConnectionString = cfg["ConnectionStrings:da_dinnerplanner-db"]!;
+			await Application.Instance.CalculateDinerAsync(dpcontext, dinner);
+			await Application.Instance.InviteGuests4Dinner(cfg, dpcontext, dinner);
 		}
 		private void AddHangfireJob()
 		{
-			using (var dpcontext = contextFactory.CreateDbContext())
-			{
-				dpcontext.ConnectionString = cfg["ConnectionStrings:da_dinnerplanner-db"]!;
-				BackgroundJob.Enqueue<ProcessServer.GeoCoderProcess>(gc => gc.ProcessAllUsersAsync(dpcontext.ConnectionString, geo));
-			}
+			if (dpcontext == null)
+				dpcontext = contextFactory.CreateDbContext();
+			dpcontext.ConnectionString = cfg["ConnectionStrings:da_dinnerplanner-db"]!;
+			BackgroundJob.Enqueue<ProcessServer.GeoCoderProcess>(gc => gc.ProcessAllUsersAsync(dpcontext.ConnectionString, geo));
 		}
 	}
 }
