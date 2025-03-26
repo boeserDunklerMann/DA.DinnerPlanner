@@ -2,9 +2,10 @@
 @using DA.DinnerPlanner.Model;
 @using System.Text
 @using DA.DinnerPlanner.Model.Contracts
-@inject IDinnerPlannerContext dpcontext
+@using Microsoft.EntityFrameworkCore
 @inject IConfiguration cfg
 @inject IGeoCoder geo
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
 <h1>Dinners</h1>
 <table class="border">
 	<thead>

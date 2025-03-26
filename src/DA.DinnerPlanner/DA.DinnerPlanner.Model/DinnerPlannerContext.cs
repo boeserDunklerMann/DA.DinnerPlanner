@@ -2,6 +2,7 @@
 using DA.DinnerPlanner.Model.Contracts;
 using DA.DinnerPlanner.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 
 
@@ -19,8 +20,9 @@ namespace DA.DinnerPlanner.Model
 	/// <Change Datum="27.02.2025" Entwickler="DA">IConfiguration added</Change>
 	/// <Change Datum="20.03.2025" Entwickler="DA">added LazyLoading support (Jira-Nr. DPLAN-63)</Change>
 	/// <Change Datum="20.03.2025" Entwickler="DA">Notifications added (Jira-Nr. DPLAN-68)</Change>
-		/// </ChangeLog>
-	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext
+	/// <Change Datum="26.03.2025" Entwickler="DA">Derived from IDisposable (Jira-Nr. DPLAN-80)</Change>
+	/// </ChangeLog>
+	public class DinnerPlannerContext : DbContext, IDinnerPlannerContext, IDisposable
 	{
 		#region Private fields
 		private readonly IConfiguration? configuration;
@@ -50,6 +52,10 @@ namespace DA.DinnerPlanner.Model
 			if (configuration != null)
 				ConnectionString = configuration["ConnectionStrings:da_dinnerplanner-db"]!;
 		}
+		public DinnerPlannerContext(DbContextOptions<DinnerPlannerContext> options) : base(options)
+		{
+
+		}
 
 		public async Task SaveAsync()
 		{
@@ -68,11 +74,18 @@ namespace DA.DinnerPlanner.Model
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
+			/*An error was generated for warning 'Microsoft.EntityFrameworkCore.Infrastructure.LazyLoadOnDisposedContextWarning': 
+			 * An attempt was made to lazy-load navigation 'AddressProxy.GeoLocation' after the associated DbContext was disposed or returned to the pool, 
+			 * or the entity was explicitly detached from the context. 
+			 * This exception can be suppressed or logged by passing event ID 'CoreEventId.LazyLoadOnDisposedContextWarning' to the 
+			 * 'ConfigureWarnings' method in 'DbContext.OnConfiguring' or 'AddDbContext'.
+			 */
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
 			// MariaDB 11+ doesnt work because of nullable PKs?
 			optionsBuilder
 				.UseLazyLoadingProxies()
-				.UseMySQL(ConnectionString);  // MariaDB10
+				.UseMySQL(ConnectionString)  // MariaDB10
+				.ConfigureWarnings(warnConfBuilder => warnConfBuilder.Ignore(CoreEventId.LazyLoadOnDisposedContextWarning));
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

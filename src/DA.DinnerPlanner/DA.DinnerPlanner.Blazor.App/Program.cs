@@ -1,7 +1,9 @@
 using DA.DinnerPlanner.Model;
 using DA.DinnerPlanner.Model.Contracts;
 using DA.DinnerPlanner.Model.GeoCode;
+using EFCore.DbContextFactory.Extensions;
 using Hangfire;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,12 +17,16 @@ builder.Services.AddHangfireServer();
 
 // add local appsettings
 builder.Configuration.AddJsonFile("appsettings.local.json", optional: false);    // there is the connstring which will not be committed to git
+string connString = builder.Configuration.GetConnectionString("da_dinnerplanner-db")!;
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<IDinnerPlannerContext, DinnerPlannerContext>();   // TODO DA: get this info from Cfg
-builder.Services.AddSingleton<IGeoCoder, OsmGeoCoder>();	// TODO DA: get this info from Cfg
+//builder.Services.AddSingleton<IDinnerPlannerContext, DinnerPlannerContext>();   // TODO DA: get this info from Cfg
+//builder.Services.AddScoped<IDinnerPlannerContext, DinnerPlannerContext>();
+builder.Services.AddDbContextFactory<DinnerPlannerContext>(builder => builder.UseMySQL(connString));
+builder.Services.AddSingleton<IDbContextFactory<DinnerPlannerContext>, DinnerPlannerContextFactory>();
+builder.Services.AddSingleton<IGeoCoder, OsmGeoCoder>();    // TODO DA: get this info from Cfg
 
 var app = builder.Build();
 

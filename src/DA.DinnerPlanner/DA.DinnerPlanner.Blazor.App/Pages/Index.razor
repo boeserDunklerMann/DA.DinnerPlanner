@@ -1,4 +1,8 @@
 ﻿@page "/"
+@using DA.DinnerPlanner.Model.Contracts
+@using Hangfire;
+@inject IConfiguration cfg
+@inject IGeoCoder geo
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -24,3 +28,12 @@
         The system tries to circumvent any language barriers by only inviting people who can understand each other linguistically.
     </p>
 </div>
+	<button @onclick="AddHangfireJob">Click</button>
+@code
+{
+    private void AddHangfireJob()
+    {
+        BackgroundJob.Enqueue<ProcessServer.GeoCoderProcess>(gc => gc.ProcessAllUsersAsync(cfg["ConnectionStrings:da_dinnerplanner-db"]!, geo));
+    }
+
+}

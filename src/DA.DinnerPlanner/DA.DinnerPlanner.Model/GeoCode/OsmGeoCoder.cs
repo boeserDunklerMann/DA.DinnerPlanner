@@ -24,49 +24,47 @@ namespace DA.DinnerPlanner.Model.GeoCode
 		{
 			if (address != null)
 			{
-				using (HttpClient client = new HttpClient())
-				{
-					StringBuilder sbApi = new StringBuilder(nominatimSearchApiURL);
-					if (!string.IsNullOrEmpty(address.Street))
-						sbApi.Append($"street={HttpUtility.UrlEncode(address.Street + " ")}{HttpUtility.UrlEncode(address.HouseNumber + address.HouseNumberExtension)}");
-					if (!string.IsNullOrEmpty(address.City))
-						sbApi.Append($"&city={HttpUtility.UrlEncode(address.City)}");
-					if (!string.IsNullOrEmpty(address.Country.CountryName))
-						sbApi.Append($"&country={HttpUtility.UrlEncode(address.Country.CountryName)}");
-					if (!string.IsNullOrEmpty(address.ZipCode))
-						sbApi.Append($"&postalcode={HttpUtility.UrlEncode(address.ZipCode)}");
-					sbApi.Append("&format=json&limit=1");
+				using HttpClient client = new();
+				StringBuilder sbApi = new(nominatimSearchApiURL);
+				if (!string.IsNullOrEmpty(address.Street))
+					sbApi.Append($"street={HttpUtility.UrlEncode(address.Street + " ")}{HttpUtility.UrlEncode(address.HouseNumber + address.HouseNumberExtension)}");
+				if (!string.IsNullOrEmpty(address.City))
+					sbApi.Append($"&city={HttpUtility.UrlEncode(address.City)}");
+				if (!string.IsNullOrEmpty(address.Country.CountryName))
+					sbApi.Append($"&country={HttpUtility.UrlEncode(address.Country.CountryName)}");
+				if (!string.IsNullOrEmpty(address.ZipCode))
+					sbApi.Append($"&postalcode={HttpUtility.UrlEncode(address.ZipCode)}");
+				sbApi.Append("&format=json&limit=1");
 
-					string? json = "";
-					Uri uri = new Uri(sbApi.ToString());
-					if (uri == null)
-						throw new NullReferenceException(nameof(uri));
-					json = await GetNominationJssonAsync(uri);
-					if (json != null)
+				string? json = "";
+				Uri uri = new(sbApi.ToString());
+				if (uri == null)
+					throw new NullReferenceException(nameof(uri));
+				json = await GetNominationJssonAsync(uri);
+				if (json != null)
+				{
+					JsonDocument jsonDocument = JsonDocument.Parse(json);
+					GeoLocation loc = new();
+					try
 					{
-						JsonDocument jsonDocument = JsonDocument.Parse(json);
-						GeoLocation loc = new();
-						try
-						{
-							loc.Latitude = double.Parse(jsonDocument.RootElement[0].GetProperty("lat").GetString()!.Replace('.', ','));
-							loc.Longitude = double.Parse(jsonDocument!.RootElement[0]!.GetProperty("lon")!.GetString()!.Replace('.', ','));
-							loc.GeoCodeResult = GeoCodeResult.OK;
-						}
-						catch
-						{
-							loc.GeoCodeResult = GeoCodeResult.Error;
-						}
-						return loc;
+						loc.Latitude = double.Parse(jsonDocument.RootElement[0].GetProperty("lat").GetString()!.Replace('.', ','));
+						loc.Longitude = double.Parse(jsonDocument!.RootElement[0]!.GetProperty("lon")!.GetString()!.Replace('.', ','));
+						loc.GeoCodeResult = GeoCodeResult.OK;
 					}
-					else
-						return new() { GeoCodeResult = GeoCodeResult.Error };
+					catch
+					{
+						loc.GeoCodeResult = GeoCodeResult.Error;
+					}
+					return loc;
 				}
+				else
+					return new() { GeoCodeResult = GeoCodeResult.Error };
 			}
 			else
 				return new() {GeoCodeResult = GeoCodeResult.NotFound };
 		}
 
-		private async Task<string?> GetNominationJssonAsync(Uri uri)
+		private static async Task<string?> GetNominationJssonAsync(Uri uri)
 		{
 			Debug.WriteLine(uri);
 			using HttpClient client = new();
