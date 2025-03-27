@@ -12,8 +12,9 @@ namespace DA.DinnerPlanner.Model.Contracts
 	/// <Change Datum="27.01.2025" Entwickler="DA">GoogleUsers added (Jira-Nr. DPLAN-38)</Change>
 	/// <Change Datum="23.02.2025" Entwickler="DA">Roles added (Jira-Nr. DPLAN-44)</Change>
 	/// <Change Datum="20.03.2025" Entwickler="DA">Notifications added (Jira-Nr. DPLAN-68)</Change>
+	/// <Change Datum="27.03.2025" Entwickler="DA">IDisposable added (Jira-Nr. DPLAN-80)</Change>
 	/// </ChangeLog>
-	public interface IDinnerPlannerContext
+	public interface IDinnerPlannerContext : IDisposable
 	{
 		DbSet<Allergy> Allergies { get; set; }
 		DbSet<CommunicationType> CommunicationTypes { get; set; }

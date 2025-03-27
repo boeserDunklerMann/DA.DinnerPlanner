@@ -3,6 +3,9 @@
 @using System.Text
 @using DA.DinnerPlanner.Model.Contracts
 @using Microsoft.EntityFrameworkCore
+
+@implements IDisposable		// see: https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component
+
 @inject IConfiguration cfg
 @inject IGeoCoder geo
 @inject IDbContextFactory<DinnerPlannerContext> contextFactory
