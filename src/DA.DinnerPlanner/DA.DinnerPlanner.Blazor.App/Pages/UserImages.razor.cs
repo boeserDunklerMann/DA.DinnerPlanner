@@ -9,6 +9,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 {
 	/// <ChangeLog>
 	/// <Create Datum="17.03.2025" Entwickler="DA" />
+	/// <Change Datum="27.03.2025" Entwickler="DA">see https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component (Jira-Nr. DPLAN-80)</Change>
 	/// </ChangeLog>
 	public partial class UserImages : ComponentBase
 	{
@@ -22,26 +23,52 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 
 		private User? EditingUser { get; set; }
 
+		private DinnerPlannerContext? dpcontext;
+		/// <summary>
+		/// Identifies whether a db-action is currently in progress
+		/// </summary>
+		private bool Loading { get; set; } = false;
 		protected override async Task OnInitializedAsync()
 		{
-			if (UserID < 0)
-				throw new Exception($"Invalid UserID {UserID}");
-			EditingUser = await Application.Instance.GetUserByIdAsync(dpcontext, UserID);
+			if (dpcontext == null)
+			{
+				dpcontext = await contextFactory.CreateDbContextAsync();
+				dpcontext.ConnectionString = configuration.GetConnectionString("da_dinnerplanner-db")!;
+			}
+
+			if (Loading)
+				return;
+			try
+			{
+				Loading = true;
+				if (UserID < 0)
+					throw new Exception($"Invalid UserID {UserID}");
+				EditingUser = await Application.Instance.GetUserByIdAsync(dpcontext, UserID);
+			}
+			finally
+			{
+				Loading = false;
+			}
 			await Task.CompletedTask;	
 		}
 
 		private async Task OnImageDeleteAsync(UserImage image)
 		{
-			image.Delete();
-			await dpcontext.SaveAsync();
+			if (Loading)
+				return;
+			try
+			{
+				Loading = true;
+				image.Delete();
+				await dpcontext!.SaveAsync();
+			}
+			finally
+			{
+				Loading = false;
+			}
 		}
 
-		private async Task OnSaveAsync()
-		{
-			await dpcontext.SaveAsync();
-		}
-
-		private async Task LoadileAsync(InputFileChangeEventArgs e)
+		private async Task LoadfileAsync(InputFileChangeEventArgs e)
 		{
 			// **WARNING!**
 			// In the following example, the file is saved without
@@ -51,15 +78,43 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			// for download or for use by other systems. 
 			// For more information, see the topic that accompanies 
 			// this sample.
-			
-			using (MemoryStream memstream = new())
+			if (Loading)
+				return;
+			try
 			{
-				await e.File.OpenReadStream(configuration.GetValue<long>("UserProfileImage:FileSizeLimit"))
-					.CopyToAsync(memstream);
-				EditingUser!.UserImages.Add(new() { Image = memstream.ToArray() });
+				Loading = true;
+				using (MemoryStream memstream = new())
+				{
+					await e.File.OpenReadStream(configuration.GetValue<long>("UserProfileImage:FileSizeLimit"))
+						.CopyToAsync(memstream);
+					EditingUser!.UserImages.Add(new() { Image = memstream.ToArray() });
+				}
+				await dpcontext!.SaveAsync();
 			}
-			await dpcontext.SaveAsync();
+			finally
+			{
+				Loading = false;
+			}
 		}
+
+		#region Disposing
+		// see: https://learn.microsoft.com/de-de/dotnet/fundamentals/code-analysis/quality-rules/ca1816#example-that-satisfies-ca1816
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				dpcontext?.Dispose();
+				dpcontext = null;
+			}
+		}
+		#endregion
 	}
 
 	/// <ChangeLog>
