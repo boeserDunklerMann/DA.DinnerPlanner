@@ -2,7 +2,11 @@
 @using DA.DinnerPlanner.Model;
 @using System.Text
 @using DA.DinnerPlanner.Model.Contracts
-@inject IDinnerPlannerContext context
+@using Microsoft.EntityFrameworkCore
+@implements IDisposable
+@inject IConfiguration cfg
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
+@inject NavigationManager navMgr
 @inject IGeoCoder geo
 <h1>UserList</h1>
 @if (Users == null)
@@ -26,44 +30,49 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var user in Users!)
-		{
-			<tr class="border">
-				<td class="border border-2 border-dark">@user.GetDefaultDisplayName()</td>
-				<td class="border border-2 border-dark">@if (user.BirthDate > DateTime.MinValue)
-					{
-						@user.Age
-						;
-					}</td>
-				<td class="border border-2 border-dark">
-					@{
-						foreach (var image in user.UserImages)
-						{
-							<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="100" />
-						}
-					}
-				</td>
-				<td class="border border-2 border-dark">
-					@{
-						StringBuilder sb = new StringBuilder();
-						foreach (var language in user.Languages)
-						{
-							sb.Append(language.Name);
-							sb.Append(", ");
-						}
-						if (sb.Length > 0)
-						{
-							sb.Length -= 2;
-							@sb.ToString()
-						}
-					}
-				</td>
-				<td class="border border-2 border-dark">
-					<!--TODO DA: add permission check here-->
-					<a href="EditUser/@user.Id">Edit</a>
-					<input type="button" @onclick="(a)=>OnGeoCodeAsync(user)" value="Geocode primary addr." />
-				</td>
-			</tr>
+		@{
+			if (!Loading)
+			{
+				foreach (var user in Users!)
+				{
+					<tr class="border">
+						<td class="border border-2 border-dark">@user.GetDefaultDisplayName()</td>
+						<td class="border border-2 border-dark">@if (user.BirthDate > DateTime.MinValue)
+							{
+								@user.Age
+								;
+							}</td>
+						<td class="border border-2 border-dark">
+							@{
+								foreach (var image in user.UserImages)
+								{
+									<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="100" />
+								}
+							}
+						</td>
+						<td class="border border-2 border-dark">
+							@{
+								StringBuilder sb = new StringBuilder();
+								foreach (var language in user.Languages)
+								{
+									sb.Append(language.Name);
+									sb.Append(", ");
+								}
+								if (sb.Length > 0)
+								{
+									sb.Length -= 2;
+									@sb.ToString()
+								}
+							}
+						</td>
+						<td class="border border-2 border-dark">
+							<!--TODO DA: add permission check here-->
+							<a href="EditUser/@user.Id">Edit</a>
+							<input type="button" @onclick="(a)=>OnGeoCodeAsync(user)" value="Geocode primary addr." />
+						</td>
+					</tr>
+				}
+			}
 		}
 	</tbody>
 </table>

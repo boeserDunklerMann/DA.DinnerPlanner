@@ -2,8 +2,13 @@
 @using DA.DinnerPlanner.Model;
 @using DA.DinnerPlanner.Model.Contracts
 @using DA.DinnerPlanner.Model.UnitsTypes
-@inject IDinnerPlannerContext dpcontext
-@if (EditingUser != null)
+@using Microsoft.EntityFrameworkCore
+@implements IDisposable
+@inject IConfiguration cfg
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
+@inject NavigationManager navMgr
+@inject IGeoCoder geo
+@if (EditingUser != null && !Loading)
 {
 	<h3>Edit User</h3>
 	<EditForm Model="@EditingUser" OnSubmit="OnEditUserSubmit">
@@ -22,7 +27,7 @@
 			<br />
 			<label>Eating habit:</label>
 			<InputSelect class="form-select" @bind-Value="@EditingUser.EatingHabit!.Id">
-				@foreach(EatingHabit habit in dpcontext.EatingHabits)
+				@foreach(EatingHabit habit in dpcontext!.EatingHabits)
 				{
 					<option value="@habit.Id">@habit.Name</option>
 				}

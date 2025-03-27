@@ -1,34 +1,42 @@
 ﻿@page "/EditAddresses/{UserID:int}"
 @using DA.DinnerPlanner.Model;
 @using DA.DinnerPlanner.Model.Contracts
-@inject IDinnerPlannerContext dpcontext
+@using Microsoft.EntityFrameworkCore
+@implements IDisposable
+@inject IConfiguration cfg
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
+@inject NavigationManager navMgr
+
 <h3>Edit Addresses</h3>
 @if (EditingUser!=null)
 {
-<table class="border">
-	<thead>
-		<tr>
-			<td class="border border-2 border-dark"></td>
-		</tr>
-	</thead>
-	<tbody>
-		@{
-			foreach (var addr in EditingUser!.AddressList!.Where(a => !a.Deleted))
-			{
-				<tr>
-					<td class="border border-2 border-dark">
-						<AddressEntry
-							Address="addr"
-							UserID="UserID"
-							Countries="dpcontext.Countries.OrderBy(c => c.CountryName).Where(c=>!c.Deleted).ToList()"
-							OnPrimaryChangedEvent="PrimaryAddressChanged" />
-					</td>
-					<td class="border border-2 border-dark">
-						<input type="image" src="img/delete.png" width="15" height="15" @onclick="(args)=>OnAddressDeleteAsync(addr)" />
-					</td>
-				</tr>
+	<table class="border">
+		<thead>
+			<tr>
+				<td class="border border-2 border-dark"></td>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				if (!Loading)
+				{
+					foreach (var addr in EditingUser!.AddressList!.Where(a => !a.Deleted))
+					{
+						<tr>
+							<td class="border border-2 border-dark">
+								<AddressEntry
+								Address="addr"
+								UserID="UserID"
+								Countries="dpcontext!.Countries.OrderBy(c => c.CountryName).Where(c=>!c.Deleted).ToList()"
+								OnPrimaryChangedEvent="PrimaryAddressChanged" />
+							</td>
+							<td class="border border-2 border-dark">
+								<input type="image" src="img/delete.png" width="15" height="15" @onclick="(args)=>OnAddressDeleteAsync(addr)" />
+							</td>
+						</tr>
+					}
+				}
 			}
-		}
 	</tbody>
 </table>
 <input type="image" src="img/add.png" width="15" height="15" @onclick="AddAddressAsync" />

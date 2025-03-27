@@ -2,49 +2,56 @@
 @using DA.DinnerPlanner.Model;
 @using DA.DinnerPlanner.Model.Contracts
 @using DA.DinnerPlanner.Model.UnitsTypes
-@inject IDinnerPlannerContext dpcontext
+@using Microsoft.EntityFrameworkCore
+@implements IDisposable
+@inject IConfiguration cfg
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
+@inject NavigationManager navMgr
+@inject IGeoCoder geo
 <style>
 	td {
-		padding: 2mm;
+	padding: 2mm;
 	}
 
-		td.commCol {
-			width: 9cm;
-		}
+	td.commCol {
+	width: 9cm;
+	}
 </style>
-
-<div>
-	<h3>Edit Communications</h3>
-	<table class="border">
-		<thead>
-			<tr>
-				<td class="border border-2 border-dark">Communication</td>
-				<td class="border border-2 border-dark">Action</td>
-			</tr>
-		</thead>
-		<tbody>
-			@{
-				foreach (var item in Communications!.Where(c => !c.Deleted))
-				{
-					<tr>
-						<td class="border border-2 border-dark commCol">
-							<CommunicationEntry
+@if (!Loading)
+{
+	<div>
+		<h3>Edit Communications</h3>
+		<table class="border">
+			<thead>
+				<tr>
+					<td class="border border-2 border-dark">Communication</td>
+					<td class="border border-2 border-dark">Action</td>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					foreach (var item in Communications!.Where(c => !c.Deleted))
+					{
+						<tr>
+							<td class="border border-2 border-dark commCol">
+								<CommunicationEntry
 								UserID="@UserID"
 								Communication="item"
 								@ref="communicationEntries[item.Id]"
-								CommunicationTypes="@dpcontext.CommunicationTypes.ToList()"
+								CommunicationTypes="@dpcontext!.CommunicationTypes.ToList()"
 								/>
-							<input type="text" @bind-value="@item.CommunicationValue" name="commValue" />
-						</td>
-						<td class="border border-2 border-dark">
-							<input type="image" src="img/delete.png" width="15" height="15" @onclick="(args)=>DeleteCommunicationAsync(item.Id)" />
-						</td>
-					</tr>
+								<input type="text" @bind-value="@item.CommunicationValue" name="commValue" />
+							</td>
+							<td class="border border-2 border-dark">
+								<input type="image" src="img/delete.png" width="15" height="15" @onclick="(args)=>DeleteCommunicationAsync(item.Id)" />
+							</td>
+						</tr>
+					}
 				}
-			}
-		</tbody>
-	</table>
-	<input type="image" src="img/add.png" width="15" height="15" @onclick="AddCommunicationAsync" />
-	<a href="EditUser/@UserID">back</a>
-	<input type="image" src="img/diskette.png" width="15" height="15" @onclick="SaveAsync" />
-</div>
+			</tbody>
+		</table>
+		<input type="image" src="img/add.png" width="15" height="15" @onclick="AddCommunicationAsync" />
+		<a href="EditUser/@UserID">back</a>
+		<input type="image" src="img/diskette.png" width="15" height="15" @onclick="SaveAsync" />
+	</div>
+}

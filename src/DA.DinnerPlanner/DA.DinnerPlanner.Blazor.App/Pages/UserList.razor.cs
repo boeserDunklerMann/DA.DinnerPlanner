@@ -6,42 +6,96 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 {
 	/// <ChangeLog>
 	/// <Create Datum="27.02.2025" Entwickler="DA" />
+	/// <Change Datum="27.03.2025" Entwickler="DA">see https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component (Jira-Nr. DPLAN-80)</Change>
 	/// </ChangeLog>
 	public partial class UserList : ComponentBase
 	{
 		public ICollection<Model.User> Users { get; private set; } = [];
 		//[BindProperty]
 		public User NewUser { get; set; } = new();
+		private DinnerPlannerContext? dpcontext;
+		/// <summary>
+		/// Identifies whether a db-action is currently in progress
+		/// </summary>
+		private bool Loading { get; set; } = false;
 
 		protected override async Task OnInitializedAsync()
 		{
-			Users = await Application.Instance.GetAllUsersAsync(context);
+			if (dpcontext == null)
+			{
+				dpcontext = await contextFactory.CreateDbContextAsync();
+				dpcontext.ConnectionString = cfg.GetConnectionString("da_dinnerplanner-db")!;
+			}
+
+			if (Loading)
+				return;
+			try
+			{
+				Loading = true;
+				Users = await Application.Instance.GetAllUsersAsync(dpcontext);
+			}
+			finally
+			{
+				Loading = false;
+			}
 			await base.OnInitializedAsync();
 		}
 
 		private async Task NewUserSubmittedAsync()
 		{
-			await Application.Instance.CreateUserAsync(context, NewUser);
-			Users = await Application.Instance.GetAllUsersAsync(context);
+			if (Loading)
+				return;
+			try
+			{
+				Loading = true;
+				await Application.Instance.CreateUserAsync(dpcontext!, NewUser);
+				//Users = await Application.Instance.GetAllUsersAsync(dpcontext);
+				navMgr.NavigateTo(nameof(UserList), true);
+			}
+			finally
+			{
+				Loading = false;
+			}
 		}
 
 		private async Task OnGeoCodeAsync(User user)
 		{
-			Address? usersPrimaryAddress = null;
+			if (Loading)
+				return;
 			try
 			{
-				usersPrimaryAddress = user.AddressList.First(a => a.Primary);
-			}
-			catch (InvalidOperationException)
-			{
+				Address? usersPrimaryAddress = null;
+				usersPrimaryAddress = user.AddressList.FirstOrDefault(a => a.Primary);
 				// user has no primary address, so we take the first one
-				usersPrimaryAddress = user.AddressList.First();
+				usersPrimaryAddress ??= user.AddressList.First();
+				if (usersPrimaryAddress != null)
+				{
+					usersPrimaryAddress.GeoLocation = await geo.Address2LocationAsync(usersPrimaryAddress);
+					await dpcontext!.SaveAsync();
+				}
 			}
-			if (usersPrimaryAddress != null)
+			finally
 			{
-				usersPrimaryAddress.GeoLocation = await geo.Address2LocationAsync(usersPrimaryAddress);
-				await context.SaveAsync();
+				Loading = false;
 			}
 		}
+		#region Disposing
+		// see: https://learn.microsoft.com/de-de/dotnet/fundamentals/code-analysis/quality-rules/ca1816#example-that-satisfies-ca1816
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				dpcontext?.Dispose();
+				dpcontext = null;
+			}
+		}
+		#endregion
 	}
 }

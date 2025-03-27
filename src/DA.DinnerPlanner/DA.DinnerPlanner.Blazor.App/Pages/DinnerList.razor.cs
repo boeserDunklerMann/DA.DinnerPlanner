@@ -8,7 +8,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 {
 	/// <ChangeLog>
 	/// <Create Datum="27.02.2025" Entwickler="DA" />
-	/// <Change Datum="26.03.2025" Entwickler="DA">see https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component (Jira-Nr. DPLAN-80)</Change>
+	/// <Change Datum="27.03.2025" Entwickler="DA">see https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component (Jira-Nr. DPLAN-80)</Change>
 	/// </ChangeLog>
 	public partial class DinnerList : ComponentBase
 	{
