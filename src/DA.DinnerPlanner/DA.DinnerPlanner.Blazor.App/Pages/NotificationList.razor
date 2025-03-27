@@ -2,7 +2,10 @@
 @using DA.DinnerPlanner.Model
 @using DA.DinnerPlanner.Model.Contracts
 @using DA.DinnerPlanner.Model.Notifications
-@inject IDinnerPlannerContext dpcontext
+@using Microsoft.EntityFrameworkCore
+@implements IDisposable
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
+@inject IConfiguration configuration
 @inject NavigationManager navMgr
 <h3>Notifications</h3>
 @if (Notifications!=null && Notifications.Count>0)
