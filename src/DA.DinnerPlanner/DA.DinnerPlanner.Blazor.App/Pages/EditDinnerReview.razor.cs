@@ -1,11 +1,13 @@
 ﻿using DA.DinnerPlanner.Common;
 using DA.DinnerPlanner.Model;
 using Microsoft.AspNetCore.Components;
+using System.Configuration;
 
 namespace DA.DinnerPlanner.Blazor.App.Pages
 {
 	/// <ChangeLog>
 	/// <Create Datum="18.03.2025" Entwickler="DA" />
+	/// <Change Datum="27.03.2025" Entwickler="DA">see https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component (Jira-Nr. DPLAN-80)</Change>
 	/// </ChangeLog>
 	public partial class EditDinnerReview : ComponentBase
 	{
@@ -16,14 +18,64 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 		/// The review from the current user (we need authorization techique!)
 		/// </summary>
 		private DinnerReview? UsersReview { get; set; }
+		private DinnerPlannerContext? dpcontext;
+		/// <summary>
+		/// Identifies whether a db-action is currently in progress
+		/// </summary>
+		private bool Loading { get; set; } = false;
 		protected override async Task OnInitializedAsync()
 		{
-			EditingDinner = await Application.Instance.GetDinnerByIdAsync(dpcontext, DinnerID);
-			UsersReview = EditingDinner.Reviews.First();
+			if (dpcontext == null)
+			{
+				dpcontext = await contextFactory.CreateDbContextAsync();
+				dpcontext.ConnectionString = configuration.GetConnectionString("da_dinnerplanner-db")!;
+			}
+
+			if (Loading)
+				return;
+			try
+			{
+				Loading = true;
+				EditingDinner = await Application.Instance.GetDinnerByIdAsync(dpcontext, DinnerID);
+				UsersReview = EditingDinner.Reviews.FirstOrDefault();
+			}
+			finally
+			{
+				Loading = false;
+			}
 		}
 		private async Task SaveAsync()
 		{
-			await dpcontext.SaveAsync();
+			if (Loading)
+				return;
+			try
+			{
+				Loading = true;
+				await dpcontext!.SaveAsync();
+			}
+			finally
+			{
+				Loading = false;
+			}
 		}
+
+		#region Disposing
+		// see: https://learn.microsoft.com/de-de/dotnet/fundamentals/code-analysis/quality-rules/ca1816#example-that-satisfies-ca1816
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				dpcontext?.Dispose();
+				dpcontext = null;
+			}
+		}
+		#endregion
 	}
 }

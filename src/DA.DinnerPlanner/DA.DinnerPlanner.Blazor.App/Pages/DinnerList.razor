@@ -47,7 +47,7 @@
 				<td class="border border-2 border-dark">
 					<ShowRatingsStars Dinner="dinner" />
 				</td>
-				<td class="border border-2 border-dark">@dinner.Host.GetDefaultDisplayName()</td>
+				<td class="border border-2 border-dark">@dinner.Host?.GetDefaultDisplayName()</td>
 			</tr>
 			<tr>
 				<th class="border border-2 border-dark" colspan="7">Guests</th>

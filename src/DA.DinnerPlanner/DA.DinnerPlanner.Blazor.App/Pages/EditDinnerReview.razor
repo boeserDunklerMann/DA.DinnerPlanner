@@ -1,10 +1,13 @@
 ﻿@page "/EditDinnerReview/{DinnerID:int}"
 @using DA.DinnerPlanner.Model;
 @using DA.DinnerPlanner.Model.Contracts
-@inject IDinnerPlannerContext dpcontext
+@using Microsoft.EntityFrameworkCore
+@implements IDisposable
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
+@inject IConfiguration configuration
 
 <h3>Edit Dinner's Review</h3>
-@if (EditingDinner != null && UsersReview != null)
+@if (EditingDinner != null && UsersReview != null && !Loading)
 {
 	<h4>@EditingDinner.Dinnerdescription</h4>
 	<div>
