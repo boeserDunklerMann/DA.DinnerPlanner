@@ -8,7 +8,7 @@
 	<input type="text" @bind-value="@Address.HouseNumberExtension" name="HouseNumberExt" class="HouseNumber" placeholder="No Ext" />
 	<input type="text" @bind-value="@Address.ZipCode" name="zipCode" placeholder="ZIP code" />
 	<input type="text" @bind-value="@Address.City" name="city" placeholder="City" />
-	<InputSelect TValue="int" class="form-select" @bind-Value="countryId">
+	<InputSelect TValue="int" class="form-select" @bind-Value="CountryId">
 		@foreach (Country country in Countries!)
 		{
 			<option value="@country.Id">@country.CountryName</option>

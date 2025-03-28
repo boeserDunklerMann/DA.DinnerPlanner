@@ -1,19 +1,32 @@
 ﻿@inherits LayoutComponentBase
+@using DA.DinnerPlanner.Model;
+@using Microsoft.EntityFrameworkCore
+@implements IDisposable
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
+@inject IConfiguration cfg
 
 <PageTitle>DA.DinnerPlanner.Blazor.App</PageTitle>
 
 <div class="page">
+    <CascadingValue Value="this.SelectedUserID">
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+		<div class="top-row px-4">
+            Select user: 
+			<InputSelect @bind-Value="@SelectedUserID">
+				@foreach (var u in Users)
+				{
+					<option value="@u.Id">@u.GetDefaultDisplayName()</option>
+				}
+			</InputSelect>
+			<a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
-
         <article class="content px-4">
             @Body
         </article>
     </main>
+    </CascadingValue>
 </div>

@@ -22,7 +22,7 @@ namespace DA.DinnerPlanner.Blazor.App.Shared
 		[Parameter]
 		public EventCallback<Address> OnPrimaryChangedEvent { get; set; }
 		#endregion
-		private int countryId
+		private int CountryId
 		{
 			get => Address!.Country.Id;
 			set => Address!.Country = Countries!.Single(c => c.Id == value && !c.Deleted);

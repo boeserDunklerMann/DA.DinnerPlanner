@@ -10,6 +10,8 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 	/// </ChangeLog>
 	public partial class NotificationList : ComponentBase
 	{
+		[CascadingParameter]
+		public int SelectedUserID { get; set; }
 		public ICollection<Notification> Notifications { get; set; } = [];
 		private DinnerPlannerContext? dpcontext;
 		/// <summary>
@@ -29,7 +31,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			try
 			{
 				Loading = true;
-				User ich = dpcontext.Users.First(u => u.Id == 1);
+				User ich = dpcontext.Users.First(u => u.Id == SelectedUserID);
 				Notifications = [.. ich.Notifications.Where(n => !n.Deleted)];
 				await Task.CompletedTask;
 			}
