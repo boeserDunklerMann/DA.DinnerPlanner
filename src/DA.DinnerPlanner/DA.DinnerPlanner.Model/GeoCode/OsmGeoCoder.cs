@@ -22,6 +22,8 @@ namespace DA.DinnerPlanner.Model.GeoCode
 		private readonly string nominatimSearchApiURL = "https://nominatim.openstreetmap.org/search?";
 		public async Task<GeoLocation> Address2LocationAsync(Address? address)
 		{
+			await Task.CompletedTask;
+
 			if (address != null)
 			{
 				using HttpClient client = new();
@@ -40,22 +42,27 @@ namespace DA.DinnerPlanner.Model.GeoCode
 				Uri uri = new(sbApi.ToString());
 				if (uri == null)
 					throw new NullReferenceException(nameof(uri));
-				json = await GetNominationJssonAsync(uri);
+				json = GetNominationJssonAsync(uri).Result;
 				if (json != null)
 				{
 					JsonDocument jsonDocument = JsonDocument.Parse(json);
-					GeoLocation loc = new();
-					try
+					if (jsonDocument.RootElement.GetArrayLength() > 0)	// OSM sometimes returns an empty array, if address isn't resolvable
 					{
-						loc.Latitude = double.Parse(jsonDocument.RootElement[0].GetProperty("lat").GetString()!.Replace('.', ','));
-						loc.Longitude = double.Parse(jsonDocument!.RootElement[0]!.GetProperty("lon")!.GetString()!.Replace('.', ','));
-						loc.GeoCodeResult = GeoCodeResult.OK;
+						GeoLocation loc = new();
+						try
+						{
+							loc.Latitude = double.Parse(jsonDocument.RootElement[0].GetProperty("lat").GetString()!.Replace('.', ','));
+							loc.Longitude = double.Parse(jsonDocument!.RootElement[0]!.GetProperty("lon")!.GetString()!.Replace('.', ','));
+							loc.GeoCodeResult = GeoCodeResult.OK;
+						}
+						catch
+						{
+							loc.GeoCodeResult = GeoCodeResult.Error;
+						}
+						return loc;
 					}
-					catch
-					{
-						loc.GeoCodeResult = GeoCodeResult.Error;
-					}
-					return loc;
+					else
+						return new() { GeoCodeResult = GeoCodeResult.Error };
 				}
 				else
 					return new() { GeoCodeResult = GeoCodeResult.Error };
@@ -66,7 +73,6 @@ namespace DA.DinnerPlanner.Model.GeoCode
 
 		private static async Task<string?> GetNominationJssonAsync(Uri uri)
 		{
-			Debug.WriteLine(uri);
 			using HttpClient client = new();
 			client.DefaultRequestHeaders.UserAgent.ParseAdd("DA.DinnerPlanner.Blazor");
 			HttpRequestMessage requestMessage = new()
@@ -82,6 +88,7 @@ namespace DA.DinnerPlanner.Model.GeoCode
 			}
 			catch (Exception e /* we swallow all exceptions */ )
 			{
+				Debug.WriteLine($"Exception type: {e.GetType()}");
 				Debug.WriteLine(e.Message);
 			}
 			if (responseMessage != null)

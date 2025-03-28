@@ -39,10 +39,10 @@
 						<input type="button" value="Invite guests"
 						@onclick="(a)=>InviteGuestsAsync(dinner)"/>
 					}
-					@* @if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereits statt, kann es bewertet werden *@
-					{
+					@* @if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereits statt, kann es bewertet werden
+					{*@
 					<a href="EditDinnerReview/@dinner.Id">rate</a>
-					}
+					@*}*@
 				</td>
 				<td class="border border-2 border-dark">
 					<ShowRatingsStars Dinner="dinner" />
@@ -83,5 +83,4 @@
  		</div>
 		<button type="submit" class="btn btn-primary">create</button>
 	</EditForm>
-	<button @onclick="AddHangfireJob">Click</button>
 </div>

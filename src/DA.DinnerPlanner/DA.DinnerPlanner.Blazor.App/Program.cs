@@ -16,7 +16,8 @@ builder.Services.AddHangfire(cfg => cfg.SetDataCompatibilityLevel(CompatibilityL
 builder.Services.AddHangfireServer();
 
 // add local appsettings
-builder.Configuration.AddJsonFile("appsettings.local.json", optional: false);    // there is the connstring which will not be committed to git
+builder.Configuration.AddJsonFile("appsettings.local.json", optional: false);    // there is the connstring which will not be committed to 
+GlobalConfiguration.Configuration.UseColouredConsoleLogProvider();
 string connString = builder.Configuration.GetConnectionString("da_dinnerplanner-db")!;
 
 // Add services to the container.

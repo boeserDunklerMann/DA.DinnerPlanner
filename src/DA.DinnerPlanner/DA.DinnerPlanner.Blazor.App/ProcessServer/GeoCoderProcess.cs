@@ -6,19 +6,14 @@ namespace DA.DinnerPlanner.Blazor.App.ProcessServer
 	/// <ChangeLog>
 	/// <Create Datum="25.03.2025" Entwickler="DA" />
 	/// <Change Datum="26.03.2025" Entwickler="DA">Context removed from ProcessAllUsersAsync, because of DBContextFactory (Jira-Nr. DPLAN-80)</Change>
-	/// </ChangeLog>
-	public class GeoCoderProcess : IGeoCoderProcess
+	/// <Change Datum="28.03.2025" Entwickler="DA">use primary c'tor</Change>
+		/// </ChangeLog>
+	public class GeoCoderProcess(Func<DinnerPlannerContext> factory) : IGeoCoderProcess
 	{
-		private readonly Func<DinnerPlannerContext> _factory;
-		public GeoCoderProcess(Func<DinnerPlannerContext> factory)
-		{
-			_factory = factory;
-		}
-
 		public async Task ProcessAllUsersAsync(string? ConnectionString, IGeoCoder geo)
 		{
 			// When running as a Hangfire-Job, we need to create a new DB-Context
-			using (var context = _factory.Invoke())
+			using (var context = factory.Invoke())
 			{
 				context.ConnectionString = ConnectionString!;
 
@@ -49,7 +44,6 @@ namespace DA.DinnerPlanner.Blazor.App.ProcessServer
 					Task.Delay(1500).Wait();
 				});
 				await context.SaveAsync();
-				//await Task.CompletedTask;
 			}
 		}
 	}

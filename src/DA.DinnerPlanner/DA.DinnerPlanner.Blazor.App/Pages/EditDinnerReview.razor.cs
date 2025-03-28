@@ -8,7 +8,8 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 	/// <ChangeLog>
 	/// <Create Datum="18.03.2025" Entwickler="DA" />
 	/// <Change Datum="27.03.2025" Entwickler="DA">see https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component (Jira-Nr. DPLAN-80)</Change>
-	/// </ChangeLog>
+	/// <Change Datum="28.03.2025" Entwickler="DA">add empty review (Jira-Nr. DPLAN-82)</Change>
+		/// </ChangeLog>
 	public partial class EditDinnerReview : ComponentBase
 	{
 		[Parameter]
@@ -37,6 +38,9 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			{
 				Loading = true;
 				EditingDinner = await Application.Instance.GetDinnerByIdAsync(dpcontext, DinnerID);
+				// if we don't have any reviews, we create and add an empty one:
+				if (EditingDinner.Reviews.Count == 0)
+					EditingDinner.Reviews.Add(new());
 				UsersReview = EditingDinner.Reviews.FirstOrDefault();
 			}
 			finally

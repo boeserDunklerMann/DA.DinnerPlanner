@@ -91,10 +91,6 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 				Loading = false;
 			}
 		}
-		private void AddHangfireJob()
-		{
-			BackgroundJob.Enqueue<ProcessServer.GeoCoderProcess>(gc => gc.ProcessAllUsersAsync(dpcontext!.ConnectionString, geo));
-		}
 
 		#region Disposing
 		// see: https://learn.microsoft.com/de-de/dotnet/fundamentals/code-analysis/quality-rules/ca1816#example-that-satisfies-ca1816
