@@ -10,8 +10,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 	/// </ChangeLog>
 	public partial class UserList : ComponentBase
 	{
-		public ICollection<Model.User> Users { get; private set; } = [];
-		//[BindProperty]
+		public IQueryable<User>? Users { get; private set; }
 		public User NewUser { get; set; } = new();
 		private DinnerPlannerContext? dpcontext;
 		/// <summary>
@@ -32,7 +31,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			try
 			{
 				Loading = true;
-				Users = await Application.Instance.GetAllUsersAsync(dpcontext);
+				Users = (await Application.Instance.GetAllUsersAsync(dpcontext)).AsQueryable();
 			}
 			finally
 			{

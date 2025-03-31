@@ -1,6 +1,7 @@
 ﻿using DA.DinnerPlanner.Model;
 using DA.DinnerPlanner.Model.Notifications;
 using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 
 namespace DA.DinnerPlanner.Blazor.App.Pages
 {
@@ -31,8 +32,9 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			try
 			{
 				Loading = true;
-				User ich = dpcontext.Users.First(u => u.Id == SelectedUserID);
-				Notifications = [.. ich.Notifications.Where(n => !n.Deleted)];
+				User? ich = await dpcontext.Users.FirstOrDefaultAsync(u => u.Id == SelectedUserID);
+				if (ich != null)
+					Notifications = [.. ich.Notifications.Where(n => !n.Deleted)];
 				await Task.CompletedTask;
 			}
 			finally

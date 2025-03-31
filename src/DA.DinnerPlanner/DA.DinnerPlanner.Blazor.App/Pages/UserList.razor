@@ -2,6 +2,7 @@
 @using DA.DinnerPlanner.Model;
 @using System.Text
 @using DA.DinnerPlanner.Model.Contracts
+@using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.EntityFrameworkCore
 @implements IDisposable
 @inject IConfiguration cfg
@@ -20,38 +21,21 @@
 	}
 </style>
 <table class="border">
-	<thead>
-		<tr class="border">
-			<th class="border border-2 border-dark">Name</th>
-			<th class="border border-2 border-dark">Age</th>
-			<th class="border border-2 border-dark">Image</th>
-			<th class="border border-2 border-dark">Languages</th>
-			<th class="border border-2 border-dark">Action</th>
-		</tr>
-	</thead>
 	<tbody>
 		@{
 			if (!Loading)
 			{
-				foreach (var user in Users!)
-				{
-					<tr class="border">
-						<td class="border border-2 border-dark">@user.GetDefaultDisplayName()</td>
-						<td class="border border-2 border-dark">@if (user.BirthDate > DateTime.MinValue)
-							{
-								@user.Age
-								;
-							}</td>
-						<td class="border border-2 border-dark">
-							@{
-								foreach (var image in user.UserImages)
-								{
-									<img src="data:image;base64,@System.Convert.ToBase64String(image.Image)" width="100" />
-								}
-							}
-						</td>
-						<td class="border border-2 border-dark">
-							@{
+				<QuickGrid Items="Users" TGridItem="User">
+					<PropertyColumn Property="@(u=>u.GetDefaultDisplayName())" Sortable="true" Title="Name"/>
+					<PropertyColumn Property="@(u=>u.Age)" />
+					<TemplateColumn Context="user" Title="Image">
+						@foreach(var img in user.UserImages)
+						{
+							<img src="data:image;base64,@System.Convert.ToBase64String(img.Image)" width="100" />
+						}
+					</TemplateColumn>
+					<TemplateColumn Context="user" Title="Languages">
+						@{
 								StringBuilder sb = new StringBuilder();
 								foreach (var language in user.Languages)
 								{
@@ -64,14 +48,12 @@
 									@sb.ToString()
 								}
 							}
-						</td>
-						<td class="border border-2 border-dark">
-							<!--TODO DA: add permission check here-->
-							<a href="EditUser/@user.Id">Edit</a>
-							<input type="button" @onclick="(a)=>OnGeoCodeAsync(user)" value="Geocode primary addr." />
-						</td>
-					</tr>
-				}
+						</TemplateColumn>
+					<TemplateColumn Context="user" Title="Actions">
+						<a href="EditUser/@user.Id">Edit</a>
+						<input type="button" @onclick="(a)=>OnGeoCodeAsync(user)" value="Geocode primary addr." />
+					</TemplateColumn>
+				</QuickGrid>
 			}
 		}
 	</tbody>
