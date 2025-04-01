@@ -8,14 +8,9 @@
 @implements IDisposable		// see: https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component
 
 @inject IConfiguration cfg
-@inject IGeoCoder geo
 @inject IDbContextFactory<DinnerPlannerContext> contextFactory
 @inject NavigationManager navMgr
 <style>
-	/* Magnifying glass */
-	.grid ::deep .col-options-button {
-		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /> </svg>');
-	}
 </style>
 <h1>Dinners</h1>
 @{
@@ -50,6 +45,9 @@
 			</TemplateColumn>
 			<TemplateColumn Title="Ratings" Context="dinner">
 				<ShowRatingsStars Dinner="@dinner"></ShowRatingsStars>
+			</TemplateColumn>
+			<TemplateColumn Title="Guests" Context="dinner">
+				<a href="ShowGuestsPerDinner/@dinner.Id"><img src="img/search.png" width="15" height="15" /></a>
 			</TemplateColumn>
 		</QuickGrid>
 	}

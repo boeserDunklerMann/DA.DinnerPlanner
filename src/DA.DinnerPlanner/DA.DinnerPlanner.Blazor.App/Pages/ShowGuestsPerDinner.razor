@@ -1,0 +1,17 @@
+﻿@page "/ShowGuestsPerDinner/{DinnerID:int}"
+@using DA.DinnerPlanner.Model;
+@using System.Text
+@using DA.DinnerPlanner.Model.Contracts
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject IConfiguration cfg
+@inject IDbContextFactory<DinnerPlannerContext> contextFactory
+
+<h3>Show Guests Per Dinner</h3>
+<QuickGrid Items="GuestList">
+	<PropertyColumn Title="Name" Property="@(g=>g.GetDefaultDisplayName())" />
+	<TemplateColumn Context="guest" Title="more">
+		<a href="EditUser/@guest.Id"><img src="img/search.png" width="15" height="15" /></a>
+	</TemplateColumn>
+</QuickGrid>

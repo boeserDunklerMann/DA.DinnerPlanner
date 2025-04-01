@@ -55,7 +55,6 @@
 									}
 									<td>
 										<form>
-										<!-- DONE DA: mach das irgendwie eleganter mit nem Einzeiler -->
 											<input type="checkbox" name="selectedAllergies" @oninput="(args)=>ToggleAllergyAsync(args, allergy)" value="@allergy.Allergy!.Id" checked="@allergy.Selected" />
 											@allergy.Allergy.Name
 										</form>
