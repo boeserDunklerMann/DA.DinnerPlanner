@@ -26,6 +26,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddDbContextFactory<DinnerPlannerContext>(builder => builder.UseMySQL(connString));
 builder.Services.AddSingleton<IDbContextFactory<DinnerPlannerContext>, DinnerPlannerContextFactory>();
 builder.Services.AddSingleton<IGeoCoder, OsmGeoCoder>();    // TODO DA: get this info from Cfg
+builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 // https://developers.facebook.com/apps/
 // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/facebook-logins?view=aspnetcore-8.0

@@ -3,6 +3,7 @@
 @using System.Text
 @using DA.DinnerPlanner.Model.Contracts
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
 
 @implements IDisposable		// see: https://learn.microsoft.com/de-de/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-9.0#scope-a-database-context-to-the-lifetime-of-the-component
 
@@ -10,59 +11,49 @@
 @inject IGeoCoder geo
 @inject IDbContextFactory<DinnerPlannerContext> contextFactory
 @inject NavigationManager navMgr
+<style>
+	/* Magnifying glass */
+	.grid ::deep .col-options-button {
+		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /> </svg>');
+	}
+</style>
 <h1>Dinners</h1>
-<table class="border">
-	<thead>
-		<tr>
-			<th class="border border-2 border-dark">Name</th>
-			<th class="border border-2 border-dark">Date and Time</th>
-			<th class="border border-2 border-dark">No of persons allowed</th>
-			<th class="border border-2 border-dark">No of guests invited (including cooks)</th>
-			<th class="border border-2 border-dark">Actions</th>
-			<th class="border border-2 border-dark">Ratings</th>
-			<th class="border border-2 border-dark">Host</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var dinner in Dinners)
-		{
-			<tr>
-				<td class="border border-2 border-dark">@dinner.Dinnerdescription</td>
-				<td class="border border-2 border-dark">@dinner.DinnerDate</td>
-				<td class="border border-2 border-dark">@dinner.NumberPersonsAllowed</td>
-				<td class="border border-2 border-dark">@((dinner.Guests.Count + dinner.Cooks.Count).ToString())</td>
-				<td class="border border-2 border-dark">
+@{
+	if (!Loading)
+	{
+		<QuickGrid @ref="DinnerGrid" Items="Dinners" TGridItem="Dinner">
+			<PropertyColumn Title="Name" Property="@(d=>d.Dinnerdescription)" Sortable="true">
+				<ColumnOptions>
+					<input type="search" value="@DinnerSearch" placeholder="Filter by name" @onchange="(args)=>OnSearchByNameChangeAsync(args)"
+						@bind:after="@(()=>AfterSearchAsync())"/>
+					<input type="button" value="clear" @onclick="OnSearchClear" @bind:after="@(()=>AfterSearchAsync())" />
+				</ColumnOptions>
+			</PropertyColumn>
+			<PropertyColumn Title="Date and Time" Property="@(d=>d.DinnerDate)" Sortable="true" />
+			<PropertyColumn Title="No of persons allowed" Property="@(d=>d.NumberPersonsAllowed)" Sortable="true" />
+			<PropertyColumn Title="No of guests invited (including cooks)" Property="@(d=>(d.Guests.Count + d.Cooks.Count).ToString())" Sortable="true" />
+			<PropertyColumn Title="Host" Property="@(d=>d.Host!.GetDefaultDisplayName())" Sortable="true" />
+			<TemplateColumn Title="Actions" Context="dinner">
+				@{
 					@if (dinner.DinnerDate > DateTime.UtcNow)   // liegt das Dinner in der Zukunft, darf es gelöscht werden
 					{
 						<input type="image" src="img/delete.png" width="15" height="15"
-						@onclick="(a)=>DelDinner(dinner)"/>
+								@onclick="(a)=>DelDinner(dinner)" />
 						<input type="button" value="Invite guests"
-						@onclick="(a)=>InviteGuestsAsync(dinner)"/>
+								@onclick="(a)=>InviteGuestsAsync(dinner)" />
 					}
-					@* @if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereits statt, kann es bewertet werden
-					{*@
-					<a href="EditDinnerReview/@dinner.Id">rate</a>
-					@*}*@
-				</td>
-				<td class="border border-2 border-dark">
-					<ShowRatingsStars Dinner="dinner" />
-				</td>
-				<td class="border border-2 border-dark">@dinner.Host?.GetDefaultDisplayName()</td>
-			</tr>
-			<tr>
-				<th class="border border-2 border-dark" colspan="7">Guests</th>
-			</tr>
-			<tr>
-				<td class="border border-2 border-dark" colspan="7">
-					@foreach(var guest in dinner.Guests)
+					@if (dinner.DinnerDate < DateTime.UtcNow || dinner.HasTakenDone) // liegt es in der Vergangenheit oder fand es bereits statt, kann es bewertet werden
 					{
-						<a href="EditUser/@guest.Id">@guest.GetDefaultDisplayName()</a> 
+						<a href="EditDinnerReview/@dinner.Id">rate</a>
 					}
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+				}
+			</TemplateColumn>
+			<TemplateColumn Title="Ratings" Context="dinner">
+				<ShowRatingsStars Dinner="@dinner"></ShowRatingsStars>
+			</TemplateColumn>
+		</QuickGrid>
+	}
+}
 <div>
 	<h2>create new dinner</h2>
 	<EditForm Model="@NewDinner" OnSubmit="NewDinnerSubmittedAsync">

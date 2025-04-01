@@ -10,8 +10,8 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 	/// </ChangeLog>
 	public partial class UserList : ComponentBase
 	{
-		public IQueryable<User>? Users { get; private set; }
-		public User NewUser { get; set; } = new();
+		private IQueryable<User>? Users { get; set; }
+		private User NewUser { get; set; } = new();
 		private DinnerPlannerContext? dpcontext;
 		/// <summary>
 		/// Identifies whether a db-action is currently in progress

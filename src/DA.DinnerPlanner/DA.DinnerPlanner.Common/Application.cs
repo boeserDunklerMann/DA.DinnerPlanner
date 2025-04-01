@@ -59,6 +59,17 @@ namespace DA.DinnerPlanner.Common
 				throw new Exception($"User not found Id: {userId}");    // DONE DA: create own Exceptionclass for this -> .Single will throw exc
 			return retval;
 		}
+		#region Search
+		public async Task<IQueryable<Dinner>> SearchDinnerAsync(IDinnerPlannerContext context, string? search)
+		{
+			if (search == null)
+				search = "";
+			return context!.Dinners
+				.Include(nameof(Dinner.Reviews))
+				.Include(nameof(Dinner.Host))
+				.Where(d => !d.Deleted && d.Dinnerdescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)).AsQueryable();
+		}
+		#endregion
 		public async Task<ICollection<Model.Dinner>> GetAllDinnersAsync(IDinnerPlannerContext context)
 		{
 			if (context == null)
