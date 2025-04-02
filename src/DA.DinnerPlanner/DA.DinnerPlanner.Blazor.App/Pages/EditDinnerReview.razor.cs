@@ -1,6 +1,7 @@
 ﻿using DA.DinnerPlanner.Common;
 using DA.DinnerPlanner.Model;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Configuration;
 
 namespace DA.DinnerPlanner.Blazor.App.Pages
@@ -55,6 +56,51 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 			try
 			{
 				Loading = true;
+				await dpcontext!.SaveAsync();
+			}
+			finally
+			{
+				Loading = false;
+			}
+		}
+
+		private async Task LoadfileAsync(InputFileChangeEventArgs e)
+		{
+			// **WARNING!**
+			// In the following example, the file is saved without
+			// scanning the file's contents. In most production
+			// scenarios, an anti-virus/anti-malware scanner API
+			// is used on the file before making the file available
+			// for download or for use by other systems. 
+			// For more information, see the topic that accompanies 
+			// this sample.
+			if (Loading)
+				return;
+			try
+			{
+				Loading = true;
+				using (MemoryStream memstream = new())
+				{
+					await e.File.OpenReadStream(configuration.GetValue<long>("UserProfileImage:FileSizeLimit"))
+						.CopyToAsync(memstream);
+					UsersReview!.DinnerImages.Add(new() { Image = memstream.ToArray() });
+				}
+				await dpcontext!.SaveAsync();
+			}
+			finally
+			{
+				Loading = false;
+			}
+		}
+
+		private async Task DeleteDinnerImageAsync(DinnerImage img)
+		{
+			if (Loading)
+				return;
+			try
+			{
+				Loading = true;
+				img.Delete();
 				await dpcontext!.SaveAsync();
 			}
 			finally

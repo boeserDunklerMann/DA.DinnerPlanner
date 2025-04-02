@@ -1,6 +1,7 @@
 ﻿@page "/EditDinnerReview/{DinnerID:int}"
 @using DA.DinnerPlanner.Model;
 @using DA.DinnerPlanner.Model.Contracts
+@using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.EntityFrameworkCore
 @implements IDisposable
 @inject IDbContextFactory<DinnerPlannerContext> contextFactory
@@ -79,5 +80,15 @@
 			</tr>
 		</table>
 	</div>
-	<input type="image" src="img/diskette.png" width="15" height="15" @onclick="SaveAsync" />
+	<input type="image" src="img/diskette.png" width="30" height="30" @onclick="SaveAsync" />
+	<h5>Images</h5>
+	<QuickGrid Items="UsersReview.DinnerImages.Where(i=>!i.Deleted).AsQueryable()" TGridItem="DinnerImage">
+		<TemplateColumn Context="dinnerImg">
+			<img src="data:image;base64,@System.Convert.ToBase64String(dinnerImg.Image)" width="200" />
+		</TemplateColumn>
+		<TemplateColumn Context="dinnerImg">
+			<input type="image" src="img/delete.png" alt="delete image" width="15" height="15" @onclick="(args)=>DeleteDinnerImageAsync(dinnerImg)" />
+		</TemplateColumn>
+	</QuickGrid>
+	<InputFile multiple OnChange="LoadfileAsync" />
 }
