@@ -66,7 +66,7 @@ namespace DA.DinnerPlanner.Blazor.App.Pages
 				Address? usersPrimaryAddress = null;
 				usersPrimaryAddress = user.AddressList.FirstOrDefault(a => a.Primary);
 				// user has no primary address, so we take the first one
-				usersPrimaryAddress ??= user.AddressList.First();
+				usersPrimaryAddress ??= user.AddressList.FirstOrDefault();
 				if (usersPrimaryAddress != null)
 				{
 					usersPrimaryAddress.GeoLocation = await geo.Address2LocationAsync(usersPrimaryAddress);
